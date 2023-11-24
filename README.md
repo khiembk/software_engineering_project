@@ -11,8 +11,8 @@ Search environment -> "Edit the system environment variables" -> "Environment Va
 Add 2 path to jdk17/bin and maven/bin from above
 
 Run server:
-- First build using: mvn install
-- Second run the .jar file in target folder: java -jar myserver-0.0.1-SNAPSHOT.jar
+- First, build using: mvn install
+- Second, run the .jar file in target folder: java -jar myserver-0.0.1-SNAPSHOT.jar
 
 For frontend web:
 - nodejs & npm: https://nodejs.org/en
