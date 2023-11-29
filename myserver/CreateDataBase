@@ -1,0 +1,7 @@
+1. Create a database login
+CREATE TABLE login (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    UserId  VARCHAR(255) NOT NULL,
+    UserName VARCHAR(255) NOT NULL,
+    UserPassword VARCHAR(255) NOT NULL
+);
