@@ -1,4 +1,5 @@
 package Webserver.com.myserver.Controller;
+import Webserver.com.myserver.HelperFunction.HashFuntion;
 import Webserver.com.myserver.Model.NomalUser;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
@@ -19,7 +20,7 @@ public class AddNewUserController {
         NomalUser nomalUser = new NomalUser();
         nomalUser.setUserName(UserName);
         nomalUser.setUserId(UserId);
-        nomalUser.setUserPassword("mypass");
+        nomalUser.setUserPassword(HashFuntion.hash256("mypass"));
         dataBaseService.addUserToDataBase(UserName, nomalUser.getUserPassword(), nomalUser.getUserId());
         return nomalUser.toString();
     }

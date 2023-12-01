@@ -1,6 +1,9 @@
 package Webserver.com.myserver.Util;
 
+import Webserver.com.myserver.Model.NomalUser;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class DataBaseService {
@@ -10,6 +13,9 @@ public class DataBaseService {
     }
     public void addUserToDataBase(String UserName, String UserPass, String UserId){
         dataBaseConnect.insertUserData(UserName,UserPass,UserId);
+    }
+    public List<NomalUser> SearchNomalUserById(String UserId){
+        return  dataBaseConnect.searchNomalUserById(UserId);
     }
 
 }
