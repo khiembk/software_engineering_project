@@ -5,6 +5,8 @@ import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class AddNewUserController {
@@ -17,6 +19,13 @@ public class AddNewUserController {
         JSONObject jsonRequest = new JSONObject(RequestBody);
         String UserName = jsonRequest.getString("UserName");
         String UserId = jsonRequest.getString("UserId");
+        List<NomalUser> findSameId = dataBaseService.SearchNomalUserById(UserId);
+        if (!findSameId.isEmpty()){
+            JSONObject jsonResponse = new JSONObject();
+            jsonResponse.put("code","501");
+            jsonResponse.put("message","query fail");
+            return jsonResponse.toString();
+        }
         NomalUser nomalUser = new NomalUser();
         nomalUser.setUserName(UserName);
         nomalUser.setUserId(UserId);

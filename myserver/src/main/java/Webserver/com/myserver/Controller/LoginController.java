@@ -1,6 +1,7 @@
 package Webserver.com.myserver.Controller;
 
 import Webserver.com.myserver.HelperFunction.HashFuntion;
+import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.Model.NomalUser;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
@@ -30,6 +31,7 @@ public class LoginController {
             if (currentUser.getUserPassword().equals(HashFuntion.hash256(UserPass))){
                 LoginResponse.put("code","200");
                 LoginResponse.put("message","Success");
+                LoginResponse.put("accessToken", JWTFactory.GenJWT(UserId));
                 return LoginResponse.toString();
             }
         }
