@@ -6,14 +6,14 @@ public class Fee {
     private int Money;
     private String FeeId;
     private  String FeeName;
-    private Date DateCreate;
+    private String DateCreate;
     private String Detail;
 
-    public void setDateCreate(Date dateCreate) {
+    public void setDateCreate(String dateCreate) {
         DateCreate = dateCreate;
     }
 
-    public Date getDateCreate() {
+    public String getDateCreate() {
         return DateCreate;
     }
 

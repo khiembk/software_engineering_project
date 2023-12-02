@@ -1,6 +1,7 @@
 package Webserver.com.myserver.Util;
 
 import Webserver.com.myserver.Model.Admin;
+import Webserver.com.myserver.Model.Fee;
 import Webserver.com.myserver.Model.NomalUser;
 import org.springframework.stereotype.Component;
 
@@ -23,12 +24,22 @@ public class DataBaseService {
     }
     public boolean IsRoot(String UserId){
         List<Admin> Admins = dataBaseConnect.searchRootById(UserId);
-        if (Admins.size()==1){
+        if(Admins.size()==1){
             return  true;
+        }
+        return false;
+    }
+    public  boolean IsExistedFee(String feeId){
+        List<Fee> fees = dataBaseConnect.searchFeeById(feeId);
+        if (fees.size()>0){
+            return true;
         }
         return false;
     }
     public void UpdateNomalUserPass(String newPass, String UseId){
         dataBaseConnect.UpdateNomalUserPass(UseId,newPass);
+    }
+    public void InsertNewFee(int money,String FeeName,String FeeId,String dateCreate,String detail){
+        dataBaseConnect.insertNewFee(money,FeeName,FeeId,dateCreate,detail);
     }
 }

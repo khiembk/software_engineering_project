@@ -14,3 +14,12 @@ CREATE TABLE admin (
 );
 3. Insert root
 INSERT INTO admin (UserName, UserPassword, UserId) VALUES ( 'root','4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2', '000000');
+4. Create a table for fee
+CREATE TABLE fee (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Money  INT NOT NULL,
+    FeeName VARCHAR(100) NOT NULL,
+    FeeId VARCHAR(100) NOT NULL,
+    DateCreate VARCHAR(30) NOT NULL,
+    Detail VARCHAR(100)
+);
