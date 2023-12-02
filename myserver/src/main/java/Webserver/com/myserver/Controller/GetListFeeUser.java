@@ -2,6 +2,7 @@ package Webserver.com.myserver.Controller;
 
 import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.HelperObject.UserInfo;
+import Webserver.com.myserver.Model.Fee;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,9 +25,14 @@ public class GetListFeeUser {
         JSONObject jsonResponse = new JSONObject();
         String AccessToken = jsonRequest.getString("accessToken");
         String UserId = jsonRequest.getString("UserId");
-
-        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId)){
-
+        List<UserInfo> userinfos = dataBaseService.GetListUserInfoById(UserId);
+        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId) && userinfos.size() ==1){
+            UserInfo cur_info = userinfos.get(0);
+            List<Fee>  fees  = dataBaseService.GetListFeeByFamilyId(cur_info.getFamilyId());
+            jsonResponse.put("code","200");
+            jsonResponse.put("message","Success");
+            jsonResponse.put("data",fees);
+            return jsonResponse.toString();
         }
         jsonRequest.put("code","505");
         jsonResponse.put("message","fail to get list fee");

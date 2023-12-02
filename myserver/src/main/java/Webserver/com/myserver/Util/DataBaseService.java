@@ -35,6 +35,10 @@ public class DataBaseService {
     public List<Fee> GetListFee(){
         return dataBaseConnect.GetListFee();
     }
+    public List<Fee> GetListFeeByFamilyId(String FamilyId){
+
+        return dataBaseConnect.GetListFeeByFamilyId(FamilyId);
+    }
     public boolean IsNomalUser(String UserId){
         List<User> uses = dataBaseConnect.searchNomalUserById(UserId);
         if (uses.size()==1){
@@ -54,6 +58,9 @@ public class DataBaseService {
     }
     public List<UserInfo> GetListUserInfo(){
         return dataBaseConnect.ListUserInfor();
+    }
+    public List<UserInfo> GetListUserInfoById(String UserId){
+        return dataBaseConnect.ListUserInforById(UserId);
     }
     public void UpdateNomalUserPass(String newPass, String UseId){
         dataBaseConnect.UpdateNomalUserPass(UseId,newPass);
