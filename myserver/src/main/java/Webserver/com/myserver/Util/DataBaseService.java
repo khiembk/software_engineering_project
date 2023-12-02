@@ -3,6 +3,7 @@ package Webserver.com.myserver.Util;
 import Webserver.com.myserver.Model.Admin;
 import Webserver.com.myserver.Model.Fee;
 import Webserver.com.myserver.Model.NomalUser;
+import Webserver.com.myserver.Model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class DataBaseService {
     public void addUserToDataBase(String UserName, String UserPass, String UserId){
         dataBaseConnect.insertUserData(UserName,UserPass,UserId);
     }
-    public List<NomalUser> SearchNomalUserById(String UserId){
+    public List<User> SearchNomalUserById(String UserId){
         return  dataBaseConnect.searchNomalUserById(UserId);
     }
     public List<Admin> SearchRootById(String UserId){
@@ -32,6 +33,7 @@ public class DataBaseService {
     public List<Fee> GetListFee(){
         return dataBaseConnect.GetListFee();
     }
+
     public  boolean IsExistedFee(String feeId){
         List<Fee> fees = dataBaseConnect.searchFeeById(feeId);
         if (fees.size()>0){

@@ -4,6 +4,7 @@ import Webserver.com.myserver.HelperFunction.HashFuntion;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.Model.Admin;
 import Webserver.com.myserver.Model.NomalUser;
+import Webserver.com.myserver.Model.User;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,9 +27,9 @@ public class LoginController {
         JSONObject jsonRequest = new JSONObject(RequestBody);
         String UserId = jsonRequest.getString("UserId");
         String UserPass = jsonRequest.getString("UserPassword");
-        List<NomalUser> LisUser = dataBaseService.SearchNomalUserById(UserId);
+        List<User> LisUser = dataBaseService.SearchNomalUserById(UserId);
         if (LisUser.size()==1){
-            NomalUser currentUser =LisUser.get(0);
+            User currentUser =LisUser.get(0);
             if (currentUser.getUserPassword().equals(HashFuntion.hash256(UserPass))){
                 LoginResponse.put("code","200");
                 LoginResponse.put("message","Success");

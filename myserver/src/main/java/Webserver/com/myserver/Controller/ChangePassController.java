@@ -2,6 +2,7 @@ package Webserver.com.myserver.Controller;
 import Webserver.com.myserver.HelperFunction.HashFuntion;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.Model.NomalUser;
+import Webserver.com.myserver.Model.User;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,9 +27,9 @@ public class ChangePassController {
         String NewUserPass = jsonRequest.getString("NewPassword");
         String AccessToken = jsonRequest.getString("accessToken");
         String OldUserPass = jsonRequest.getString("OldPassword");
-        List<NomalUser> LisUser = dataBaseService.SearchNomalUserById(UserId);
+        List<User> LisUser = dataBaseService.SearchNomalUserById(UserId);
         if (LisUser.size()==1 && JWTFactory.VerifyJWT(UserId, AccessToken)){
-            NomalUser currentUser =LisUser.get(0);
+            User currentUser =LisUser.get(0);
             if (currentUser.getUserPassword().equals(HashFuntion.hash256(OldUserPass))){
                 dataBaseService.UpdateNomalUserPass(HashFuntion.hash256(NewUserPass),UserId);
                 LoginResponse.put("code","200");

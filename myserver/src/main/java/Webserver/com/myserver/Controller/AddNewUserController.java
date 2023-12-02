@@ -2,6 +2,7 @@ package Webserver.com.myserver.Controller;
 import Webserver.com.myserver.HelperFunction.HashFuntion;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.Model.NomalUser;
+import Webserver.com.myserver.Model.User;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class AddNewUserController {
         if (JWTFactory.VerifyJWT(rootId,accessToken) && dataBaseService.IsRoot(rootId)){
         String UserName = jsonRequest.getString("UserName");
         String UserId = jsonRequest.getString("UserId");
-        List<NomalUser> findSameId = dataBaseService.SearchNomalUserById(UserId);
+        List<User> findSameId = dataBaseService.SearchNomalUserById(UserId);
         if (!findSameId.isEmpty()){
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("code","501");
@@ -41,4 +42,16 @@ public class AddNewUserController {
         jsonResponse.put("code","502");
         jsonResponse.put("message","Invalid JWT");
         return jsonResponse.toString();
-}}
+}
+   @PostMapping("/GetListUser")
+    String GetListUser(@RequestBody String RequestBody){
+        JSONObject jsonRequest = new JSONObject(RequestBody);
+        JSONObject jsonReponse = new JSONObject();
+        String UserId = jsonRequest.getString("UserId");
+        String AccessToken = jsonRequest.getString("accsessToken");
+        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){}
+        jsonReponse.put("code","500");
+        jsonReponse.put("message","Internal server Error");
+        return jsonReponse.toString();
+   }
+}

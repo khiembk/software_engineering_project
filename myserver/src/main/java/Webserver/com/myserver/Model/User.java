@@ -2,7 +2,7 @@ package Webserver.com.myserver.Model;
 
 import Webserver.com.myserver.HelperFunction.HashFuntion;
 
-public abstract class User {
+public  class User {
     private String UserId;
     private String UserName;
     private String UserPassword;
