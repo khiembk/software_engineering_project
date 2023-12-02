@@ -1,21 +1,30 @@
 package Webserver.com.myserver.Model;
 public class Family {
-    private  String FamimyId;
+    private  String FamilyId;
     private String Address;
+    private String OwnerName;
 
     public String getAddress() {
         return Address;
     }
 
-    public String getFamimyId() {
-        return FamimyId;
+    public void setFamilyId(String familyId) {
+        FamilyId = familyId;
     }
 
-    public void setFamimyId(String famimyId) {
-        FamimyId = famimyId;
+    public String getFamilyId() {
+        return FamilyId;
     }
 
     public void setAddress(String address) {
         Address = address;
+    }
+
+    public String getOwnerName() {
+        return OwnerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        OwnerName = ownerName;
     }
 }
