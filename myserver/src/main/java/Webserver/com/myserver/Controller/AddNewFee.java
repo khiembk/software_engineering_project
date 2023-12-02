@@ -67,6 +67,46 @@ public class AddNewFee {
         logger.info(jsonResponse.toString());
         return jsonResponse.toString();
     }
+    @PostMapping("/getListFee/Complete")
+    String GetListFeeComplete(@RequestBody String RequestBody){
+        logger.info(RequestBody.replace("\n",""));
+        JSONObject jsonRequest = new JSONObject(RequestBody);
+        String AccessToken = jsonRequest.getString("accessToken");
+        String UserId = jsonRequest.getString("UserId");
+        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){
+            JSONObject jsonResponse = new JSONObject();
+            jsonResponse.put("code","200");
+            jsonResponse.put("message","Success");
+            jsonResponse.put("data",dataBaseService.GetListFeeComplete());
+            logger.info(jsonResponse.toString());
+            return jsonResponse.toString();
+        }
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("code","502");
+        jsonResponse.put("message","Invalid JWT");
+        logger.info(jsonResponse.toString());
+        return jsonResponse.toString();
+    }
+    @PostMapping("/getListFee/NotComplete")
+    String GetListFeeNotComplete(@RequestBody String RequestBody){
+        logger.info(RequestBody.replace("\n",""));
+        JSONObject jsonRequest = new JSONObject(RequestBody);
+        String AccessToken = jsonRequest.getString("accessToken");
+        String UserId = jsonRequest.getString("UserId");
+        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){
+            JSONObject jsonResponse = new JSONObject();
+            jsonResponse.put("code","200");
+            jsonResponse.put("message","Success");
+            jsonResponse.put("data",dataBaseService.GetListFeeNotComplete());
+            logger.info(jsonResponse.toString());
+            return jsonResponse.toString();
+        }
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("code","502");
+        jsonResponse.put("message","Invalid JWT");
+        logger.info(jsonResponse.toString());
+        return jsonResponse.toString();
+    }
 
 
 

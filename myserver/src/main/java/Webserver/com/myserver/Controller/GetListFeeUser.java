@@ -45,4 +45,51 @@ public class GetListFeeUser {
         logger.info(jsonResponse.toString());
         return  jsonResponse.toString();
     }
+    @PostMapping("/Complete")
+    public String GetListFeeOfUserComplete(@RequestBody String RequestBody){
+        logger.info(RequestBody.replace("\n",""));
+        JSONObject jsonRequest = new JSONObject(RequestBody);
+        JSONObject jsonResponse = new JSONObject();
+        String AccessToken = jsonRequest.getString("accessToken");
+        String UserId = jsonRequest.getString("UserId");
+        List<UserInfo> userinfos = dataBaseService.GetListUserInfoById(UserId);
+        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId) && userinfos.size() ==1){
+            UserInfo cur_info = userinfos.get(0);
+            List<Fee> fees  = dataBaseService.GetListFeeByFamilyIdComplete(cur_info.getFamilyId());
+            jsonResponse.put("code","200");
+            jsonResponse.put("message","Success");
+            jsonResponse.put("data",fees);
+            logger.info(jsonResponse.toString());
+            return jsonResponse.toString();
+
+        }
+        jsonRequest.put("code","505");
+        jsonResponse.put("message","fail to get list fee");
+        logger.info(jsonResponse.toString());
+        return  jsonResponse.toString();
+    }
+
+    @PostMapping("/NotComplete")
+    public String GetListFeeOfUserNotComplete(@RequestBody String RequestBody){
+        logger.info(RequestBody.replace("\n",""));
+        JSONObject jsonRequest = new JSONObject(RequestBody);
+        JSONObject jsonResponse = new JSONObject();
+        String AccessToken = jsonRequest.getString("accessToken");
+        String UserId = jsonRequest.getString("UserId");
+        List<UserInfo> userinfos = dataBaseService.GetListUserInfoById(UserId);
+        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId) && userinfos.size() ==1){
+            UserInfo cur_info = userinfos.get(0);
+            List<Fee> fees  = dataBaseService.GetListFeeByFamilyIdNotComplete(cur_info.getFamilyId());
+            jsonResponse.put("code","200");
+            jsonResponse.put("message","Success");
+            jsonResponse.put("data",fees);
+            logger.info(jsonResponse.toString());
+            return jsonResponse.toString();
+
+        }
+        jsonRequest.put("code","505");
+        jsonResponse.put("message","fail to get list fee");
+        logger.info(jsonResponse.toString());
+        return  jsonResponse.toString();
+    }
 }

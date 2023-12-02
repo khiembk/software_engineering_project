@@ -35,9 +35,22 @@ public class DataBaseService {
     public List<Fee> GetListFee(){
         return dataBaseConnect.GetListFee();
     }
+    public List<Fee> GetListFeeComplete(){
+        return dataBaseConnect.GetListFeeComplete();
+    }
+    public List<Fee> GetListFeeNotComplete(){
+        return dataBaseConnect.GetListFeeNotComplete();
+    }
+
     public List<Fee> GetListFeeByFamilyId(String FamilyId){
 
         return dataBaseConnect.GetListFeeByFamilyId(FamilyId);
+    }
+    public List<Fee> GetListFeeByFamilyIdNotComplete(String FamilyId){
+        return dataBaseConnect.getListFeeByFamilyIdAndNotComplete(FamilyId);
+    }
+    public List<Fee> GetListFeeByFamilyIdComplete(String FamilyId){
+        return dataBaseConnect.getListFeeByFamilyIdAndComplete(FamilyId);
     }
     public boolean IsNomalUser(String UserId){
         List<User> uses = dataBaseConnect.searchNomalUserById(UserId);

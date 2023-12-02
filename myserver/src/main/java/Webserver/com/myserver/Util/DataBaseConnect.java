@@ -27,6 +27,14 @@ public class DataBaseConnect {
     private static final String GET_lIST_FEE_SQL = "SELECT * FROM fee";
     private static final String UPDATE_FEE_STATUS_SQL = "UPDATE fee SET IsComplete = ? WHERE FeeId = ?";
     private static final String GET_lIST_FEE_BY_FAMILY_ID_SQL = "SELECT * FROM fee WHERE FamilyId = ?";
+    private static final String GET_LIST_FEE_BY_FAMILY_ID_AND_NOT_COMPLETE_SQL =
+            "SELECT * FROM fee WHERE FamilyId = ? AND IsComplete = 0";
+    private static final String GET_LIST_FEE_NOT_COMPLETE_SQL =
+            "SELECT * FROM fee WHERE  IsComplete = 0";
+    private static final String GET_LIST_FEE_COMPLETE_SQL =
+            "SELECT * FROM fee WHERE  IsComplete = 1";
+    private static final String GET_LIST_FEE_BY_FAMILY_ID_AND_COMPLETE_SQL =
+            "SELECT * FROM fee WHERE FamilyId = ? AND IsComplete = 1";
     private static final String GET_lIST_USER_SQL = "SELECT * FROM nomal_user_info";
     private static final String GET_lIST_USER_BY_ID_SQL = "SELECT * FROM nomal_user_info WHERE UserId = ?";
     private  static  final  String INSERT_USER_INFO_NAME_ID = "INSERT INTO nomal_user_info (UserName, UserId) VALUES (?, ?)";
@@ -35,6 +43,18 @@ public class DataBaseConnect {
         jdbcTemplate.update(insertUser, UserName, UserPassword,UserId);
         jdbcTemplate.update(INSERT_USER_INFO_NAME_ID,UserName,UserId);
     }
+    public List<Fee> getListFeeByFamilyIdAndNotComplete(String familyId) {
+        return jdbcTemplate.query(GET_LIST_FEE_BY_FAMILY_ID_AND_NOT_COMPLETE_SQL,
+                new Object[]{familyId},
+                new BeanPropertyRowMapper<>(Fee.class));
+    }
+    public List<Fee> getListFeeByFamilyIdAndComplete(String familyId) {
+        return jdbcTemplate.query(GET_LIST_FEE_BY_FAMILY_ID_AND_COMPLETE_SQL,
+                new Object[]{familyId},
+                new BeanPropertyRowMapper<>(Fee.class));
+    }
+
+
     public void CompleteFeeById(String FeeId){
         jdbcTemplate.update(UPDATE_FEE_STATUS_SQL,1,FeeId);
     }
@@ -55,6 +75,12 @@ public class DataBaseConnect {
     }
     public List<Fee> GetListFee(){
        return  jdbcTemplate.query(GET_lIST_FEE_SQL,new BeanPropertyRowMapper<>(Fee.class));
+    }
+    public List<Fee> GetListFeeComplete(){
+        return  jdbcTemplate.query(GET_LIST_FEE_COMPLETE_SQL,new BeanPropertyRowMapper<>(Fee.class));
+    }
+    public List<Fee> GetListFeeNotComplete(){
+        return  jdbcTemplate.query(GET_LIST_FEE_NOT_COMPLETE_SQL,new BeanPropertyRowMapper<>(Fee.class));
     }
 
     public List<Fee> GetListFeeByFamilyId(String FamilyId){
