@@ -6,6 +6,7 @@ import Webserver.com.myserver.Model.Admin;
 import Webserver.com.myserver.Model.NomalUser;
 import Webserver.com.myserver.Model.User;
 import Webserver.com.myserver.Util.DataBaseService;
+import org.apache.juli.logging.Log;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,6 +58,7 @@ public class LoginController {
                 return LoginResponse.toString();
             }
         }
+
         LoginResponse.put("code","500");
         LoginResponse.put("message","Error");
         return LoginResponse.toString();

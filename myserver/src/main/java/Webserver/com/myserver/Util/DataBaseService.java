@@ -56,6 +56,9 @@ public class DataBaseService {
         }
         return false;
     }
+    public List<Fee> GetFeeById(String feeId){
+        return dataBaseConnect.searchFeeById(feeId);
+    }
     public List<UserInfo> GetListUserInfo(){
         return dataBaseConnect.ListUserInfor();
     }
@@ -67,5 +70,8 @@ public class DataBaseService {
     }
     public void InsertNewFee(int money,String FeeName,String FeeId,String dateCreate,String detail,String FamilyId){
         dataBaseConnect.insertNewFee(money,FeeName,FeeId,dateCreate,detail,FamilyId);
+    }
+    public void CompleteFeeById(String FeeId){
+        dataBaseConnect.CompleteFeeById(FeeId);
     }
 }
