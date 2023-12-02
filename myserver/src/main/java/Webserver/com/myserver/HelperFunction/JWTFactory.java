@@ -80,7 +80,7 @@ public class JWTFactory {
             return claimsJws.getBody();
         } catch (Exception e) {
             e.printStackTrace();
-            return null; // Or handle the exception appropriately in your application
+            return null;
         }
     }
     private static SecretKey convertStringToKey(String keyString) {

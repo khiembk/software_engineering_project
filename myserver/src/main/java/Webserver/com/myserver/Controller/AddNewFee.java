@@ -49,6 +49,7 @@ public class AddNewFee {
 
     @PostMapping("/getListFee")
     String GetListFee(@RequestBody String RequestBody){
+        logger.info(RequestBody.replace("\n",""));
         JSONObject jsonRequest = new JSONObject(RequestBody);
         String AccessToken = jsonRequest.getString("accessToken");
         String UserId = jsonRequest.getString("UserId");
@@ -57,11 +58,13 @@ public class AddNewFee {
             jsonResponse.put("code","200");
             jsonResponse.put("message","Success");
             jsonResponse.put("data",dataBaseService.GetListFee());
+            logger.info(jsonResponse.toString());
             return jsonResponse.toString();
         }
         JSONObject jsonResponse = new JSONObject();
         jsonResponse.put("code","502");
         jsonResponse.put("message","Invalid JWT");
+        logger.info(jsonResponse.toString());
         return jsonResponse.toString();
     }
 

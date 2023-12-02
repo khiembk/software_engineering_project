@@ -45,6 +45,4 @@ public class UpdateUserInforController {
         return  jsonReponse.toString();
     }
 
-
-
 }
