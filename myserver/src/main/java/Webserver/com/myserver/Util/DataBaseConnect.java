@@ -22,6 +22,7 @@ public class DataBaseConnect {
     private static final String SEARCH_ROOT_BY_ID_SQL = "SELECT * FROM admin WHERE UserId = ?";
     private static final String INSERT_FEE_BY_ID_SQL = "INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail) VALUES (?,?,?,?,?)";
     private static final String SEARCH_FEE_BY_ID_SQL = "SELECT * FROM fee WHERE FeeId = ?";
+    private static final String GET_lIST_FEE_SQL = "SELECT * FROM fee";
     public  void insertUserData(String UserName, String UserPassword , String UserId) {
         jdbcTemplate.update(insertUser, UserName, UserPassword,UserId);
     }
@@ -31,7 +32,9 @@ public class DataBaseConnect {
     public List<Fee> searchFeeById(String feeId){
         return jdbcTemplate.query(SEARCH_FEE_BY_ID_SQL,new Object[]{feeId},new BeanPropertyRowMapper<>(Fee.class));
     }
-
+    public List<Fee> GetListFee(){
+       return  jdbcTemplate.query(GET_lIST_FEE_SQL,new BeanPropertyRowMapper<>(Fee.class));
+    }
     public List<NomalUser> searchNomalUserById(String UserId){
         return jdbcTemplate.query(SEARCH_USER_BY_ID_SQL,new Object[]{UserId}, new BeanPropertyRowMapper<>(NomalUser.class));
     }

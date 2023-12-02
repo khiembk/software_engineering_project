@@ -29,6 +29,9 @@ public class DataBaseService {
         }
         return false;
     }
+    public List<Fee> GetListFee(){
+        return dataBaseConnect.GetListFee();
+    }
     public  boolean IsExistedFee(String feeId){
         List<Fee> fees = dataBaseConnect.searchFeeById(feeId);
         if (fees.size()>0){

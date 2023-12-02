@@ -43,6 +43,24 @@ public class AddNewFee {
         return jsonResponse.toString();
     }
 
+    @PostMapping("/getListFee")
+    String GetListFee(@RequestBody String RequestBody){
+        JSONObject jsonRequest = new JSONObject(RequestBody);
+        String AccessToken = jsonRequest.getString("accessToken");
+        String UserId = jsonRequest.getString("UserId");
+        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){
+            JSONObject jsonResponse = new JSONObject();
+            jsonResponse.put("code","200");
+            jsonResponse.put("message","Success");
+            jsonResponse.put("data",dataBaseService.GetListFee());
+            return jsonResponse.toString();
+        }
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("code","502");
+        jsonResponse.put("message","Invalid JWT");
+        return jsonResponse.toString();
+    }
+
 
 
 }
