@@ -25,12 +25,18 @@ public class DataBaseConnect {
     private static final String INSERT_FEE_BY_ID_SQL = "INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (?,?,?,?,?,?,?)";
     private static final String SEARCH_FEE_BY_ID_SQL = "SELECT * FROM fee WHERE FeeId = ?";
     private static final String GET_lIST_FEE_SQL = "SELECT * FROM fee";
+    private static final String UPDATE_FEE_STATUS_SQL = "UPDATE fee SET IsComplete = ? WHERE FeeId = ?";
+    private static final String GET_lIST_FEE_BY_FAMILY_ID_SQL = "SELECT * FROM fee WHERE FamilyId = ?";
     private static final String GET_lIST_USER_SQL = "SELECT * FROM nomal_user_info";
+    private static final String GET_lIST_USER_BY_ID_SQL = "SELECT * FROM nomal_user_info WHERE UserId = ?";
     private  static  final  String INSERT_USER_INFO_NAME_ID = "INSERT INTO nomal_user_info (UserName, UserId) VALUES (?, ?)";
     private  static  final  String UPDATE_USER_INFO_BY_ID = "UPDATE nomal_user_info SET FamilyId = ?, PhoneNumber = ? , DateOfBirth = ?  WHERE UserId = ?";
     public  void insertUserData(String UserName, String UserPassword , String UserId) {
         jdbcTemplate.update(insertUser, UserName, UserPassword,UserId);
         jdbcTemplate.update(INSERT_USER_INFO_NAME_ID,UserName,UserId);
+    }
+    public void CompleteFeeById(String FeeId){
+        jdbcTemplate.update(UPDATE_FEE_STATUS_SQL,1,FeeId);
     }
     public void  updateUserInfor(String UserId, String FalimyId, String PhoneNumber, String DateOfbirth){
         jdbcTemplate.update(UPDATE_USER_INFO_BY_ID,FalimyId,PhoneNumber,DateOfbirth,UserId);
@@ -44,8 +50,15 @@ public class DataBaseConnect {
     public List<UserInfo> ListUserInfor(){
         return  jdbcTemplate.query(GET_lIST_USER_SQL,new BeanPropertyRowMapper<>(UserInfo.class));
     }
+    public List<UserInfo> ListUserInforById(String UserId){
+        return  jdbcTemplate.query(GET_lIST_USER_BY_ID_SQL,new Object[]{UserId},new BeanPropertyRowMapper<>(UserInfo.class));
+    }
     public List<Fee> GetListFee(){
        return  jdbcTemplate.query(GET_lIST_FEE_SQL,new BeanPropertyRowMapper<>(Fee.class));
+    }
+
+    public List<Fee> GetListFeeByFamilyId(String FamilyId){
+        return  jdbcTemplate.query(GET_lIST_FEE_BY_FAMILY_ID_SQL,new Object[]{FamilyId},new BeanPropertyRowMapper<>(Fee.class));
     }
 
     public List<User> searchNomalUserById(String UserId){
