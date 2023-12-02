@@ -1,5 +1,6 @@
 package Webserver.com.myserver.Controller;
 import Webserver.com.myserver.HelperFunction.HashFuntion;
+import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.Model.NomalUser;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
@@ -17,6 +18,9 @@ public class AddNewUserController {
     @PostMapping ("/addUser")
     String AddNewUser(@RequestBody String RequestBody){
         JSONObject jsonRequest = new JSONObject(RequestBody);
+        String rootId = jsonRequest.getString("RootId");
+        String accessToken = jsonRequest.getString("accessToken");
+        if (JWTFactory.VerifyJWT(rootId,accessToken) && dataBaseService.IsRoot(rootId)){
         String UserName = jsonRequest.getString("UserName");
         String UserId = jsonRequest.getString("UserId");
         List<NomalUser> findSameId = dataBaseService.SearchNomalUserById(UserId);
@@ -33,4 +37,8 @@ public class AddNewUserController {
         dataBaseService.addUserToDataBase(UserName, nomalUser.getUserPassword(), nomalUser.getUserId());
         return nomalUser.toString();
     }
-}
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("code","502");
+        jsonResponse.put("message","Invalid JWT");
+        return jsonResponse.toString();
+}}

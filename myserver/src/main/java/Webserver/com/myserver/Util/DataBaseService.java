@@ -1,5 +1,6 @@
 package Webserver.com.myserver.Util;
 
+import Webserver.com.myserver.Model.Admin;
 import Webserver.com.myserver.Model.NomalUser;
 import org.springframework.stereotype.Component;
 
@@ -17,5 +18,14 @@ public class DataBaseService {
     public List<NomalUser> SearchNomalUserById(String UserId){
         return  dataBaseConnect.searchNomalUserById(UserId);
     }
-
+    public List<Admin> SearchRootById(String UserId){
+        return dataBaseConnect.searchRootById(UserId);
+    }
+    public boolean IsRoot(String UserId){
+        List<Admin> Admins = dataBaseConnect.searchRootById(UserId);
+        if (Admins.size()==1){
+            return  true;
+        }
+        return false;
+    }
 }

@@ -5,3 +5,12 @@ CREATE TABLE login (
     UserName VARCHAR(255) NOT NULL,
     UserPassword VARCHAR(255) NOT NULL
 );
+2. Create a table for root
+CREATE TABLE admin (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    UserId  VARCHAR(255) NOT NULL,
+    UserName VARCHAR(255) NOT NULL,
+    UserPassword VARCHAR(255) NOT NULL
+);
+3. Insert root
+INSERT INTO admin (UserName, UserPassword, UserId) VALUES ( 'root','4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2', '000000');
