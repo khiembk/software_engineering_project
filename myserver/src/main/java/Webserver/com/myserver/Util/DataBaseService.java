@@ -28,4 +28,7 @@ public class DataBaseService {
         }
         return false;
     }
+    public void UpdateNomalUserPass(String newPass, String UseId){
+        dataBaseConnect.UpdateNomalUserPass(UseId,newPass);
+    }
 }
