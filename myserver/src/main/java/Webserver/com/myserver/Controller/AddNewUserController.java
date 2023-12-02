@@ -48,8 +48,13 @@ public class AddNewUserController {
         JSONObject jsonRequest = new JSONObject(RequestBody);
         JSONObject jsonReponse = new JSONObject();
         String UserId = jsonRequest.getString("UserId");
-        String AccessToken = jsonRequest.getString("accsessToken");
-        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){}
+        String AccessToken = jsonRequest.getString("accessToken");
+        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){
+              jsonReponse.put("code","200");
+              jsonReponse.put("message","Success");
+              jsonReponse.put("data",dataBaseService.GetListUserInfo());
+              return jsonReponse.toString();
+        }
         jsonReponse.put("code","500");
         jsonReponse.put("message","Internal server Error");
         return jsonReponse.toString();

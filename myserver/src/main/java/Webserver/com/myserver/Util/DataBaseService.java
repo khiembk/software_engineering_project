@@ -1,5 +1,6 @@
 package Webserver.com.myserver.Util;
 
+import Webserver.com.myserver.HelperObject.UserInfo;
 import Webserver.com.myserver.Model.Admin;
 import Webserver.com.myserver.Model.Fee;
 import Webserver.com.myserver.Model.NomalUser;
@@ -7,6 +8,7 @@ import Webserver.com.myserver.Model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class DataBaseService {
@@ -33,13 +35,25 @@ public class DataBaseService {
     public List<Fee> GetListFee(){
         return dataBaseConnect.GetListFee();
     }
-
+    public boolean IsNomalUser(String UserId){
+        List<User> uses = dataBaseConnect.searchNomalUserById(UserId);
+        if (uses.size()==1){
+            return  true;
+        }
+        return false;
+    }
+    public void updateUserInfo(String UserId, String FamilyId, String PhoneNumber, String DateOfbirth){
+        dataBaseConnect.updateUserInfor(UserId,FamilyId,PhoneNumber,DateOfbirth);
+    }
     public  boolean IsExistedFee(String feeId){
         List<Fee> fees = dataBaseConnect.searchFeeById(feeId);
         if (fees.size()>0){
             return true;
         }
         return false;
+    }
+    public List<UserInfo> GetListUserInfo(){
+        return dataBaseConnect.ListUserInfor();
     }
     public void UpdateNomalUserPass(String newPass, String UseId){
         dataBaseConnect.UpdateNomalUserPass(UseId,newPass);

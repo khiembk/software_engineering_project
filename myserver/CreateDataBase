@@ -23,3 +23,12 @@ CREATE TABLE fee (
     DateCreate VARCHAR(30) NOT NULL,
     Detail VARCHAR(100)
 );
+5. Create a table save infor of nomalUser.
+CREATE TABLE nomal_user_info (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    UserId  VARCHAR(255) NOT NULL,
+    UserName VARCHAR(255) NOT NULL,
+    FamilyId VARCHAR(100),
+    DateOfBirth VARCHAR(30),
+    PhoneNumber VARCHAR(10)
+);
