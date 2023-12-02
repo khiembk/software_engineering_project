@@ -8,6 +8,8 @@ public class Fee {
     private  String FeeName;
     private String DateCreate;
     private String Detail;
+    private String FamilyId;
+    private  boolean IsComplete;
 
     public void setDateCreate(String dateCreate) {
         DateCreate = dateCreate;
@@ -49,4 +51,19 @@ public class Fee {
         Money = money;
     }
 
+    public String getFamilyId() {
+        return FamilyId;
+    }
+
+    public void setFamilyId(String familyId) {
+        FamilyId = familyId;
+    }
+
+    public boolean isComplete() {
+        return IsComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        IsComplete = complete;
+    }
 }

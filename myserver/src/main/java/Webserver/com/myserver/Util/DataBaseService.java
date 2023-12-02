@@ -58,7 +58,7 @@ public class DataBaseService {
     public void UpdateNomalUserPass(String newPass, String UseId){
         dataBaseConnect.UpdateNomalUserPass(UseId,newPass);
     }
-    public void InsertNewFee(int money,String FeeName,String FeeId,String dateCreate,String detail){
-        dataBaseConnect.insertNewFee(money,FeeName,FeeId,dateCreate,detail);
+    public void InsertNewFee(int money,String FeeName,String FeeId,String dateCreate,String detail,String FamilyId){
+        dataBaseConnect.insertNewFee(money,FeeName,FeeId,dateCreate,detail,FamilyId);
     }
 }

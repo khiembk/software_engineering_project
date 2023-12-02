@@ -31,7 +31,8 @@ public class AddNewFee {
             String FeeName = jsonRequest.getString("FeeName");
             String dateCreate = jsonRequest.getString("DateCreate");
             String detail = jsonRequest.getString("Detail");
-            dataBaseService.InsertNewFee(Money,FeeName,FeeId,dateCreate,detail);
+            String famimyId = jsonRequest.getString("FamilyId");
+            dataBaseService.InsertNewFee(Money,FeeName,FeeId,dateCreate,detail,famimyId);
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("code","200");
             jsonResponse.put("message","Success");

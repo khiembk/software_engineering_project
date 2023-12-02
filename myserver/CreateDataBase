@@ -21,6 +21,8 @@ CREATE TABLE fee (
     FeeName VARCHAR(100) NOT NULL,
     FeeId VARCHAR(100) NOT NULL,
     DateCreate VARCHAR(30) NOT NULL,
+    FamilyId VARCHAR(100) NOT NULL,
+    IsComplete INT NOT NULL,
     Detail VARCHAR(100)
 );
 5. Create a table save infor of nomalUser.
