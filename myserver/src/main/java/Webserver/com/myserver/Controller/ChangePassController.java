@@ -5,6 +5,8 @@ import Webserver.com.myserver.Model.NomalUser;
 import Webserver.com.myserver.Model.User;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +18,13 @@ import java.util.List;
 @RequestMapping("/api/changePass")
 public class ChangePassController {
     private final DataBaseService dataBaseService;
+    private static final Logger logger = LoggerFactory.getLogger(ChangePassController.class);
     public  ChangePassController(DataBaseService dataBaseService){
         this.dataBaseService=dataBaseService;
     }
     @PostMapping("/nomalUser")
     String Login(@RequestBody String RequestBody){
+        logger.info(RequestBody.replace("\n",""));
         JSONObject LoginResponse = new JSONObject();
         JSONObject jsonRequest = new JSONObject(RequestBody);
         String UserId = jsonRequest.getString("UserId");
@@ -34,11 +38,13 @@ public class ChangePassController {
                 dataBaseService.UpdateNomalUserPass(HashFuntion.hash256(NewUserPass),UserId);
                 LoginResponse.put("code","200");
                 LoginResponse.put("message","Success");
+                logger.info(LoginResponse.toString());
                 return LoginResponse.toString();
             }
         }
         LoginResponse.put("code","500");
         LoginResponse.put("message","Error");
+        logger.info(LoginResponse.toString());
         return LoginResponse.toString();
     }
 

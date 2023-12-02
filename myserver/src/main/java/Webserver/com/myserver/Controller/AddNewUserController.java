@@ -5,6 +5,8 @@ import Webserver.com.myserver.Model.NomalUser;
 import Webserver.com.myserver.Model.User;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,11 +15,13 @@ import java.util.List;
 @RequestMapping("/api")
 public class AddNewUserController {
     private final  DataBaseService dataBaseService;
+    private static final Logger logger = LoggerFactory.getLogger(AddNewUserController.class);
     public AddNewUserController(DataBaseService dataBaseService){
         this.dataBaseService=dataBaseService;
     }
     @PostMapping ("/addUser")
     String AddNewUser(@RequestBody String RequestBody){
+        logger.info(RequestBody.replace("\n",""));
         JSONObject jsonRequest = new JSONObject(RequestBody);
         String rootId = jsonRequest.getString("RootId");
         String accessToken = jsonRequest.getString("accessToken");
@@ -36,11 +40,13 @@ public class AddNewUserController {
         nomalUser.setUserId(UserId);
         nomalUser.setUserPassword(HashFuntion.hash256("mypass"));
         dataBaseService.addUserToDataBase(UserName, nomalUser.getUserPassword(), nomalUser.getUserId());
+        logger.info(nomalUser.toString());
         return nomalUser.toString();
     }
         JSONObject jsonResponse = new JSONObject();
         jsonResponse.put("code","502");
         jsonResponse.put("message","Invalid JWT");
+        logger.info(jsonResponse.toString());
         return jsonResponse.toString();
 }
    @PostMapping("/GetListUser")
