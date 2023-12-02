@@ -16,3 +16,6 @@ Run server:
 
 For frontend web:
 - nodejs & npm: https://nodejs.org/en
+- Run using 'npm start' in with myweb folder as base
+![image](https://github.com/khiembk/software_engineering_project/assets/122113576/01f85409-80a2-463c-90ea-d6cb96e00c0c)
+
