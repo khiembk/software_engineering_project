@@ -9,7 +9,7 @@ public class Fee {
     private String DateCreate;
     private String Detail;
     private String FamilyId;
-    private  boolean IsComplete;
+    private  int IsComplete;
 
     public void setDateCreate(String dateCreate) {
         DateCreate = dateCreate;
@@ -59,11 +59,11 @@ public class Fee {
         FamilyId = familyId;
     }
 
-    public boolean isComplete() {
+    public int isComplete() {
         return IsComplete;
     }
 
-    public void setComplete(boolean complete) {
-        IsComplete = complete;
+    public void setIsComplete(int isComplete) {
+        IsComplete = isComplete;
     }
 }
