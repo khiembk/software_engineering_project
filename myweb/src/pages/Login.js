@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth'
 
 async function loginUser(credentials) {
-  return fetch('http://localhost:8080/login', {
+  return fetch('http://localhost:8080/api/login/nomalUser', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -14,8 +14,8 @@ async function loginUser(credentials) {
 };
 
 export default function Login() {
-  const [username, setUserName] = useState();
-  const [password, setPassword] = useState();
+  const [UserId, setUserName] = useState();
+  const [UserPassword, setPassword] = useState();
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -23,12 +23,14 @@ export default function Login() {
     e.preventDefault();
 
     const data = await loginUser({
-      username,
-      password
+      UserId,
+      UserPassword
     });
+    
+    console.log(data);
 
     if(data){
-      login(data.uid);
+      login(data.accessToken);
       navigate("/");
     }
   }
