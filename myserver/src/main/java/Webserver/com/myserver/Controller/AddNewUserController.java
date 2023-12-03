@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class AddNewUserController {
     private final  DataBaseService dataBaseService;
     private static final Logger logger = LoggerFactory.getLogger(AddNewUserController.class);
