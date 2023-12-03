@@ -45,7 +45,7 @@ CREATE TABLE nomal_user_info (
 INSERT INTO login (UserName, UserPassword, UserId) VALUES ('Tran Van A', 'ea71c25a7a602246b4c39824b855678894a96f43bb9b71319c39700a1e045222','000001');
 INSERT INTO nomal_user_info (UserName, UserId) VALUES ('Tran Van A', '000001');
 UPDATE nomal_user_info SET FamilyId = 'NBGVLS0001', PhoneNumber = '0123456789' , DateOfBirth = '01/01/2000'  WHERE UserId = '000001' ;
-se
+
 INSERT INTO login (UserName, UserPassword, UserId) VALUES ('Tran Van B', 'ea71c25a7a602246b4c39824b855678894a96f43bb9b71319c39700a1e045222','000002');
 INSERT INTO nomal_user_info (UserName, UserId) VALUES ('Tran Van B', '000002');
 UPDATE nomal_user_info SET FamilyId = 'NBGVLS0001', PhoneNumber = '0123456789' , DateOfBirth = '01/01/2000'  WHERE UserId = '000002' ;
@@ -78,6 +78,18 @@ INSERT INTO login (UserName, UserPassword, UserId) VALUES ('Nguyen Van F', 'ea71
 INSERT INTO nomal_user_info (UserName, UserId) VALUES ('Nguyen Van F', '000009');
 UPDATE nomal_user_info SET FamilyId = 'NBGVLS0003', PhoneNumber = '0123456789' , DateOfBirth = '01/01/2000'  WHERE UserId = '000009' ;
 
+INSERT INTO login (UserName, UserPassword, UserId) VALUES ('Le Van D', 'ea71c25a7a602246b4c39824b855678894a96f43bb9b71319c39700a1e045222','000010');
+INSERT INTO nomal_user_info (UserName, UserId) VALUES ('Le Van D', '000010');
+UPDATE nomal_user_info SET FamilyId = 'NBGVLS0004', PhoneNumber = '0123456789' , DateOfBirth = '01/01/2000'  WHERE UserId = '000010' ;
+
+INSERT INTO login (UserName, UserPassword, UserId) VALUES ('Le Van E', 'ea71c25a7a602246b4c39824b855678894a96f43bb9b71319c39700a1e045222','000011');
+INSERT INTO nomal_user_info (UserName, UserId) VALUES ('Le Van E', '000011');
+UPDATE nomal_user_info SET FamilyId = 'NBGVLS0004', PhoneNumber = '0123456789' , DateOfBirth = '01/01/2000'  WHERE UserId = '000011' ;
+
+INSERT INTO login (UserName, UserPassword, UserId) VALUES ('Le Van F', 'ea71c25a7a602246b4c39824b855678894a96f43bb9b71319c39700a1e045222','000012');
+INSERT INTO nomal_user_info (UserName, UserId) VALUES ('Le Van F', '000012');
+UPDATE nomal_user_info SET FamilyId = 'NBGVLS0004', PhoneNumber = '0123456789' , DateOfBirth = '01/01/2000'  WHERE UserId = '000012' ;
+
 7. Insert Sample Fee
 INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'water_bill' ,'bill0001','01/01/2023',null,'NBGVLS0003',0);
 INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'electrical_bill' ,'bill0002','01/01/2023',null,'NBGVLS0003',0);
@@ -89,3 +101,11 @@ INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) 
 INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'vegetable_bill' ,'bill0008','01/01/2023',null,'NBGVLS0001',0);
 INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'milk_bill' ,'bill0009','01/01/2023',null,'NBGVLS0002',1);
 INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'cloth_bill' ,'bill0010','01/01/2023',null,'NBGVLS0003',1);
+INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'cloth_bill' ,'bill0011','01/01/2023',null,'NBGVLS0004',0);
+INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'water_bill' ,'bill0012','01/01/2023',null,'NBGVLS0004',1);
+INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'electrical_bill' ,'bill0013','01/01/2023',null,'NBGVLS0004',0);
+8. Insert sample family
+INSERT INTO family (FamilyId , OwnerName, Address) VALUES ('NBGVLS0001','Tran Van A','Hanoi');
+INSERT INTO family (FamilyId , OwnerName, Address) VALUES ('NBGVLS0002','Nguyen Van A','Hanoi');
+INSERT INTO family (FamilyId , OwnerName, Address) VALUES ('NBGVLS0003','Nguyen Van D','Hanoi');
+INSERT INTO family (FamilyId , OwnerName, Address) VALUES ('NBGVLS0004','Le Van D','Hanoi');
