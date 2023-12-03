@@ -1,10 +1,7 @@
 package Webserver.com.myserver.Util;
 
 import Webserver.com.myserver.HelperObject.UserInfo;
-import Webserver.com.myserver.Model.Admin;
-import Webserver.com.myserver.Model.Fee;
-import Webserver.com.myserver.Model.NomalUser;
-import Webserver.com.myserver.Model.User;
+import Webserver.com.myserver.Model.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -35,9 +32,22 @@ public class DataBaseService {
     public List<Fee> GetListFee(){
         return dataBaseConnect.GetListFee();
     }
+    public List<Fee> GetListFeeComplete(){
+        return dataBaseConnect.GetListFeeComplete();
+    }
+    public List<Fee> GetListFeeNotComplete(){
+        return dataBaseConnect.GetListFeeNotComplete();
+    }
+
     public List<Fee> GetListFeeByFamilyId(String FamilyId){
 
         return dataBaseConnect.GetListFeeByFamilyId(FamilyId);
+    }
+    public List<Fee> GetListFeeByFamilyIdNotComplete(String FamilyId){
+        return dataBaseConnect.getListFeeByFamilyIdAndNotComplete(FamilyId);
+    }
+    public List<Fee> GetListFeeByFamilyIdComplete(String FamilyId){
+        return dataBaseConnect.getListFeeByFamilyIdAndComplete(FamilyId);
     }
     public boolean IsNomalUser(String UserId){
         List<User> uses = dataBaseConnect.searchNomalUserById(UserId);
@@ -52,6 +62,19 @@ public class DataBaseService {
     public  boolean IsExistedFee(String feeId){
         List<Fee> fees = dataBaseConnect.searchFeeById(feeId);
         if (fees.size()>0){
+            return true;
+        }
+        return false;
+    }
+    public List<Family> GetListFamily(){
+        return dataBaseConnect.getListFamily();
+    }
+    public void InsertNewFamily(String FamilyId, String OwnerName, String Address){
+        dataBaseConnect.InsertNewFamily(FamilyId,OwnerName,Address);
+    }
+    public boolean IsExistedFamily(String FamilyId){
+        List<Family> families= dataBaseConnect.getListFamilyById(FamilyId);
+        if (families.size() > 0){
             return true;
         }
         return false;
