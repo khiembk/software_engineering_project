@@ -1,7 +1,6 @@
 package Webserver.com.myserver.Controller;
 import Webserver.com.myserver.HelperFunction.HashFuntion;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
-import Webserver.com.myserver.Model.NomalUser;
 import Webserver.com.myserver.Model.User;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;

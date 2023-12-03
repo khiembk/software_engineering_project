@@ -31,7 +31,7 @@ public class FamilyController {
             String Address = RequestBody.get("Address");
             String OwnerName = RequestBody.get("OwnerName");
             if (!dataBaseService.IsExistedFamily(FamilyId)){
-                dataBaseService.InsertNewFamily(FamilyId,Address,OwnerName);
+                dataBaseService.InsertNewFamily(FamilyId,OwnerName,Address);
                 jsonReponse.put("code","200");
                 jsonReponse.put("message","success");
                 logger.info(jsonReponse.toString());

@@ -39,6 +39,10 @@ public class AddNewUserController {
         nomalUser.setUserName(UserName);
         nomalUser.setUserId(UserId);
         nomalUser.setUserPassword(HashFuntion.hash256("mypass"));
+        String FamilyId = jsonRequest.getString("FamilyId");
+        String PhoneNumber = jsonRequest.getString("PhoneNumber");
+        String dateofBirth = jsonRequest.getString("dateOfBirth");
+        dataBaseService.updateUserInfo(UserId,FamilyId,PhoneNumber,dateofBirth);
         dataBaseService.addUserToDataBase(UserName, nomalUser.getUserPassword(), nomalUser.getUserId());
         logger.info(nomalUser.toString());
         return nomalUser.toString();
