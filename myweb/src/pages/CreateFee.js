@@ -1,23 +1,50 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { fetchFunction } from "../utils/Fetch";
 
 const CreateFee = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [FailAttempt, setAttempt] = useState(null);
   const [title, setTitle] = useState("Tạo khoản thu phí mới");
   const [feeID, setFeeID] = useState("");
   const [money, setMoney] = useState(0);
-  const [timeCreate, setTimeCreate] = useState(new Date());
   const [feeName, setFeeName] = useState("");
-  const [deadline, setDeadline] = useState("");
   const [detail, setDetail] = useState("");
-  const [feeType, setFeeType] = useState("Bắt Buộc");
+  const [familyId, setFamilyId] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setFeeID("");
     setMoney("");
-    setTimeCreate(new Date());
     setFeeName("");
-    setDeadline(new Date());
     setDetail("");
+    setFamilyId("");
+  };
+
+  const addNewFee = async (e) => {
+    e.preventDefault();
+
+    const respond = await fetchFunction({
+      reqType: "/Fee/addNewFee", 
+      UserId: user.UserId,
+      accessToken: user.token,
+      FeeId: feeID,
+      FeeName: feeName,
+      DateCreate: new Date(),
+      Detail: detail,
+      FamilyId: familyId,
+      Money: money
+    });
+
+    if(respond.code === "200"){
+      setAttempt(null);
+      navigate("/admin");
+    }
+    else{
+      setAttempt("fail");
+    }
   };
 
   return (
@@ -50,23 +77,6 @@ const CreateFee = () => {
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="money"
-          >
-            Số tiền phải đóng (VNĐ)
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="money"
-            type="text"
-            placeholder="Money"
-            value={money}
-            onChange={(e) => setMoney(e.target.value)}
-          />
-        </div>
-
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
             htmlFor="feeName"
           >
             Tên phí
@@ -84,52 +94,34 @@ const CreateFee = () => {
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="feeType"
+            htmlFor="money"
           >
-            Loại phí
-          </label>
-          <select
-            className="shadow appearance-none border rounded w-36 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="feeType"
-            value={feeType}
-            onChange={(e) => setFeeType(e.target.value)}
-          >
-            <option value="mandatory">Bắt Buộc</option>
-            <option value="voluntary">Tự Nguyện</option>
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="timeCreate"
-          >
-            Ngày bắt đầu thu phí
+            Số tiền phải đóng (VNĐ)
           </label>
           <input
-            className="border-gray-900 border-2 w-48 ml-3 h-9 "
-            type="datetime-local"
-            id="timeCreate"
-            name="timeCreate"
-            value={timeCreate}
-            onChange={(e) => setTimeCreate(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="money"
+            type="text"
+            placeholder="Money"
+            value={money}
+            onChange={(e) => setMoney(e.target.value)}
           />
         </div>
 
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="deadline"
+            htmlFor="money"
           >
-            Hạn cuối thu phí
+            Mã hộ áp dụng
           </label>
           <input
-            className="border-gray-900 border-2 w-48 h-9 ml-3 "
-            type="datetime-local"
-            id="deadline"
-            name="deadline"
-            value={deadline}
-            onChange={(e) => setDeadline(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="familyId"
+            type="text"
+            placeholder="FamilyId"
+            value={familyId}
+            onChange={(e) => setFamilyId(e.target.value)}
           />
         </div>
 
@@ -149,16 +141,20 @@ const CreateFee = () => {
           />
         </div>
 
+        {FailAttempt && <div className="text-red-500 py-2">Có lỗi gì đó</div>}
+
         <div className="grid grid-cols-2 gap-4">
           <button
             className="col-span-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
             type="submit"
+            onClick={addNewFee}
           >
             Tạo Khoản phí mới
           </button>
           <button
-            className="col-span-1 bg-red-500 hover:bg-white-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
+            className="col-span-1 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
             type="reset"
+            onClick={e => {navigate("/admin");}}
           >
             Hủy
           </button>

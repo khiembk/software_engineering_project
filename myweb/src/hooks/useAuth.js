@@ -5,17 +5,17 @@ import { useNavigate } from "react-router-dom";
 const AuthenContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [userData, setUserData] = useLocalStorage("user", { data: null, timestamp: null });
+    const [userData, setUserData] = useLocalStorage("user", { token: null, UserId: null, mode: null, timestamp: null });
     const navigate = useNavigate();
 
     const login = async (data) => {
-        const timestamp = new Date().getTime() + 60 * 60 * 1000; // 60 minutes session
-        setUserData({ data, timestamp });
+        const timestamp = new Date().getTime() + 24 * 60 * 60 * 1000; // 1 day session
+        setUserData({ token: data.token, UserId: data.UserId, mode: data.mode, timestamp });
         navigate("/");
     };
 
     const logout = () => {
-        setUserData({ data: null, timestamp: null });
+        setUserData({ token: null, UserId: null, mode: null, timestamp: null });
         navigate("/login", { replace: true });
     };
 
@@ -29,12 +29,12 @@ export const AuthProvider = ({ children }) => {
 
     const value = useMemo(
         () => ({
-            user: isSessionValid ? userData.data : null,
+            user: isSessionValid ? userData : null,
             login,
             logout,
             isSessionValid,
         }),
-        [isSessionValid, login, logout, userData.data]
+        [isSessionValid, login, logout, userData]
     );
 
     return <AuthenContext.Provider value={value}>{children}</AuthenContext.Provider>;

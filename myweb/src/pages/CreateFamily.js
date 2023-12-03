@@ -15,34 +15,28 @@ const CreateUser = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [FailAttempt, setAttempt] = useState(null);
-  const [title, setTitle] = useState("Tạo nhân khẩu mới");
-  const [userID, setUserID] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [dob, setDob] = useState(new Date());
-  const [hk_number, setHK_number] = useState("");
-  const [phone_number, setPhone_Number] = useState("");
+  const [title, setTitle] = useState("Tạo hộ khẩu mới");
+  const [familyID, setFamilyID] = useState("");
+  const [fullOwnerName, setFullOwnerName] = useState("");
+  const [address, setAddress] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setUserID("");
-    setFullName("");
-    setDob(new Date());
-    setHK_number("");
-    setPhone_Number("");
+    setFamilyID("");
+    setFullOwnerName("");
+    setAddress("");
   };
 
-  const addNewUser = async (e) => {
+  const addNewFamily = async (e) => {
     e.preventDefault();
 
     const respond = await fetchFunction({
-      reqType: "/addUser", 
-      RootId: user.UserId,
+      reqType: "/Family/Add", 
+      UserId: user.UserId,
       accessToken: user.token,
-      UserId: userID,
-      UserName: fullName,
-      DateOfBirth: dob,
-      PhoneNumber: phone_number,
-      FamilyId: hk_number
+      FamilyId: familyID,
+      OwnerName: fullOwnerName,
+      Address: address,
     });
 
     if(respond.code === "200"){
@@ -66,21 +60,21 @@ const CreateUser = () => {
         <div className="mb-4 block items-center">
           <label
             className="block text-gray-700 text-sm font-bold mb-2 relative"
-            htmlFor="userID"
+            htmlFor="familyID"
           >
-            Số CCCD
+            Mã hộ khẩu
           </label>
           <div className="flex justify-center items-center">
             <FaKey className="mr-2 scale-125" />
             <input
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               type="text"
-              name="userID"
-              id="userID"
-              placeholder="UserId"
-              value={userID}
+              name="familyID"
+              id="familyID"
+              placeholder="FamilyId"
+              value={familyID}
               onChange={(e) => {
-                setUserID(e.target.value);
+                setFamilyID(e.target.value);
               }}
             />
           </div>
@@ -91,18 +85,18 @@ const CreateUser = () => {
             className="block justify-center items-center text-gray-700 text-sm font-bold mb-2"
             htmlFor="name"
           >
-            Họ tên
+            Họ tên chủ hộ
           </label>
           <div className="flex justify-center items-center">
             <FaUser className="mr-2 scale-125" />
             <input
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               type="text"
-              name="name"
-              id="name"
-              placeholder="FullName"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              name="fullOwnerName"
+              id="fullOwnerName"
+              placeholder="FullOwnerName"
+              value={fullOwnerName}
+              onChange={(e) => setFullOwnerName(e.target.value)}
             />
           </div>
         </div>
@@ -110,59 +104,20 @@ const CreateUser = () => {
         <div className="mb-4 block items-center">
           <label
             className="block justify-center items-center text-gray-700 text-sm font-bold mb-2"
-            htmlFor="date_of_birth"
+            htmlFor="name"
           >
-            Ngày sinh
-          </label>
-          <div className="flex items-center">
-            <FaCalendar className="mr-2 scale-125" />
-            <input
-              className="border-gray-900 border-2 w-36 ml-3 "
-              type="date"
-              id="date_of_birth"
-              name="date_of_birth"
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className="mb-4 block items-center">
-          <label
-            className="block justify-center items-center text-gray-700 text-sm font-bold mb-2"
-            htmlFor="HK_num"
-          >
-            Số Hộ khẩu
+            Địa chỉ
           </label>
           <div className="flex justify-center items-center">
-            <FaHouseUser className="mr-2 scale-125" />
+            <FaAddressCard className="mr-2 scale-125" />
             <input
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               type="text"
-              name="HK_num"
-              id="HK_num"
-              placeholder="HK_number"
-              value={hk_number}
-              onChange={(e) => setHK_number(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className="block mb-4 items-center">
-          <label
-            className="block justify-center items-center text-gray-700 text-sm font-bold mb-2"
-            htmlFor="phone_number"
-          >
-            Số điện thoại liên lạc
-          </label>
-          <div className="flex justify-center items-center">
-            <FaPhone className="mr-2 scale-125" />
-            <input
-              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="tel"
-              name="phone_number"
-              id="phone_number"
-              placeholder="Phone Number"
-              value={phone_number}
-              onchange={(e) => setPhone_Number(e.target.value)}
+              name="address"
+              id="address"
+              placeholder="Address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
             />
           </div>
         </div>
@@ -173,7 +128,7 @@ const CreateUser = () => {
           <button
             className="col-span-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
             type="submit"
-            onClick={addNewUser}
+            onClick={addNewFamily}
           >
             Tạo Nhân khẩu mới
           </button>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth'
 
 async function loginUser(credentials) {
-  return fetch('http://localhost:8080/api/login/nomalUser', {
+  return fetch('http://localhost:8080/api/login/' + credentials.reqType, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -16,22 +16,26 @@ async function loginUser(credentials) {
 export default function Login() {
   const [UserId, setUserName] = useState();
   const [UserPassword, setPassword] = useState();
+  const [FailAttempt, setAttempt] = useState(null);
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const btn_Click = async e => {
+  const btn_Click = async (e, loginType) => {
     e.preventDefault();
 
     const data = await loginUser({
+      reqType: loginType == "user" ? "nomalUser" : "Root",
       UserId,
       UserPassword
     });
-    
-    console.log(data);
 
-    if(data){
-      login(data.accessToken);
+    if(data.code === "200"){
+      setAttempt(null);
+      login({token: data.accessToken, UserId, mode: loginType});
       navigate("/");
+    }
+    else{
+      setAttempt("fail");
     }
   }
 
@@ -40,25 +44,27 @@ export default function Login() {
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-            Username
+            UserId
           </label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username" onChange={e => setUserName(e.target.value)}/>
+          <input class={`shadow appearance-none border rounded ${UserId === "" && "border-red-500"} w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`} id="username" type="text" placeholder="UserId" onChange={e => setUserName(e.target.value)}/>
+          {UserId === "" && <p class="text-red-500 text-xs italic">Please enter UserId.</p>}
         </div>
         <div class="mb-6">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
             Password
           </label>
-          <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="*********" onChange={e => setPassword(e.target.value)}/>
-          <p class="text-red-500 text-xs italic">Please choose a password.</p>
+          <input class={`shadow appearance-none border rounded ${UserPassword === "" && "border-red-500"} w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`} id="password" type="password" placeholder="*********" onChange={e => setPassword(e.target.value)}/>
+          {UserPassword === "" && <p class="text-red-500 text-xs italic">Please choose a password.</p>}
         </div>
         <div class="flex items-center justify-between">
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={btn_Click}>
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onClick={(e) => btn_Click(e, "user")}>
             Sign In
           </button>
-          <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="https://google.com">
-            Forgot Password?
-          </a>
+          <button class="inline-block align-baseline font-bold text-sm border rounded bg-red-500 border-red-500 px-3 py-2 text-white hover:bg-red-800" type="button" onClick={(e) => btn_Click(e, "admin")}>
+            Login as admin
+          </button>
         </div>
+        {FailAttempt && <div className="text-red-500" style={{marginTop: "10px", textAlign: 'center'}}>UserId or Password is wrong!</div>}
       </form>
       <p class="text-center text-gray-500 text-xs">
         &copy;2020 Acme Corp. All rights reserved.
