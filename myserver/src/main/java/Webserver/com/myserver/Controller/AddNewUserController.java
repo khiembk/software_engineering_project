@@ -1,6 +1,7 @@
 package Webserver.com.myserver.Controller;
 import Webserver.com.myserver.HelperFunction.HashFuntion;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
+import Webserver.com.myserver.HelperObject.UserInfo;
 import Webserver.com.myserver.Model.NomalUser;
 import Webserver.com.myserver.Model.User;
 import Webserver.com.myserver.Util.DataBaseService;
@@ -56,6 +57,7 @@ public class AddNewUserController {
 }
    @PostMapping("/GetListUser")
     String GetListUser(@RequestBody String RequestBody){
+        logger.info(RequestBody);
         JSONObject jsonRequest = new JSONObject(RequestBody);
         JSONObject jsonReponse = new JSONObject();
         String UserId = jsonRequest.getString("UserId");
@@ -68,6 +70,45 @@ public class AddNewUserController {
         }
         jsonReponse.put("code","500");
         jsonReponse.put("message","Internal server Error");
+        logger.info(jsonReponse.toString());
         return jsonReponse.toString();
    }
+    @PostMapping("/GetUserInfo")
+    String GetUserInfo(@RequestBody String RequestBody){
+        JSONObject jsonRequest = new JSONObject(RequestBody);
+        JSONObject jsonReponse = new JSONObject();
+        String UserId = jsonRequest.getString("UserId");
+        String AccessToken = jsonRequest.getString("accessToken");
+        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId)){
+            jsonReponse.put("code","200");
+            jsonReponse.put("message","Success");
+            jsonReponse.put("data",dataBaseService.GetListUserInfoById(UserId));
+            logger.info(jsonReponse.toString());
+            return jsonReponse.toString();
+        }
+        jsonReponse.put("code","500");
+        jsonReponse.put("message","Internal server Error");
+        return jsonReponse.toString();
+    }
+
+    @PostMapping("/GetUserInfoByFamilyId")
+    String GetUserInfoById(@RequestBody String RequestBody){
+        JSONObject jsonRequest = new JSONObject(RequestBody);
+        JSONObject jsonReponse = new JSONObject();
+        String UserId = jsonRequest.getString("UserId");
+        String AccessToken = jsonRequest.getString("accessToken");
+        List<UserInfo> userInfos = dataBaseService.GetListUserInfoById(UserId);
+        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId) && userInfos.size()==1){
+            String familyId = userInfos.get(0).getFamilyId();
+            jsonReponse.put("code","200");
+            jsonReponse.put("message","Success");
+            jsonReponse.put("data",dataBaseService.GetListUserInfoByFamilyId(familyId));
+            logger.info(jsonReponse.toString());
+            return jsonReponse.toString();
+        }
+        jsonReponse.put("code","500");
+        jsonReponse.put("message","Internal server Error");
+        return jsonReponse.toString();
+    }
+
 }
