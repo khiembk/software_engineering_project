@@ -56,6 +56,9 @@ public class DataBaseService {
         }
         return false;
     }
+    public List<UserInfo> GetListUserInfoByFamilyId(String familyId){
+        return dataBaseConnect.ListUserInforByFamilyId(familyId);
+    }
     public void updateUserInfo(String UserId, String FamilyId, String PhoneNumber, String DateOfbirth){
         dataBaseConnect.updateUserInfor(UserId,FamilyId,PhoneNumber,DateOfbirth);
     }
