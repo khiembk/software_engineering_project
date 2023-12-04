@@ -24,7 +24,7 @@ export default function Login() {
     e.preventDefault();
 
     const data = await loginUser({
-      reqType: loginType == "user" ? "nomalUser" : "Root",
+      reqType: loginType === "user" ? "nomalUser" : "Root",
       UserId,
       UserPassword
     });

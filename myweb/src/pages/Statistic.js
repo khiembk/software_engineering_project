@@ -20,17 +20,26 @@ export default function Statistic() {
         UserId: user.UserId,
         accessToken: user.token
       });
-      if(list.code == "200"){
+      if(list.code === "200"){
+        let monthtran = 0;
+        let monthtime = 0;
+        let yeartran = 0;
+        let yeartime = 0;
         for (let i = 0; i < list.data.length; i++) {
-          if(moment(list.data[i].dateCreate).tz("Asia/Bangkok").year() == currentYear){
-            if(moment(list.data[i].dateCreate).tz("Asia/Bangkok").month() == currentMonth){
-              setMonthtransactiontime(monthtransactiontime + 1);
-              setMonthtransactionmoney(monthtransactionmoney + list.data[i].money);
+          if(moment(list.data[i].dateCreate).tz("Asia/Bangkok").year() === currentYear){
+            if(moment(list.data[i].dateCreate).tz("Asia/Bangkok").month() === currentMonth){
+              monthtime++;
+              monthtran += list.data[i].money;
             }
-            setYeartransactiontime(yeartransactiontime + 1);
-            setYeartransactionmoney(yeartransactionmoney + list.data[i].money);
+            yeartime++;
+            yeartran += list.data[i].money;
           }
         }
+
+        setMonthtransactiontime(monthtime);
+        setMonthtransactionmoney(monthtran);
+        setYeartransactiontime(yeartime);
+        setYeartransactionmoney(yeartran);
       }
       else{
         setError("Something went wrong!");
@@ -47,19 +56,19 @@ export default function Statistic() {
   }, []);
 
   return (
-    <div>
+    <div className="w-full">
       {error && <div>Something is wrong!</div>}
       <div style={{margin: "10px"}}>
         <div>
-          <h1 className="font-semibold" style={{marginBottom: '5px'}}>Thống kê các giao dịch được thực hiện trong tháng vừa qua</h1>
-          <div>
+          <h1 className="font-semibold text-center" style={{marginBottom: '5px'}}>Thống kê các giao dịch được thực hiện trong tháng vừa qua</h1>
+          <div className="text-center">
             <p>Số giao dịch được thực hiện thành công: {monthtransactiontime}</p>
             <p>Tổng tiền đã nộp: {monthtransactionmoney}</p>
           </div>
         </div>
         <div style={{marginTop: '30px'}}>
-          <h1 className="font-semibold" style={{marginBottom: '5px'}}>Thống kê các giao dịch được thực hiện trong năm nay</h1>
-          <div>
+          <h1 className="font-semibold text-center" style={{marginBottom: '5px'}}>Thống kê các giao dịch được thực hiện trong năm nay</h1>
+          <div className="text-center">
             <p>Số giao dịch được thực hiện thành công: {yeartransactiontime}</p>
             <p>Tổng tiền đã nộp: {yeartransactionmoney}</p>
           </div>

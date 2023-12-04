@@ -13,7 +13,7 @@ export default function PayHistory() {
         UserId: user.UserId,
         accessToken: user.token
       });
-      if(list.code == "200"){
+      if(list.code === "200"){
         setFeeUserComplete(list.data);
       }
       else{

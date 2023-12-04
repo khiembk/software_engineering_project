@@ -16,7 +16,7 @@ const FeeList = ({ items }) => {
 
   return (
     <div style={{margin: '10px'}}>
-      <div className="flex" style={{marginBottom: '10px'}}>
+      <div className="flex justify-center" style={{marginBottom: '10px'}}>
         <p className="w-[15rem] border border-black px-1 py-1" style={{marginRight: '10px'}}>Mã phí</p>
         <p className="w-[15rem] border border-black px-1 py-1" style={{marginRight: '10px'}}>Tên phí</p>
         <p className="w-[30rem] border border-black px-1 py-1" style={{marginRight: '10px'}}>Chi tiết</p>
@@ -26,7 +26,7 @@ const FeeList = ({ items }) => {
       </div>
       <ul>
         {currentItems.map((item, index) => (
-          <li className="flex" style={{marginBottom: '3px'}} key={index}>
+          <li className="flex justify-center" style={{marginBottom: '3px'}} key={index}>
             <p className="w-[15rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{item.feeId}</p>
             <p className="w-[15rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{item.feeName}</p>
             <p className="w-[30rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{item.detail}</p>

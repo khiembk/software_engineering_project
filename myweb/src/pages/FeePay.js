@@ -13,7 +13,7 @@ export default function FeePay() {
         UserId: user.UserId,
         accessToken: user.token
       });
-      if(list.code == "200"){
+      if(list.code === "200"){
         setFeeUser(list.data);
       }
       else{
