@@ -56,6 +56,7 @@ public class AddNewUserController {
 }
    @PostMapping("/GetListUser")
     String GetListUser(@RequestBody String RequestBody){
+        logger.info(RequestBody);
         JSONObject jsonRequest = new JSONObject(RequestBody);
         JSONObject jsonReponse = new JSONObject();
         String UserId = jsonRequest.getString("UserId");
@@ -68,6 +69,24 @@ public class AddNewUserController {
         }
         jsonReponse.put("code","500");
         jsonReponse.put("message","Internal server Error");
+        logger.info(jsonReponse.toString());
         return jsonReponse.toString();
    }
+    @PostMapping("/GetUserInfo")
+    String GetUserInfo(@RequestBody String RequestBody){
+        JSONObject jsonRequest = new JSONObject(RequestBody);
+        JSONObject jsonReponse = new JSONObject();
+        String UserId = jsonRequest.getString("UserId");
+        String AccessToken = jsonRequest.getString("accessToken");
+        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId)){
+            jsonReponse.put("code","200");
+            jsonReponse.put("message","Success");
+            jsonReponse.put("data",dataBaseService.GetListUserInfoById(UserId));
+            logger.info(jsonReponse.toString());
+            return jsonReponse.toString();
+        }
+        jsonReponse.put("code","500");
+        jsonReponse.put("message","Internal server Error");
+        return jsonReponse.toString();
+    }
 }

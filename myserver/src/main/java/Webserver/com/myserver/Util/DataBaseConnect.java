@@ -36,6 +36,7 @@ public class DataBaseConnect {
     private static final String GET_LIST_FEE_BY_FAMILY_ID_AND_COMPLETE_SQL =
             "SELECT * FROM fee WHERE FamilyId = ? AND IsComplete = 1";
     private static final String GET_lIST_USER_SQL = "SELECT * FROM nomal_user_info";
+
     private static final String GET_lIST_USER_BY_ID_SQL = "SELECT * FROM nomal_user_info WHERE UserId = ?";
     private  static  final  String INSERT_USER_INFO_NAME_ID = "INSERT INTO nomal_user_info (UserName, UserId) VALUES (?, ?)";
 
@@ -81,6 +82,7 @@ public class DataBaseConnect {
     public List<UserInfo> ListUserInfor(){
         return  jdbcTemplate.query(GET_lIST_USER_SQL,new BeanPropertyRowMapper<>(UserInfo.class));
     }
+
     public List<UserInfo> ListUserInforById(String UserId){
         return  jdbcTemplate.query(GET_lIST_USER_BY_ID_SQL,new Object[]{UserId},new BeanPropertyRowMapper<>(UserInfo.class));
     }
