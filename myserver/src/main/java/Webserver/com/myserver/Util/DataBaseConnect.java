@@ -38,6 +38,7 @@ public class DataBaseConnect {
     private static final String GET_lIST_USER_SQL = "SELECT * FROM nomal_user_info";
 
     private static final String GET_lIST_USER_BY_ID_SQL = "SELECT * FROM nomal_user_info WHERE UserId = ?";
+    private static final String GET_lIST_USER_BY_FAMILY_ID_SQL = "SELECT * FROM nomal_user_info WHERE FamilyId = ?";
     private  static  final  String INSERT_USER_INFO_NAME_ID = "INSERT INTO nomal_user_info (UserName, UserId) VALUES (?, ?)";
 
     private  static  final  String INSERT_NEW_FAMILY = "INSERT INTO family (FamilyId , OwnerName, Address) VALUES ( ?, ?, ?)";
@@ -85,6 +86,9 @@ public class DataBaseConnect {
 
     public List<UserInfo> ListUserInforById(String UserId){
         return  jdbcTemplate.query(GET_lIST_USER_BY_ID_SQL,new Object[]{UserId},new BeanPropertyRowMapper<>(UserInfo.class));
+    }
+    public List<UserInfo> ListUserInforByFamilyId(String FamilyId){
+        return  jdbcTemplate.query(GET_lIST_USER_BY_FAMILY_ID_SQL,new Object[]{FamilyId},new BeanPropertyRowMapper<>(UserInfo.class));
     }
     public List<Fee> GetListFee(){
        return  jdbcTemplate.query(GET_lIST_FEE_SQL,new BeanPropertyRowMapper<>(Fee.class));
