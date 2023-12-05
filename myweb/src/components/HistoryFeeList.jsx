@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import moment from 'moment-timezone';
 
 const HistoryFeeList = ({ items }) => {
   const itemsPerPage = 5; // Adjust the number of items per page
@@ -30,7 +31,7 @@ const HistoryFeeList = ({ items }) => {
             <p className="w-[15rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{item.feeName}</p>
             <p className="w-[30rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{item.detail}</p>
             <p className="w-[10rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{item.money}</p>
-            <p className="w-[10rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{item.dateCreate}</p>
+            <p className="w-[10rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{moment.utc(item.dateCreate).tz("Asia/Bangkok").format("DD/MM/YYYY")}</p>
           </li>
         ))}
       </ul>

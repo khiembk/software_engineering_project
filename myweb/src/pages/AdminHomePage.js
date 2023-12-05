@@ -9,11 +9,10 @@ import LoadingScreen from "../components/LoadingScreen";
 
 function AdminHomePage() {
   const [title, setTitle] = useState("Quản lý thu phí");
-  const [familyList, setFamilyList] = useState([]);
-  const [userList, setUserList] = useState([]);
-  const [feeList, setFeeList] = useState([]);
+  const [familyList, setFamilyList] = useState();
+  const [userList, setUserList] = useState();
+  const [feeList, setFeeList] = useState();
   const { user, logout } = useAuth();
-  const [loading, setLoading] = useState(true);
 
   const logoutBtn_Click = async e => {
       e.preventDefault();
@@ -75,15 +74,9 @@ function AdminHomePage() {
   };
 
   useEffect(() => {
-    try{
-      setLoading(true);
-      fetchFamilyList();
-      fetchUserList();
-      fetchFeeList();
-    }
-    finally{
-      setLoading(false);
-    }
+    fetchFamilyList();
+    fetchUserList();
+    fetchFeeList();
   }, []);
 
   const content=()=>{
@@ -149,7 +142,7 @@ function AdminHomePage() {
           </button>
         </div>
 
-        {loading ? (<LoadingScreen/>) : content()}
+        {(userList && familyList && feeList) ? content() : (<LoadingScreen/>)}
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchFunction } from '../utils/Fetch';
 import { useAuth } from '../hooks/useAuth';
+import moment from 'moment-timezone';
 
 const FeeList2 = ({ items }) => {
     const { user } = useAuth();
@@ -30,7 +31,6 @@ const FeeList2 = ({ items }) => {
             });
             if(respond.code === "200"){
                 console.log("success");
-                window.location.reload();
             }
             else{
                 console.log({message: "fail"});
@@ -63,7 +63,7 @@ const FeeList2 = ({ items }) => {
                         <td className="px-4 py-2 border-2">{item.feeName}</td>
                         <td className="px-4 py-2 border-2">{item.detail}</td>
                         <td className="px-4 py-2 border-2">{item.money}</td>
-                        <td className="px-4 py-2 border-2">{item.dateCreate}</td>
+                        <td className="px-4 py-2 border-2">{moment.utc(item.dateCreate).tz('Asia/Bangkok').format("DD/MM/YYYY")}</td>
                         <td className="px-4 py-2 border-2">{item.isComplete}</td>
                         {!item.isComplete && <button className='w-[6rem] font-semibold px-1 py-1 bg-transparent border border-gray-500 rounded hover:text-white hover:bg-gray-500 hover:border-transparent' style={{marginLeft: '10px'}} onClick={(e) => click_Btn(e, item.feeId)}>Thanh toán</button>}
                     </tr>

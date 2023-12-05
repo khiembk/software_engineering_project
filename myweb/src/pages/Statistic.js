@@ -6,12 +6,8 @@ import LoadingScreen from "../components/LoadingScreen";
 
 export default function Statistic() {
   const { user } = useAuth();
-  const [monthtransactiontime, setMonthtransactiontime] = useState(0);
-  const [monthtransactionmoney, setMonthtransactionmoney] = useState(0);
-  const [yeartransactiontime, setYeartransactiontime] = useState(0);
-  const [yeartransactionmoney, setYeartransactionmoney] = useState(0);
+  const [statData, setStatData] = useState();
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   
@@ -38,10 +34,12 @@ export default function Statistic() {
           }
         }
 
-        setMonthtransactiontime(monthtime);
-        setMonthtransactionmoney(monthtran);
-        setYeartransactiontime(yeartime);
-        setYeartransactionmoney(yeartran);
+        setStatData({
+          monthtransactiontime: monthtime,
+          monthtransactionmoney: monthtran,
+          yeartransactiontime: yeartime,
+          yeartransactionmoney: yeartran
+        });
       }
       else{
         setError("Something went wrong!");
@@ -54,35 +52,29 @@ export default function Statistic() {
   };
 
   useEffect(() => {
-    try{
-      setLoading(true);
-      fetchFeeUser();
-    }
-    finally{
-      setLoading(false);
-    }
+    fetchFeeUser();
   }, []);
 
   return (
     <div className="flex-grow">
-      {loading ? (<LoadingScreen/>) :
+      {statData ?
       <div style={{margin: "10px"}}>
         {error && <p className="text-red-500 font-bold text-[5rem]">error</p>}
         <div>
           <h1 className="font-semibold text-center" style={{marginBottom: '5px'}}>Thống kê các giao dịch được thực hiện trong tháng vừa qua</h1>
           <div className="text-center">
-            <p>Số giao dịch được thực hiện thành công: {monthtransactiontime}</p>
-            <p>Tổng tiền đã nộp: {monthtransactionmoney}</p>
+            <p>Số giao dịch được thực hiện thành công: {statData.monthtransactiontime}</p>
+            <p>Tổng tiền đã nộp: {statData.monthtransactionmoney}</p>
           </div>
         </div>
         <div style={{marginTop: '30px'}}>
           <h1 className="font-semibold text-center" style={{marginBottom: '5px'}}>Thống kê các giao dịch được thực hiện trong năm nay</h1>
           <div className="text-center">
-            <p>Số giao dịch được thực hiện thành công: {yeartransactiontime}</p>
-            <p>Tổng tiền đã nộp: {yeartransactionmoney}</p>
+            <p>Số giao dịch được thực hiện thành công: {statData.yeartransactiontime}</p>
+            <p>Tổng tiền đã nộp: {statData.yeartransactionmoney}</p>
           </div>
         </div>
-      </div>}
+      </div> : (<LoadingScreen/>)}
     </div>
   )
 };

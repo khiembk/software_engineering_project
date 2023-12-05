@@ -12,7 +12,6 @@ export default function UserInformation() {
   const [userInformation, setUserInformation] = useState(null);
   const [userFamily, setUserFamily] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const fetchUserInformation = async () => {
     try {
@@ -53,22 +52,15 @@ export default function UserInformation() {
   };
 
   useEffect(() => {
-    try{
-      setLoading(true);
-      fetchUserInformation();
-      fetchUserFamily();
-    }
-    finally{
-      setLoading(false);
-    }
+    fetchUserInformation();
+    fetchUserFamily();
   }, []); // Empty dependency array means this effect runs once on component mount
 
   return (
     <div className='flex-grow'>
-      {loading ? (<LoadingScreen/>) : 
-        <div style={{marginTop: '30px'}}>
+      <div style={{marginTop: '30px'}}>
           {error && <div>Something is wrong!</div>}
-          {userInformation && (
+          {(userInformation && userFamily) ? (
             <div>
               <h1 className="text-center font-semibold text-[1.5rem]">Thông tin người dùng</h1>
               <div className="text-center" style={{ margin: '10px'}}>
@@ -80,11 +72,10 @@ export default function UserInformation() {
                   <button className='px-2 py-2 bg-red-500 border border-red-500 rounded my-4 font-semibold text-white hover:bg-red-800' onClick={e => {navigate("/changepass")}}>Đổi mật khẩu</button>
               </div>
               <h2 className="text-center font-semibold text-[1.5rem]" style={{marginTop: '30px'}}>Thông tin những người dùng cùng mã hộ</h2>
-              {userFamily && <UserList items={userFamily}></UserList>}
+              <UserList items={userFamily}></UserList>
             </div>
-          )}
+          ) : (<LoadingScreen/>)}
         </div>
-      }
     </div>
     
   );
