@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { fetchFunction } from "../utils/Fetch";
 import moment from "moment-timezone";
+import LoadingScreen from "../components/LoadingScreen";
 
 export default function Statistic() {
   const { user } = useAuth();
@@ -10,6 +11,7 @@ export default function Statistic() {
   const [yeartransactiontime, setYeartransactiontime] = useState(0);
   const [yeartransactionmoney, setYeartransactionmoney] = useState(0);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   
@@ -52,13 +54,20 @@ export default function Statistic() {
   };
 
   useEffect(() => {
-    fetchFeeUser();
+    try{
+      setLoading(true);
+      fetchFeeUser();
+    }
+    finally{
+      setLoading(false);
+    }
   }, []);
 
   return (
-    <div className="w-full">
-      {error && <div>Something is wrong!</div>}
+    <div className="flex-grow">
+      {loading ? (<LoadingScreen/>) :
       <div style={{margin: "10px"}}>
+        {error && <p className="text-red-500 font-bold text-[5rem]">error</p>}
         <div>
           <h1 className="font-semibold text-center" style={{marginBottom: '5px'}}>Thống kê các giao dịch được thực hiện trong tháng vừa qua</h1>
           <div className="text-center">
@@ -73,7 +82,7 @@ export default function Statistic() {
             <p>Tổng tiền đã nộp: {yeartransactionmoney}</p>
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   )
 };

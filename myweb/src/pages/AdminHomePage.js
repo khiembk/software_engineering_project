@@ -5,7 +5,7 @@ import { fetchFunction } from "../utils/Fetch";
 import FamilyList from '../components/FamilyList'
 import UserList from "../components/UserList";
 import FeeList2 from "../components/FeeList2";
-
+import LoadingScreen from "../components/LoadingScreen";
 
 function AdminHomePage() {
   const [title, setTitle] = useState("Quản lý thu phí");
@@ -13,6 +13,7 @@ function AdminHomePage() {
   const [userList, setUserList] = useState([]);
   const [feeList, setFeeList] = useState([]);
   const { user, logout } = useAuth();
+  const [loading, setLoading] = useState(true);
 
   const logoutBtn_Click = async e => {
       e.preventDefault();
@@ -74,9 +75,15 @@ function AdminHomePage() {
   };
 
   useEffect(() => {
-    fetchFamilyList();
-    fetchUserList();
-    fetchFeeList();
+    try{
+      setLoading(true);
+      fetchFamilyList();
+      fetchUserList();
+      fetchFeeList();
+    }
+    finally{
+      setLoading(false);
+    }
   }, []);
 
   const content=()=>{
@@ -142,7 +149,7 @@ function AdminHomePage() {
           </button>
         </div>
 
-        {content()}
+        {loading ? (<LoadingScreen/>) : content()}
       </div>
     </div>
   );
