@@ -28,15 +28,15 @@ public class AddNewFee {
         logger.info(RequestBody.toString());
         try {
             String AccessToken = RequestBody.get("accessToken");
-            if (AccessToken.isBlank() || AccessToken.equals("")) {
+            if (AccessToken.isEmpty()) {
                 throw new RuntimeException("AccessToken is null");
             }
             String UserId = RequestBody.get("UserId");
-            if (UserId.isBlank() || UserId.equals("")) {
+            if (UserId.isEmpty()) {
                 throw new RuntimeException("UserId is null");
             }
             String FeeId = RequestBody.get("FeeId");
-            if (FeeId.isBlank() || FeeId.equals("")) {
+            if (FeeId.isEmpty()) {
                 throw new RuntimeException("FeeId is null");
             }
             int Money = Integer.valueOf(RequestBody.get("Money"));
@@ -44,16 +44,16 @@ public class AddNewFee {
                 throw new RuntimeException("Money is null");
             }
             String FeeName = RequestBody.get("FeeName");
-            if (FeeName.isBlank() || FeeName.equals("")) {
+            if (FeeName.isEmpty()) {
                 throw new RuntimeException("FeeName is null");
             }
             String dateCreate = RequestBody.get("DateCreate");
-            if (dateCreate.isBlank() || dateCreate.equals("")) {
+            if (dateCreate.isEmpty()) {
                 throw new RuntimeException("dateCreate is null");
             }
             String detail = RequestBody.get("Detail");
             String familyId = RequestBody.get("FamilyId");
-            if (familyId.isBlank() || familyId.equals("")) {
+            if (familyId.isEmpty()) {
                 throw new RuntimeException("familyId is null");
             }
             if (JWTFactory.VerifyJWT(UserId, AccessToken) && dataBaseService.IsRoot(UserId) && !dataBaseService.IsExistedFee(FeeId)) {
@@ -80,11 +80,11 @@ public class AddNewFee {
         logger.info(RequestBody.toString());
         try {
             String AccessToken = RequestBody.get("accessToken");
-            if (AccessToken.isBlank() || AccessToken.equals("")) {
+            if (AccessToken.isEmpty()) {
                 throw new RuntimeException("AccessToken is null");
             }
             String UserId = RequestBody.get("UserId");
-            if (UserId.isBlank() || UserId.equals("")) {
+            if (UserId.isEmpty()) {
                 throw new RuntimeException("UserId is null");
             }
             if (JWTFactory.VerifyJWT(UserId, AccessToken) && dataBaseService.IsRoot(UserId)) {
@@ -112,11 +112,11 @@ public class AddNewFee {
         logger.info(RequestBody.toString());
         try {
             String AccessToken = RequestBody.get("accessToken");
-            if (AccessToken.isBlank() || AccessToken.equals("")) {
+            if (AccessToken.isEmpty()) {
                 throw new RuntimeException("AccessToken is null");
             }
             String UserId = RequestBody.get("UserId");
-            if (UserId.isBlank() || UserId.equals("")) {
+            if (UserId.isEmpty()) {
                 throw new RuntimeException("UserId is null");
             }
             if (JWTFactory.VerifyJWT(UserId, AccessToken) && dataBaseService.IsRoot(UserId)) {
@@ -144,11 +144,11 @@ public class AddNewFee {
         logger.info(RequestBody.toString());
         try {
             String AccessToken = RequestBody.get("accessToken");
-            if (AccessToken.isBlank() || AccessToken.equals("")) {
+            if (AccessToken.isEmpty()) {
                 throw new RuntimeException("AccessToken is null");
             }
             String UserId = RequestBody.get("UserId");
-            if (UserId.isBlank() || UserId.equals("")) {
+            if (UserId.isEmpty()) {
                 throw new RuntimeException("UserId is null");
             }
             if (JWTFactory.VerifyJWT(UserId, AccessToken) && dataBaseService.IsRoot(UserId)) {

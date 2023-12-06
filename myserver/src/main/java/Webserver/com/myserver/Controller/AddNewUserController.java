@@ -1,6 +1,7 @@
 package Webserver.com.myserver.Controller;
 import Webserver.com.myserver.HelperFunction.HashFuntion;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
+import Webserver.com.myserver.HelperObject.BasicReponse;
 import Webserver.com.myserver.HelperObject.UserInfo;
 import Webserver.com.myserver.Model.NomalUser;
 import Webserver.com.myserver.Model.User;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -22,38 +24,50 @@ public class AddNewUserController {
         this.dataBaseService=dataBaseService;
     }
     @PostMapping ("/addUser")
-    String AddNewUser(@RequestBody String RequestBody){
-        logger.info(RequestBody.replace("\n",""));
-        JSONObject jsonRequest = new JSONObject(RequestBody);
-        String rootId = jsonRequest.getString("RootId");
-        String accessToken = jsonRequest.getString("accessToken");
-        if (JWTFactory.VerifyJWT(rootId,accessToken) && dataBaseService.IsRoot(rootId)){
-        String UserName = jsonRequest.getString("UserName");
-        String UserId = jsonRequest.getString("UserId");
-        List<User> findSameId = dataBaseService.SearchNomalUserById(UserId);
-        if (!findSameId.isEmpty()){
-            JSONObject jsonResponse = new JSONObject();
-            jsonResponse.put("code","501");
-            jsonResponse.put("message","query fail");
-            return jsonResponse.toString();
+    String AddNewUser(@RequestBody HashMap<String,String> RequestBody){
+
+        logger.info(RequestBody.toString());
+        BasicReponse basicReponse = new BasicReponse();
+        try {
+            String rootId = RequestBody.get("RootId");
+            if (rootId.isEmpty()){
+                throw new RuntimeException("RootId is null");
+            }
+            String accessToken = RequestBody.get("accessToken");
+            if (accessToken.isEmpty()){
+                throw new RuntimeException("AccessToken is null");
+            }
+            String UserName = RequestBody.get("UserName");
+            if (UserName.isEmpty()){
+                throw new RuntimeException("UserName is null");
+            }
+            String UserId =RequestBody.get("UserId");
+            if (UserId.isEmpty()){
+                throw new RuntimeException("UserId is null");
+            }
+            if (JWTFactory.VerifyJWT(rootId,accessToken) && dataBaseService.IsRoot(rootId)){
+                dataBaseService.addUserToDataBase(UserName, HashFuntion.hash256("mypass"), UserId);
+                String FamilyId = RequestBody.get("FamilyId");
+                String PhoneNumber = RequestBody.get("PhoneNumber");
+                String dateofBirth = RequestBody.get("dateOfBirth");
+                if (dateofBirth.isEmpty() || PhoneNumber.isEmpty() || FamilyId.isEmpty()){
+                    throw new RuntimeException("User not enough info");
+                }
+                dataBaseService.updateUserInfo(UserId,FamilyId,PhoneNumber,dateofBirth);
+
+                basicReponse.setMessage("Success");
+                basicReponse.setCode("200");
+                logger.info(basicReponse.toString());
+                return basicReponse.toString();
+        }else{
+                throw new RuntimeException("Invalid JWT");
+            }
+    }catch (Exception exception){
+            basicReponse.setCode("500");
+            basicReponse.setMessage(exception.getMessage());
+            logger.info(basicReponse.toString());
+            return basicReponse.toString();
         }
-        NomalUser nomalUser = new NomalUser();
-        nomalUser.setUserName(UserName);
-        nomalUser.setUserId(UserId);
-        nomalUser.setUserPassword(HashFuntion.hash256("mypass"));
-        String FamilyId = jsonRequest.getString("FamilyId");
-        String PhoneNumber = jsonRequest.getString("PhoneNumber");
-        String dateofBirth = jsonRequest.getString("dateOfBirth");
-        dataBaseService.updateUserInfo(UserId,FamilyId,PhoneNumber,dateofBirth);
-        dataBaseService.addUserToDataBase(UserName, nomalUser.getUserPassword(), nomalUser.getUserId());
-        logger.info(nomalUser.toString());
-        return nomalUser.toString();
-    }
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("code","502");
-        jsonResponse.put("message","Invalid JWT");
-        logger.info(jsonResponse.toString());
-        return jsonResponse.toString();
 }
    @PostMapping("/GetListUser")
     String GetListUser(@RequestBody String RequestBody){
