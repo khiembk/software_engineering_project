@@ -1,5 +1,6 @@
 package Webserver.com.myserver.Controller;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
+import Webserver.com.myserver.HelperObject.BasicReponse;
 import Webserver.com.myserver.Model.Fee;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
@@ -21,24 +22,40 @@ public class ChangeFeeStatusController {
     }
     @PostMapping()
     public String CompleteFee(@RequestBody HashMap<String, String> requestBody){
-        logger.info(requestBody.toString().replace("\n",""));
-        String UserId = requestBody.get("UserId");
-        String accessToken = requestBody.get("accessToken");
-        String FeeId = requestBody.get("FeeId");
-        JSONObject response=  new JSONObject();
-        if (JWTFactory.VerifyJWT(UserId,accessToken) && dataBaseService.IsRoot(UserId) ){
-            List<Fee> fees = dataBaseService.GetFeeById(FeeId);
-            if (fees.size()==1){
-                dataBaseService.CompleteFeeById(FeeId);
-                response.put("code","200");
-                response.put("message","Success");
-                logger.info(response.toString());
-                return response.toString();
+        logger.info(requestBody.toString());
+        BasicReponse basicReponse = new BasicReponse();
+        try{
+            String UserId = requestBody.get("UserId");
+            if (UserId.isEmpty()){
+                throw  new RuntimeException("UserId is null");
+            }
+            String accessToken = requestBody.get("accessToken");
+            if (accessToken.isEmpty()){
+                throw new RuntimeException("AccessToken is null");
+            }
+            String FeeId = requestBody.get("FeeId");
+            if (JWTFactory.VerifyJWT(UserId,accessToken) && dataBaseService.IsRoot(UserId) ){
+                List<Fee> fees = dataBaseService.GetFeeById(FeeId);
+                if (fees.size()==1){
+                    dataBaseService.CompleteFeeById(FeeId);
+                    JSONObject response=  new JSONObject();
+                    response.put("code","200");
+                    response.put("message","Success");
+                    logger.info(response.toString());
+                    return response.toString();
+                }else{
+                    throw  new RuntimeException("Invalid FeeId");
+                }
+            }else {
+                throw new RuntimeException("Invalid JWT");
             }
         }
-        response.put("code","500");
-        response.put("message","Internal server error");
-        logger.info(response.toString());
-        return  response.toString();
+        catch (Exception exception){
+            basicReponse.setCode("500");
+            basicReponse.setMessage(exception.getMessage());
+            logger.info(basicReponse.toString());
+            return  basicReponse.toString();
+
+        }
     }
 }

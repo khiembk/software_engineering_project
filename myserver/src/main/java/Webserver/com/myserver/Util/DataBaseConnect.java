@@ -18,6 +18,7 @@ public class DataBaseConnect {
     String  insertUser = "INSERT INTO login (UserName, UserPassword, UserId) VALUES (?, ?,?)";
     private static final String SEARCH_USER_BY_ID_SQL = "SELECT * FROM login WHERE UserId = ?";
     private static final String UPDATE_PASS_USER_BY_ID_SQL = "UPDATE login SET UserPassword = ? WHERE UserId = ?";
+    private static final String UPDATE_PASS_ROOT_BY_ID_SQL = "UPDATE admin SET UserPassword = ? WHERE UserId = ?";
     private static final String SEARCH_ROOT_BY_ID_SQL = "SELECT * FROM admin WHERE UserId = ?";
     private static final String INSERT_FEE_BY_ID_SQL = "INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (?,?,?,?,?,?,?)";
     private static final String SEARCH_FEE_BY_ID_SQL = "SELECT * FROM fee WHERE FeeId = ?";
@@ -46,6 +47,9 @@ public class DataBaseConnect {
     public  void insertUserData(String UserName, String UserPassword , String UserId) {
         jdbcTemplate.update(insertUser, UserName, UserPassword,UserId);
         jdbcTemplate.update(INSERT_USER_INFO_NAME_ID,UserName,UserId);
+    }
+    public void UpdateRootPass(String NewPass, String UserId){
+        jdbcTemplate.update(UPDATE_PASS_ROOT_BY_ID_SQL,NewPass,UserId);
     }
     public void InsertNewFamily(String FammilyId, String OwnerName, String Address){
         jdbcTemplate.update(INSERT_NEW_FAMILY,FammilyId,OwnerName,Address);
