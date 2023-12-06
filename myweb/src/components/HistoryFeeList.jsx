@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import moment from 'moment-timezone';
+import { Pagination } from '@mui/material';
 
 const HistoryFeeList = ({ items }) => {
   const itemsPerPage = 5; // Adjust the number of items per page
@@ -11,47 +12,31 @@ const HistoryFeeList = ({ items }) => {
   const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
 
   // Function to handle page change
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = (event, pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
   return (
     <div style={{margin: '10px'}}>
       <div className="flex justify-center" style={{marginBottom: '10px'}}>
-        <p className="w-[15rem] border border-black px-1 py-1" style={{marginRight: '10px'}}>Mã phí</p>
-        <p className="w-[15rem] border border-black px-1 py-1" style={{marginRight: '10px'}}>Tên phí</p>
-        <p className="w-[30rem] border border-black px-1 py-1" style={{marginRight: '10px'}}>Chi tiết</p>
-        <p className="w-[10rem] border border-black px-1 py-1" style={{marginRight: '10px'}}>Số tiền</p>
-        <p className="w-[10rem] border border-black px-1 py-1" style={{marginRight: '10px'}}>Ngày tạo</p>
+        <p className="w-[15rem] border-2 border-gray-500 px-1 py-1">Mã phí</p>
+        <p className="w-[15rem] border-2 border-gray-500 px-1 py-1">Tên phí</p>
+        <p className="w-[30rem] border-2 border-gray-500 px-1 py-1">Chi tiết</p>
+        <p className="w-[10rem] border-2 border-gray-500 px-1 py-1">Số tiền</p>
+        <p className="w-[10rem] border-2 border-gray-500 px-1 py-1">Ngày tạo</p>
       </div>
       <ul>
         {currentItems.map((item, index) => (
-          <li className="flex justify-center" style={{marginBottom: '3px'}} key={index}>
-            <p className="w-[15rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{item.feeId}</p>
-            <p className="w-[15rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{item.feeName}</p>
-            <p className="w-[30rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{item.detail}</p>
-            <p className="w-[10rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{item.money}</p>
-            <p className="w-[10rem] border border-gray-300 px-1 py-1" style={{marginRight: '10px'}}>{moment.utc(item.dateCreate).tz("Asia/Bangkok").format("DD/MM/YYYY")}</p>
+          <li className="flex justify-center" style={{marginBottom: '1px'}} key={index}>
+            <p className="w-[15rem] border-2 border-gray-300 px-1 py-1">{item.feeId}</p>
+            <p className="w-[15rem] border-2 border-gray-300 px-1 py-1">{item.feeName}</p>
+            <p className="w-[30rem] border-2 border-gray-300 px-1 py-1">{item.detail}</p>
+            <p className="w-[10rem] border-2 border-gray-300 px-1 py-1">{item.money}</p>
+            <p className="w-[10rem] border-2 border-gray-300 px-1 py-1">{moment.utc(item.dateCreate).tz("Asia/Bangkok").format("DD/MM/YYYY")}</p>
           </li>
         ))}
       </ul>
-      <div style={{ marginTop: '10px', textAlign: 'center', alignContent: '' }}>
-        {Array.from({ length: Math.ceil(items.length / itemsPerPage) }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageChange(index + 1)}
-            style={{
-              margin: '3px',
-              padding: '5px',
-              border: '1px solid #ccc',
-              background: currentPage === index + 1 ? '#eee' : 'transparent',
-              borderRadius: '1rem'
-            }}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+      <Pagination className="flex justify-center mt-4" size="large" variant="outlined" color="primary" count={Math.ceil(items.length / itemsPerPage)} page={currentPage} onChange={handlePageChange} />
     </div>
   );
 };
