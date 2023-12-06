@@ -17,8 +17,8 @@ const FeeList2 = ({ items }) => {
     const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
 
     // Function to handle page change
-    const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    const handlePageChange = (event, pageNumber) => {
+        setCurrentPage(pageNumber);
     };
 
     const click_Btn = async (e, feeId) => {
@@ -32,6 +32,7 @@ const FeeList2 = ({ items }) => {
             });
             if(respond.code === "200"){
                 console.log("success");
+                window.location.reload();
             }
             else{
                 console.log({message: "fail"});

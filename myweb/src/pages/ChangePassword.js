@@ -41,6 +41,11 @@ export default function ChangePassword() {
             if(respond.code === "200"){
                 setAttempt(null);
                 setAnchorEl(buttonElement);
+
+                setTimeout(() => {
+                  setAnchorEl(null);
+                  logout();
+                }, 3000);
             }
             else{
                 setAttempt("Old password might be entered incorrectly!");
@@ -85,21 +90,21 @@ export default function ChangePassword() {
         {FailAttempt && <div className="text-red-500" style={{marginTop: "10px", textAlign: 'center'}}>{FailAttempt}</div>}
       </form>
       <Popover
-            id={idPopover}
-            open={openPopover}
-            onClose={handleClosePopover}
-            anchorEl={anchorEl}
-            anchorOrigin={{
+        id={idPopover}
+        open={openPopover}
+        onClose={handleClosePopover}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+        vertical: 'center',
+        horizontal: 'center',
+        }}
+        transformOrigin={{
             vertical: 'center',
             horizontal: 'center',
-            }}
-            transformOrigin={{
-                vertical: 'center',
-                horizontal: 'center',
-            }}
-        >
-        <Typography className='w-[40rem] text-center' sx={{ p: 2 }}><span className='font-semibold text-green-700'>Change password successfully! Please click on anywhere outside this bubble to logout of current session.</span></Typography>
-        </Popover>
+        }}
+      >
+        <Typography className='w-[40rem] text-center' sx={{ p: 2 }}><span className='font-semibold text-green-700'>Change password successfully! Please click outside to logout or it will automatically log out.</span></Typography>
+      </Popover>
     </div>
   )
 };
