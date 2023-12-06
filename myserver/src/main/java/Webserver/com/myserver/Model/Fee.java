@@ -59,7 +59,7 @@ public class Fee {
         FamilyId = familyId;
     }
 
-    public int isComplete() {
+    public int getIsComplete() {
         return IsComplete;
     }
 

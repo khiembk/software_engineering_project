@@ -1,7 +1,5 @@
 package Webserver.com.myserver.Model;
 
-import Webserver.com.myserver.HelperFunction.HashFuntion;
-
 public  class User {
     private String UserId;
     private String UserName;
@@ -33,12 +31,4 @@ public  class User {
     public void setUserPassword(String userPassword) {
         UserPassword = userPassword;
     }
-//    public String changePass(String curentPass, String newpass){
-//        String result = "setPassFailed";
-//        if (HashFuntion.hash256(curentPass).equals(this.UserPassword)){
-//            setUserPassword(newpass);
-//            result = "setPassSucess";
-//        }
-//        return  result;
-//    }
 }

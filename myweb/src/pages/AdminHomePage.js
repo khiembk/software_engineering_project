@@ -1,54 +1,120 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
-
+import { useAuth } from "../hooks/useAuth";
+import { fetchFunction } from "../utils/Fetch";
+import FamilyList from '../components/FamilyList'
+import UserList from "../components/UserList";
+import FeeList2 from "../components/FeeList2";
+import LoadingScreen from "../components/LoadingScreen";
 
 function AdminHomePage() {
   const [title, setTitle] = useState("Quản lý thu phí");
-  const [Fee, setFee] = useState([]);
+  const [familyList, setFamilyList] = useState();
+  const [userList, setUserList] = useState();
+  const [feeList, setFeeList] = useState();
+  const { user, logout } = useAuth();
+
+  const logoutBtn_Click = async e => {
+      e.preventDefault();
+      logout();
+  }
+  
+  const fetchFamilyList = async () => {
+    try {
+      const list = await fetchFunction({
+        reqType: "/Family/GetList", 
+        UserId: user.UserId,
+        accessToken: user.token
+      });
+      if(list.code == "200"){
+        setFamilyList(list.data);
+      }
+      else{
+        console.log({message: "get user list fail? code !== 200", data: user});
+      }
+    } catch (error) {
+      console.log("get family list fail?");
+    }
+  };
+
+  const fetchUserList = async () => {
+    try {
+      const list = await fetchFunction({
+        reqType: "/GetListUser", 
+        UserId: user.UserId,
+        accessToken: user.token
+      });
+      if(list.code == "200"){
+        setUserList(list.data);
+      }
+      else{
+        console.log({message: "get user list fail? code !== 200", data: user});
+      }
+    } catch (error) {
+      console.log("get user list fail?");
+    }
+  };
+
+  const fetchFeeList = async () => {
+    try {
+      const list = await fetchFunction({
+        reqType: "/Fee/getListFee", 
+        UserId: user.UserId,
+        accessToken: user.token
+      });
+      if(list.code == "200"){
+        setFeeList(list.data);
+      }
+      else{
+        console.log({message: "get user list fail? code !== 200", data: user});
+      }
+    } catch (error) {
+      console.log("get fee list fail?");
+    }
+  };
+
+  useEffect(() => {
+    fetchFamilyList();
+    fetchUserList();
+    fetchFeeList();
+  }, []);
 
   const content=()=>{
     if(title === "Quản lý thu phí") {
       return (<div className="ml-2 w-3/4 h-screen ">
-      <h1 className="text-center mb-5 text-2xl mt-4 font-bold">
-       Thông tin chi tiết các phí hiện hành
-      </h1>
-      <Link to='/addfee' className="inline-block w-48 text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
-        Thêm loại phí mới
-      </Link>
+        <h1 className="text-center mb-5 text-2xl mt-4 font-bold">
+        Thông tin chi tiết các phí hiện hành
+        </h1>
+        <Link to='/admin/addfee' className="inline-block w-48 text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
+          Thêm khoản phí mới
+        </Link>
 
-      <table className="mt-4 table  w-full h-screen ">
-        <thead>
-          <th className="py-2 px-4 border-2"> Mã phí </th>
-          <th className="py-2 px-4 border-2"> Tên phí </th>
-          <th className="py-2 px-4 border-2"> Hạn nộp </th>
-          <th className="py-2 px-4 border-2"> Loại phí </th>
-          <th className="py-2 px-4 border-2"> Tiến trình nộp phí  </th>
-          <th className="py-2 px-4 border-2"> Thao tác  </th>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>)
-    } else {
-      return(
-      <div className="ml-2 w-3/4 h-screen ">
-      <h1 className="text-center mb-5 text-2xl mt-4 font-bold">
-       Thông tin chi tiết các nhân khẩu
-      </h1>
-      <Link to='/addfee' className="inline-block w-52 text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
-        Thêm nhân khẩu mới
-      </Link>
+        <FeeList2 items={feeList}/>
+      </div>)
+    } else if(title === "Quản lý nhân khẩu"){
+        return(
+        <div className="ml-2 w-3/4 h-screen ">
+        <h1 className="text-center mb-5 text-2xl mt-4 font-bold">
+        Thông tin chi tiết các nhân khẩu
+        </h1>
+        <Link to='/admin/adduser' className="inline-block w-52 text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
+          Thêm nhân khẩu mới
+        </Link>
 
-      <table className="mt-4 table  w-full h-screen ">
-        <thead>
-          <th className="py-2 px-4 border-2"> Mã Nhân khẩu </th>
-          <th className="py-2 px-4 border-2"> Họ tên </th>
-          <th className="py-2 px-4 border-2"> Ngày sinh </th>
-          <th className="py-2 px-4 border-2"> Số Hộ khẩu </th>
-          <th className="py-2 px-4 border-2"> Thao tác  </th>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>)
+        <UserList items={userList}/>
+      </div>)
+    } else{
+        return(
+        <div className="ml-2 w-3/4 h-screen ">
+        <h1 className="text-center mb-5 text-2xl mt-4 font-bold">
+        Thông tin chi tiết các hộ khẩu
+        </h1>
+        <Link to='/admin/addfamily' className="inline-block w-52 text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
+          Thêm hộ khẩu mới
+        </Link>
+        
+        <FamilyList items={familyList}/>
+      </div>)
     }
   }
   return (
@@ -59,20 +125,24 @@ function AdminHomePage() {
 
       <div className="flex">
         <div className="grid grid-rows-3 justify-center items-center w-1/5 h-screen bg-[#101F33] p-8">
-          <Link to='/listuser' className= 'inline-block text-center hover:text-[#4FC3F7] text-[#BDC2C7] font-bold py-2 px-4 rounded mb-4' onClick={(e)=>setTitle("Quản lý nhân khẩu")}>
-            Quản lý nhân khẩu
+          <Link to='/admin/' className= 'inline-block text-center hover:text-[#4FC3F7] text-[#BDC2C7] font-bold py-2 px-4 rounded mb-4' onClick={(e)=>setTitle("Quản lý hộ khẩu")}>
+            Quản lý hộ khẩu
           </Link>
           
-          <Link to='/listfee' className="inline-block text-center hover:text-[#4FC3F7] text-[#BDC2C7] font-bold py-2 px-4 rounded mb-4" onClick={(e)=>setTitle("Quản lý thu phí")}>
+          <Link to='/admin/' className="inline-block text-center hover:text-[#4FC3F7] text-[#BDC2C7] font-bold py-2 px-4 rounded mb-4" onClick={(e)=>setTitle("Quản lý nhân khẩu")}>
+            Quản lý nhân khẩu
+          </Link>
+
+          <Link to='/admin/' className="inline-block text-center hover:text-[#4FC3F7] text-[#BDC2C7] font-bold py-2 px-4 rounded mb-4" onClick={(e)=>setTitle("Quản lý thu phí")}>
             Quản lý thu phí
           </Link>
 
-          <button className="hover:text-[#4FC3F7] text-[#BDC2C7] font-bold py-2 px-4 rounded mb-4">
+          <button className="hover:text-[#4FC3F7] text-[#BDC2C7] font-bold py-2 px-4 rounded mb-4" onClick={logoutBtn_Click}>
             Đăng xuất
           </button>
         </div>
 
-        {content()}
+        {(userList && familyList && feeList) ? content() : (<LoadingScreen/>)}
       </div>
     </div>
   );

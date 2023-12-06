@@ -1,4 +1,5 @@
 import { defer, Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
+import { AdminLayout } from './components/AdminLayout';
 import { ProtectedLayout } from './components/ProtectedLayout';
 import { UnprotectedLayout } from './components/UnprotectedLayout';
 import { AuthLayout } from "./components/AuthLayout";
@@ -8,6 +9,11 @@ import UserInformation from "./pages/UserInformation";
 import FeePay from './pages/FeePay'
 import FeeHistory from './pages/PayHistory'
 import Statistic from "./pages/Statistic";
+import AdminHomePage from "./pages/AdminHomePage";
+import CreateFee from "./pages/CreateFee";
+import CreateUser from "./pages/CreateUser";
+import CreateFamily from "./pages/CreateFamily"
+import ChangePassword from "./pages/ChangePassword"
 
 const getUserData = () => 
     new Promise((resolve) =>
@@ -29,6 +35,13 @@ export const router = createBrowserRouter(
                 <Route path="/thuphi" element={<FeePay/>}/>
                 <Route path="/lichsunop" element={<FeeHistory/>}/>
                 <Route path="/thongke" element={<Statistic/>}/>
+                <Route path="/changepass" element={<ChangePassword/>}/>
+            </Route>
+            <Route element={<AdminLayout/>}>
+                <Route path="/admin/" element={<AdminHomePage/>}/>
+                <Route path="/admin/addfee" element={<CreateFee/>}/>
+                <Route path="/admin/adduser" element={<CreateUser/>}/>
+                <Route path="/admin/addfamily" element={<CreateFamily/>}/>
             </Route>
         </Route>
     )

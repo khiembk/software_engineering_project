@@ -5,7 +5,12 @@ export const UnprotectedLayout = () => {
     const { user } = useAuth();
 
     if (user) {
-        return <Navigate to="/" />;
+        if(user.mode === "user"){
+            return <Navigate to="/" />;
+        }
+        else if(user.mode === "admin"){
+            return <Navigate to="/admin/" />;
+        }
     }
 
     return (
