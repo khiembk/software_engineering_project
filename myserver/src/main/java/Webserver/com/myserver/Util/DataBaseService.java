@@ -49,6 +49,12 @@ public class DataBaseService {
     public List<Fee> GetListFeeByFamilyIdComplete(String FamilyId){
         return dataBaseConnect.getListFeeByFamilyIdAndComplete(FamilyId);
     }
+    public List<Admin> GetListRootById(String UserId){
+        return dataBaseConnect.searchRootById(UserId);
+    }
+    public void UpdatePassRoot(String UserId,String NewPass){
+        dataBaseConnect.UpdateRootPass(NewPass,UserId);
+    }
     public boolean IsNomalUser(String UserId){
         List<User> uses = dataBaseConnect.searchNomalUserById(UserId);
         if (uses.size()==1){

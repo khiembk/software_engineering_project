@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import moment from 'moment-timezone';
+import { Pagination } from '@mui/material';
 
 const UserList = ({ items }) => {
     const itemsPerPage = 5; // Adjust the number of items per page
@@ -39,22 +40,7 @@ const UserList = ({ items }) => {
                     ))}
                 </tbody>
             </table>
-            <div style={{ marginTop: '10px', textAlign: 'center', alignContent: '' }}>
-                {Array.from({ length: Math.ceil(items.length / itemsPerPage) }, (_, index) => (
-                <button
-                    key={index}
-                    onClick={() => handlePageChange(index + 1)}
-                    style={{
-                    margin: '3px',
-                    padding: '5px',
-                    border: '1px solid #ccc',
-                    background: currentPage === index + 1 ? '#eee' : 'transparent',
-                    borderRadius: '1rem'
-                    }}
-                >{index + 1}
-                </button>
-                ))}
-            </div>
+            <Pagination className="flex justify-center mt-4" size="large" variant="outlined" color="primary" count={Math.ceil(items.length / itemsPerPage)} page={currentPage} onChange={handlePageChange} />
         </div>
     );
 };
