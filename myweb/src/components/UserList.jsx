@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import moment from 'moment-timezone';
 
 const UserList = ({ items }) => {
     const itemsPerPage = 5; // Adjust the number of items per page
@@ -31,7 +32,7 @@ const UserList = ({ items }) => {
                     <tr key={index}>
                         <td className="px-4 py-2 border-2">{item.userId}</td>
                         <td className="px-4 py-2 border-2">{item.userName}</td>
-                        <td className="px-4 py-2 border-2">{item.dateOfBirth}</td>
+                        <td className="px-4 py-2 border-2">{moment.utc(item.dateOfBirth).tz("Asia/Bangkok").format("DD/MM/YYYY")}</td>
                         <td className="px-4 py-2 border-2">{item.phoneNumber}</td>
                         <td className="px-4 py-2 border-2">{item.familyId}</td>
                     </tr>

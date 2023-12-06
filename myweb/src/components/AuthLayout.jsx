@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { useLoaderData, useOutlet, Await } from "react-router-dom";
-import LinearProgress from "@mui/material/LinearProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import { AuthProvider } from "../hooks/useAuth";
 
@@ -9,7 +9,12 @@ export const AuthLayout = () => {
   const { userPromise } = useLoaderData();
 
   return (
-    <Suspense fallback={<LinearProgress />}>
+    <Suspense fallback={
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <CircularProgress className="justify-center" style={{height: '4rem', width: '4rem'}}/>
+        <p className="font-semibold text-[2rem]" style={{marginTop: '30px'}}>Loading...</p>
+      </div>
+    }>
       <Await
         resolve={userPromise}
         errorElement={<Alert severity="error">Something went wrong!</Alert>}

@@ -13,6 +13,7 @@ import AdminHomePage from "./pages/AdminHomePage";
 import CreateFee from "./pages/CreateFee";
 import CreateUser from "./pages/CreateUser";
 import CreateFamily from "./pages/CreateFamily"
+import ChangePassword from "./pages/ChangePassword"
 
 const getUserData = () => 
     new Promise((resolve) =>
@@ -34,6 +35,7 @@ export const router = createBrowserRouter(
                 <Route path="/thuphi" element={<FeePay/>}/>
                 <Route path="/lichsunop" element={<FeeHistory/>}/>
                 <Route path="/thongke" element={<Statistic/>}/>
+                <Route path="/changepass" element={<ChangePassword/>}/>
             </Route>
             <Route element={<AdminLayout/>}>
                 <Route path="/admin/" element={<AdminHomePage/>}/>

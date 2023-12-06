@@ -5,13 +5,13 @@ import { fetchFunction } from "../utils/Fetch";
 import FamilyList from '../components/FamilyList'
 import UserList from "../components/UserList";
 import FeeList2 from "../components/FeeList2";
-
+import LoadingScreen from "../components/LoadingScreen";
 
 function AdminHomePage() {
   const [title, setTitle] = useState("Quản lý thu phí");
-  const [familyList, setFamilyList] = useState([]);
-  const [userList, setUserList] = useState([]);
-  const [feeList, setFeeList] = useState([]);
+  const [familyList, setFamilyList] = useState();
+  const [userList, setUserList] = useState();
+  const [feeList, setFeeList] = useState();
   const { user, logout } = useAuth();
 
   const logoutBtn_Click = async e => {
@@ -142,7 +142,7 @@ function AdminHomePage() {
           </button>
         </div>
 
-        {content()}
+        {(userList && familyList && feeList) ? content() : (<LoadingScreen/>)}
       </div>
     </div>
   );
