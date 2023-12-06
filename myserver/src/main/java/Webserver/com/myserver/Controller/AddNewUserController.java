@@ -70,59 +70,96 @@ public class AddNewUserController {
         }
 }
    @PostMapping("/GetListUser")
-    String GetListUser(@RequestBody String RequestBody){
-        logger.info(RequestBody);
-        JSONObject jsonRequest = new JSONObject(RequestBody);
-        JSONObject jsonReponse = new JSONObject();
-        String UserId = jsonRequest.getString("UserId");
-        String AccessToken = jsonRequest.getString("accessToken");
-        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){
-              jsonReponse.put("code","200");
-              jsonReponse.put("message","Success");
-              jsonReponse.put("data",dataBaseService.GetListUserInfo());
-              return jsonReponse.toString();
-        }
-        jsonReponse.put("code","500");
-        jsonReponse.put("message","Internal server Error");
-        logger.info(jsonReponse.toString());
-        return jsonReponse.toString();
+    String GetListUser(@RequestBody HashMap<String,String> RequestBody){
+        logger.info(RequestBody.toString());
+       try {
+           String UserId = RequestBody.get("UserId");
+           if (UserId.isEmpty()){
+               throw new RuntimeException("UserId is null");
+           }
+           String AccessToken = RequestBody.get("accessToken");
+           if (AccessToken.isEmpty()){
+               throw new RuntimeException("AccessToken is null");
+           }
+           if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){
+               JSONObject jsonReponse = new JSONObject();
+               jsonReponse.put("code","200");
+               jsonReponse.put("message","Success");
+               jsonReponse.put("data",dataBaseService.GetListUserInfo());
+               return jsonReponse.toString();
+           }else {
+               throw new RuntimeException("Invalid JWT");
+           }
+
+       }catch (Exception exception){
+           BasicReponse basicReponse= new BasicReponse();
+           basicReponse.setCode("500");
+           basicReponse.setMessage(exception.getMessage());
+           logger.info(basicReponse.toString());
+           return basicReponse.toString();
+       }
+
    }
     @PostMapping("/GetUserInfo")
-    String GetUserInfo(@RequestBody String RequestBody){
-        JSONObject jsonRequest = new JSONObject(RequestBody);
-        JSONObject jsonReponse = new JSONObject();
-        String UserId = jsonRequest.getString("UserId");
-        String AccessToken = jsonRequest.getString("accessToken");
-        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId)){
-            jsonReponse.put("code","200");
-            jsonReponse.put("message","Success");
-            jsonReponse.put("data",dataBaseService.GetListUserInfoById(UserId));
-            logger.info(jsonReponse.toString());
-            return jsonReponse.toString();
-        }
-        jsonReponse.put("code","500");
-        jsonReponse.put("message","Internal server Error");
-        return jsonReponse.toString();
+    String GetUserInfo(@RequestBody HashMap<String,String> RequestBody){
+       try {
+           String UserId = RequestBody.get("UserId");
+           if (UserId.isEmpty()){
+               throw new RuntimeException("UserIs is null");
+           }
+           String AccessToken = RequestBody.get("accessToken");
+           if (AccessToken.isEmpty()){
+               throw new RuntimeException("AccessToken is null");
+           }
+           if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId)){
+               JSONObject jsonReponse = new JSONObject();
+               jsonReponse.put("code","200");
+               jsonReponse.put("message","Success");
+               jsonReponse.put("data",dataBaseService.GetListUserInfoById(UserId));
+               logger.info(jsonReponse.toString());
+               return jsonReponse.toString();
+           }else{
+               throw new RuntimeException("Invalid JWT");
+           }
+       }catch (Exception exception){
+           BasicReponse basicReponse = new BasicReponse();
+           basicReponse.setCode("500");
+           basicReponse.setMessage(exception.getMessage());
+           return basicReponse.toString();
+       }
     }
 
     @PostMapping("/GetUserInfoByFamilyId")
-    String GetUserInfoById(@RequestBody String RequestBody){
-        JSONObject jsonRequest = new JSONObject(RequestBody);
-        JSONObject jsonReponse = new JSONObject();
-        String UserId = jsonRequest.getString("UserId");
-        String AccessToken = jsonRequest.getString("accessToken");
-        List<UserInfo> userInfos = dataBaseService.GetListUserInfoById(UserId);
-        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId) && userInfos.size()==1){
-            String familyId = userInfos.get(0).getFamilyId();
-            jsonReponse.put("code","200");
-            jsonReponse.put("message","Success");
-            jsonReponse.put("data",dataBaseService.GetListUserInfoByFamilyId(familyId));
-            logger.info(jsonReponse.toString());
-            return jsonReponse.toString();
+    String GetUserInfoById(@RequestBody HashMap<String,String> RequestBody){
+        logger.info(RequestBody.toString());
+        try {
+            String UserId = RequestBody.get("UserId");
+            if (UserId.isEmpty()){
+                throw new RuntimeException("UserId is null");
+            }
+            String AccessToken = RequestBody.get("accessToken");
+            if (AccessToken.isEmpty()){
+                throw new RuntimeException("AccessToken is null");
+            }
+            List<UserInfo> userInfos = dataBaseService.GetListUserInfoById(UserId);
+            if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId) && userInfos.size()==1){
+                String familyId = userInfos.get(0).getFamilyId();
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("code","200");
+                jsonResponse.put("message","Success");
+                jsonResponse.put("data",dataBaseService.GetListUserInfoByFamilyId(familyId));
+                logger.info(jsonResponse.toString());
+                return jsonResponse.toString();
+            }else{
+                throw new RuntimeException("Invalid JWT");
+            }
+        }catch (Exception exception){
+            BasicReponse basicReponse = new BasicReponse();
+            basicReponse.setCode("500");
+            basicReponse.setMessage(exception.getMessage());
+            return basicReponse.toString();
         }
-        jsonReponse.put("code","500");
-        jsonReponse.put("message","Internal server Error");
-        return jsonReponse.toString();
+
     }
 
 }
