@@ -18,54 +18,56 @@ import java.util.HashMap;
 public class AddNewFee {
     private final DataBaseService dataBaseService;
     private static final Logger logger = LoggerFactory.getLogger(AddNewFee.class);
-    public AddNewFee(DataBaseService dataBaseService){
-        this.dataBaseService= dataBaseService;
+
+    public AddNewFee(DataBaseService dataBaseService) {
+        this.dataBaseService = dataBaseService;
     }
+
     @PostMapping("/addNewFee")
-    String AddNewFee(@RequestBody HashMap<String,String> RequestBody){
+    String AddNewFee(@RequestBody HashMap<String, String> RequestBody) {
         logger.info(RequestBody.toString());
         try {
             String AccessToken = RequestBody.get("accessToken");
-            if (AccessToken.isBlank()){
+            if (AccessToken.isBlank() || AccessToken.equals("")) {
                 throw new RuntimeException("AccessToken is null");
             }
             String UserId = RequestBody.get("UserId");
-            if (UserId.isBlank()){
+            if (UserId.isBlank() || UserId.equals("")) {
                 throw new RuntimeException("UserId is null");
             }
             String FeeId = RequestBody.get("FeeId");
-            if (FeeId.isBlank()){
+            if (FeeId.isBlank() || FeeId.equals("")) {
                 throw new RuntimeException("FeeId is null");
             }
             int Money = Integer.valueOf(RequestBody.get("Money"));
-            if (Money==0){
+            if (Money == 0) {
                 throw new RuntimeException("Money is null");
             }
             String FeeName = RequestBody.get("FeeName");
-            if (FeeName.isBlank()){
+            if (FeeName.isBlank() || FeeName.equals("")) {
                 throw new RuntimeException("FeeName is null");
             }
             String dateCreate = RequestBody.get("DateCreate");
-            if (dateCreate.isBlank()){
+            if (dateCreate.isBlank() || dateCreate.equals("")) {
                 throw new RuntimeException("dateCreate is null");
             }
             String detail = RequestBody.get("Detail");
             String familyId = RequestBody.get("FamilyId");
-            if (familyId.isBlank()){
+            if (familyId.isBlank() || familyId.equals("")) {
                 throw new RuntimeException("familyId is null");
             }
-            if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId) && !dataBaseService.IsExistedFee(FeeId)){
-                dataBaseService.InsertNewFee(Money,FeeName,FeeId,dateCreate,detail,familyId);
+            if (JWTFactory.VerifyJWT(UserId, AccessToken) && dataBaseService.IsRoot(UserId) && !dataBaseService.IsExistedFee(FeeId)) {
+                dataBaseService.InsertNewFee(Money, FeeName, FeeId, dateCreate, detail, familyId);
                 JSONObject jsonResponse = new JSONObject();
-                jsonResponse.put("code","200");
-                jsonResponse.put("message","Success");
+                jsonResponse.put("code", "200");
+                jsonResponse.put("message", "Success");
                 logger.info(jsonResponse.toString());
                 return jsonResponse.toString();
-            }else {
-                throw new RuntimeException("Invalid role or JWT");
+            } else {
+                throw new RuntimeException("Invalid JWT");
             }
-        }catch (Exception exception){
-            BasicReponse basicReponse =  new BasicReponse();
+        } catch (Exception exception) {
+            BasicReponse basicReponse = new BasicReponse();
             basicReponse.setCode("500");
             basicReponse.setMessage(exception.getMessage());
             logger.info(basicReponse.toString());
@@ -74,66 +76,98 @@ public class AddNewFee {
     }
 
     @PostMapping("/getListFee")
-    String GetListFee(@RequestBody String RequestBody){
-        logger.info(RequestBody.replace("\n",""));
-        JSONObject jsonRequest = new JSONObject(RequestBody);
-        String AccessToken = jsonRequest.getString("accessToken");
-        String UserId = jsonRequest.getString("UserId");
-        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){
-            JSONObject jsonResponse = new JSONObject();
-            jsonResponse.put("code","200");
-            jsonResponse.put("message","Success");
-            jsonResponse.put("data",dataBaseService.GetListFee());
-            logger.info(jsonResponse.toString());
-            return jsonResponse.toString();
+    String GetListFee(@RequestBody HashMap<String, String> RequestBody) {
+        logger.info(RequestBody.toString());
+        try {
+            String AccessToken = RequestBody.get("accessToken");
+            if (AccessToken.isBlank() || AccessToken.equals("")) {
+                throw new RuntimeException("AccessToken is null");
+            }
+            String UserId = RequestBody.get("UserId");
+            if (UserId.isBlank() || UserId.equals("")) {
+                throw new RuntimeException("UserId is null");
+            }
+            if (JWTFactory.VerifyJWT(UserId, AccessToken) && dataBaseService.IsRoot(UserId)) {
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("code", "200");
+                jsonResponse.put("message", "Success");
+                jsonResponse.put("data", dataBaseService.GetListFee());
+                logger.info(jsonResponse.toString());
+                return jsonResponse.toString();
+            } else {
+                throw new RuntimeException("Invalid JWT");
+            }
+
+        } catch (Exception exception) {
+            BasicReponse basicReponse = new BasicReponse();
+            basicReponse.setCode("500");
+            basicReponse.setMessage(exception.getMessage());
+            logger.info(basicReponse.toString());
+            return basicReponse.toString();
         }
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("code","502");
-        jsonResponse.put("message","Invalid JWT");
-        logger.info(jsonResponse.toString());
-        return jsonResponse.toString();
     }
+
     @PostMapping("/getListFee/Complete")
-    String GetListFeeComplete(@RequestBody String RequestBody){
-        logger.info(RequestBody.replace("\n",""));
-        JSONObject jsonRequest = new JSONObject(RequestBody);
-        String AccessToken = jsonRequest.getString("accessToken");
-        String UserId = jsonRequest.getString("UserId");
-        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){
-            JSONObject jsonResponse = new JSONObject();
-            jsonResponse.put("code","200");
-            jsonResponse.put("message","Success");
-            jsonResponse.put("data",dataBaseService.GetListFeeComplete());
-            logger.info(jsonResponse.toString());
-            return jsonResponse.toString();
+    String GetListFeeComplete(@RequestBody HashMap<String, String> RequestBody) {
+        logger.info(RequestBody.toString());
+        try {
+            String AccessToken = RequestBody.get("accessToken");
+            if (AccessToken.isBlank() || AccessToken.equals("")) {
+                throw new RuntimeException("AccessToken is null");
+            }
+            String UserId = RequestBody.get("UserId");
+            if (UserId.isBlank() || UserId.equals("")) {
+                throw new RuntimeException("UserId is null");
+            }
+            if (JWTFactory.VerifyJWT(UserId, AccessToken) && dataBaseService.IsRoot(UserId)) {
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("code", "200");
+                jsonResponse.put("message", "Success");
+                jsonResponse.put("data", dataBaseService.GetListFeeComplete());
+                logger.info(jsonResponse.toString());
+                return jsonResponse.toString();
+            } else {
+                throw new RuntimeException("Invalid JWT");
+            }
+
+        } catch (Exception exception) {
+            BasicReponse basicReponse = new BasicReponse();
+            basicReponse.setCode("500");
+            basicReponse.setMessage(exception.getMessage());
+            logger.info(basicReponse.toString());
+            return basicReponse.toString();
         }
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("code","502");
-        jsonResponse.put("message","Invalid JWT");
-        logger.info(jsonResponse.toString());
-        return jsonResponse.toString();
     }
+
     @PostMapping("/getListFee/NotComplete")
-    String GetListFeeNotComplete(@RequestBody String RequestBody){
-        logger.info(RequestBody.replace("\n",""));
-        JSONObject jsonRequest = new JSONObject(RequestBody);
-        String AccessToken = jsonRequest.getString("accessToken");
-        String UserId = jsonRequest.getString("UserId");
-        if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){
-            JSONObject jsonResponse = new JSONObject();
-            jsonResponse.put("code","200");
-            jsonResponse.put("message","Success");
-            jsonResponse.put("data",dataBaseService.GetListFeeNotComplete());
-            logger.info(jsonResponse.toString());
-            return jsonResponse.toString();
+    String GetListFeeNotComplete(@RequestBody HashMap<String, String> RequestBody) {
+        logger.info(RequestBody.toString());
+        try {
+            String AccessToken = RequestBody.get("accessToken");
+            if (AccessToken.isBlank() || AccessToken.equals("")) {
+                throw new RuntimeException("AccessToken is null");
+            }
+            String UserId = RequestBody.get("UserId");
+            if (UserId.isBlank() || UserId.equals("")) {
+                throw new RuntimeException("UserId is null");
+            }
+            if (JWTFactory.VerifyJWT(UserId, AccessToken) && dataBaseService.IsRoot(UserId)) {
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("code", "200");
+                jsonResponse.put("message", "Success");
+                jsonResponse.put("data", dataBaseService.GetListFeeNotComplete());
+                logger.info(jsonResponse.toString());
+                return jsonResponse.toString();
+            } else {
+                throw new RuntimeException("Invalid JWT");
+            }
+
+        } catch (Exception exception) {
+            BasicReponse basicReponse = new BasicReponse();
+            basicReponse.setCode("500");
+            basicReponse.setMessage(exception.getMessage());
+            logger.info(basicReponse.toString());
+            return basicReponse.toString();
         }
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("code","502");
-        jsonResponse.put("message","Invalid JWT");
-        logger.info(jsonResponse.toString());
-        return jsonResponse.toString();
     }
-
-
-
 }
