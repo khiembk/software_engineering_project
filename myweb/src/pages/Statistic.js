@@ -3,6 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 import { fetchFunction } from "../utils/Fetch";
 import moment from "moment-timezone";
 import LoadingScreen from "../components/LoadingScreen";
+import StatisticBarChart from "../components/StatisticBarChart";
 
 export default function Statistic() {
   const { user } = useAuth();
@@ -55,6 +56,69 @@ export default function Statistic() {
     fetchFeeUser();
   }, []);
 
+  const dataset = [
+    {
+      trantime: 59,
+      tranmoney: 57,
+      month: 'Jan',
+    },
+    {
+      trantime: 50,
+      tranmoney: 52,
+      month: 'Fev',
+    },
+    {
+      trantime: 47,
+      tranmoney: 53,
+      month: 'Mar',
+    },
+    {
+      trantime: 54,
+      tranmoney: 56,
+      month: 'Apr',
+    },
+    {
+      trantime: 57,
+      tranmoney: 69,
+      month: 'May',
+    },
+    {
+      trantime: 60,
+      tranmoney: 63,
+      month: 'June',
+    },
+    {
+      trantime: 59,
+      tranmoney: 60,
+      month: 'July',
+    },
+    {
+      trantime: 65,
+      tranmoney: 60,
+      month: 'Aug',
+    },
+    {
+      trantime: 51,
+      tranmoney: 51,
+      month: 'Sept',
+    },
+    {
+      trantime: 60,
+      tranmoney: 65,
+      month: 'Oct',
+    },
+    {
+      trantime: 67,
+      tranmoney: 64,
+      month: 'Nov',
+    },
+    {
+      trantime: 61,
+      tranmoney: 70,
+      month: 'Dec',
+    },
+  ];
+
   return (
     <div className="flex-grow">
       {statData ?
@@ -74,6 +138,7 @@ export default function Statistic() {
             <p>Tổng tiền đã nộp: {statData.yeartransactionmoney}</p>
           </div>
         </div>
+        <StatisticBarChart dataset = {dataset}/>
       </div> : (<LoadingScreen/>)}
     </div>
   )
