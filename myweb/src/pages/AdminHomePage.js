@@ -15,7 +15,6 @@ import PeopleIcon from '@mui/icons-material/People';
 import MoneyIcon from '@mui/icons-material/Money';
 import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
 import LogoutIcon from '@mui/icons-material/Logout';
-
 import SearchIcon from '@mui/icons-material/Search';
 
 function Header(props) {
@@ -41,7 +40,6 @@ function Header(props) {
 
 
 
-
 function AdminHomePage() {
   const [title, setTitle] = useState("Quản lý thu phí");
   const [familyList, setFamilyList] = useState();
@@ -49,6 +47,7 @@ function AdminHomePage() {
   const [feeList, setFeeList] = useState();
   const { user, logout } = useAuth();
   const [searchValue, setSearchValue] = useState('');
+  const [searchFamilyIDValue, setSearchFamiLyIDValue] = useState('');
   const logoutBtn_Click = async e => {
       e.preventDefault();
       logout();
@@ -108,6 +107,27 @@ function AdminHomePage() {
     }
   };
 
+  const fetchFeeListByFamilyID = async () => {
+
+    try {
+      const list = await fetchFunction({
+        reqType: "/Fee/GetListFeeByFamily", 
+        UserId: user.UserId,
+        accessToken: user.token,
+        FamilyId: searchFamilyIDValue
+      });
+  
+      if (list.code == "200") {
+        setFeeList(list.data);
+      } else {
+        console.error({ message: "Lấy danh sách phí thất bại", data: list });
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách phí:", error);
+    }
+  };
+  
+
   useEffect(() => {
     fetchFamilyList();
     fetchUserList();
@@ -120,12 +140,30 @@ function AdminHomePage() {
         <h1 className="text-center mb-5 text-2xl mt-4 font-bold">
         Thông tin chi tiết các phí hiện hành
         </h1>
+        <div className="flex w-full h-12 items-center">
         <Link to='/admin/addfee' className="inline-block w-48 text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
           Thêm khoản phí mới
         </Link>
 
+        <form className="flex w-2/3 mx-auto justify-center items-center">
+      <input
+        type="text"
+        placeholder="Search by FamilyID"
+        id='FamilyId'
+        value={searchFamilyIDValue}
+        onChange={(e)=> setSearchFamiLyIDValue(e.target.value)}
+        className="w-full px-3 py-2 text-default border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+      />
+      <button type="button" className="ml-3 px-4 py-2 bg-blue-500 text-white rounded-md" onClick={
+    fetchFeeListByFamilyID}>
+        <SearchIcon/>
+      </button>
+      </form>
+      </div>
+
         <FeeList2 items={feeList}/>
       </div>)
+
     } else if(title === "Quản lý nhân khẩu"){
         return(
         <div className="ml-10 w-3/4 h-screen ">
@@ -142,6 +180,7 @@ function AdminHomePage() {
       <input
         type="text"
         placeholder="Search by UserID,FullName"
+        id='FamilyId'
         value={searchValue}
         onChange={(e)=> setSearchValue(e.target.value)}
         className="w-full px-3 py-2 text-default border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
