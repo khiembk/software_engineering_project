@@ -14,6 +14,7 @@ import CreateFee from "./pages/CreateFee";
 import CreateUser from "./pages/CreateUser";
 import CreateFamily from "./pages/CreateFamily"
 import ChangePassword from "./pages/ChangePassword"
+import ChangePasswordforAdmin from "./pages/ChangePasswordforAdmin";
 
 const getUserData = () => 
     new Promise((resolve) =>
@@ -42,6 +43,7 @@ export const router = createBrowserRouter(
                 <Route path="/admin/addfee" element={<CreateFee/>}/>
                 <Route path="/admin/adduser" element={<CreateUser/>}/>
                 <Route path="/admin/addfamily" element={<CreateFamily/>}/>
+                <Route path="admin/changepass" element={<ChangePasswordforAdmin/>}/>
             </Route>
         </Route>
     )
