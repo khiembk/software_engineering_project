@@ -11,7 +11,7 @@ const FamilyList = ({ items }) => {
   const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
 
   // Function to handle page change
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = (event, pageNumber) => {
     setCurrentPage(pageNumber);
 };
 
