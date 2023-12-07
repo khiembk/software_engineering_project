@@ -1,6 +1,7 @@
 package Webserver.com.myserver.Controller;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.HelperObject.BasicReponse;
+import Webserver.com.myserver.Model.Fee;
 import Webserver.com.myserver.Util.DataBaseService;
 
 import org.json.JSONObject;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 @RestController
@@ -170,4 +172,122 @@ public class AddNewFee {
             return basicReponse.toString();
         }
     }
+    @PostMapping("/GetListFeeByFamily")
+    String GetListFeeByFamily(@RequestBody HashMap<String,String> RequestBody){
+        logger.info(RequestBody.toString());
+        try {
+            String AccessToken = RequestBody.get("accessToken");
+            if (AccessToken.isEmpty()) {
+                throw new RuntimeException("AccessToken is null");
+            }
+            String UserId = RequestBody.get("UserId");
+            if (UserId.isEmpty()) {
+                throw new RuntimeException("UserId is null");
+            }
+            String FamilyId= RequestBody.get("FamilyId");
+            if (FamilyId.isEmpty()){
+                throw new RuntimeException("FamilyId is null");
+            }
+            if (JWTFactory.VerifyJWT(UserId, AccessToken) && dataBaseService.IsRoot(UserId)) {
+                List<Fee> FeeOfFamily = dataBaseService.GetListFeeByFamilyId(FamilyId);
+                if (FeeOfFamily.isEmpty()){
+                    throw new RuntimeException("Cannot find any fee");
+                }
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("code", "200");
+                jsonResponse.put("message", "Success");
+                jsonResponse.put("data", FeeOfFamily);
+                logger.info(jsonResponse.toString());
+                return jsonResponse.toString();
+            } else {
+                throw new RuntimeException("Invalid JWT");
+            }
+
+        } catch (Exception exception) {
+            BasicReponse basicReponse = new BasicReponse();
+            basicReponse.setCode("500");
+            basicReponse.setMessage(exception.getMessage());
+            logger.info(basicReponse.toString());
+            return basicReponse.toString();
+        }
+    }
+    @PostMapping("/GetListFeeByFamily/Complete")
+    String GetListFeeByFamilyComplete(@RequestBody HashMap<String,String> RequestBody){
+        logger.info(RequestBody.toString());
+        try {
+            String AccessToken = RequestBody.get("accessToken");
+            if (AccessToken.isEmpty()) {
+                throw new RuntimeException("AccessToken is null");
+            }
+            String UserId = RequestBody.get("UserId");
+            if (UserId.isEmpty()) {
+                throw new RuntimeException("UserId is null");
+            }
+            String FamilyId= RequestBody.get("FamilyId");
+            if (FamilyId.isEmpty()){
+                throw new RuntimeException("FamilyId is null");
+            }
+            if (JWTFactory.VerifyJWT(UserId, AccessToken) && dataBaseService.IsRoot(UserId)) {
+                List<Fee> FeeOfFamily = dataBaseService.GetListFeeByFamilyIdComplete(FamilyId);
+                if (FeeOfFamily.isEmpty()){
+                    throw new RuntimeException("Cannot find any fee");
+                }
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("code", "200");
+                jsonResponse.put("message", "Success");
+                jsonResponse.put("data", FeeOfFamily);
+                logger.info(jsonResponse.toString());
+                return jsonResponse.toString();
+            } else {
+                throw new RuntimeException("Invalid JWT");
+            }
+
+        } catch (Exception exception) {
+            BasicReponse basicReponse = new BasicReponse();
+            basicReponse.setCode("500");
+            basicReponse.setMessage(exception.getMessage());
+            logger.info(basicReponse.toString());
+            return basicReponse.toString();
+        }
+    }
+    @PostMapping("/GetListFeeByFamily/NotComplete")
+    String GetListFeeByFamilyNotComplete(@RequestBody HashMap<String,String> RequestBody){
+        logger.info(RequestBody.toString());
+        try {
+            String AccessToken = RequestBody.get("accessToken");
+            if (AccessToken.isEmpty()) {
+                throw new RuntimeException("AccessToken is null");
+            }
+            String UserId = RequestBody.get("UserId");
+            if (UserId.isEmpty()) {
+                throw new RuntimeException("UserId is null");
+            }
+            String FamilyId= RequestBody.get("FamilyId");
+            if (FamilyId.isEmpty()){
+                throw new RuntimeException("FamilyId is null");
+            }
+            if (JWTFactory.VerifyJWT(UserId, AccessToken) && dataBaseService.IsRoot(UserId)) {
+                List<Fee> FeeOfFamily = dataBaseService.GetListFeeByFamilyIdNotComplete(FamilyId);
+                if (FeeOfFamily.isEmpty()){
+                    throw new RuntimeException("Cannot find any fee");
+                }
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("code", "200");
+                jsonResponse.put("message", "Success");
+                jsonResponse.put("data", FeeOfFamily);
+                logger.info(jsonResponse.toString());
+                return jsonResponse.toString();
+            } else {
+                throw new RuntimeException("Invalid JWT");
+            }
+
+        } catch (Exception exception) {
+            BasicReponse basicReponse = new BasicReponse();
+            basicReponse.setCode("500");
+            basicReponse.setMessage(exception.getMessage());
+            logger.info(basicReponse.toString());
+            return basicReponse.toString();
+        }
+    }
+
 }
