@@ -106,4 +106,7 @@ public class DataBaseService {
     public void CompleteFeeById(String FeeId){
         dataBaseConnect.CompleteFeeById(FeeId);
     }
+    public void DeleteUserById(String UserId){
+        dataBaseConnect.DeleteNomalUserById(UserId);
+    }
 }
