@@ -17,6 +17,7 @@ public class DataBaseConnect {
     }
     String  insertUser = "INSERT INTO login (UserName, UserPassword, UserId) VALUES (?, ?,?)";
     private static final String SEARCH_USER_BY_ID_SQL = "SELECT * FROM login WHERE UserId = ?";
+    private static final String DELETE_USER_BY_ID_SQL_LOGIN = "DELETE FROM login WHERE UserId = ?";
     private static final String UPDATE_PASS_USER_BY_ID_SQL = "UPDATE login SET UserPassword = ? WHERE UserId = ?";
     private static final String UPDATE_PASS_ROOT_BY_ID_SQL = "UPDATE admin SET UserPassword = ? WHERE UserId = ?";
     private static final String SEARCH_ROOT_BY_ID_SQL = "SELECT * FROM admin WHERE UserId = ?";
@@ -40,6 +41,7 @@ public class DataBaseConnect {
 
     private static final String GET_lIST_USER_BY_ID_SQL = "SELECT * FROM nomal_user_info WHERE UserId = ?";
     private static final String GET_lIST_USER_BY_FAMILY_ID_SQL = "SELECT * FROM nomal_user_info WHERE FamilyId = ?";
+    private static final String DELETE_USER_BY_ID_SQL_INFO = "DELETE FROM nomal_user_info WHERE UserId = ?";
     private  static  final  String INSERT_USER_INFO_NAME_ID = "INSERT INTO nomal_user_info (UserName, UserId) VALUES (?, ?)";
 
     private  static  final  String INSERT_NEW_FAMILY = "INSERT INTO family (FamilyId , OwnerName, Address) VALUES ( ?, ?, ?)";
@@ -47,6 +49,10 @@ public class DataBaseConnect {
     public  void insertUserData(String UserName, String UserPassword , String UserId) {
         jdbcTemplate.update(insertUser, UserName, UserPassword,UserId);
         jdbcTemplate.update(INSERT_USER_INFO_NAME_ID,UserName,UserId);
+    }
+    public void DeleteNomalUserById(String UserId){
+        jdbcTemplate.update(DELETE_USER_BY_ID_SQL_LOGIN,UserId);
+        jdbcTemplate.update(DELETE_USER_BY_ID_SQL_INFO,UserId);
     }
     public void UpdateRootPass(String NewPass, String UserId){
         jdbcTemplate.update(UPDATE_PASS_ROOT_BY_ID_SQL,NewPass,UserId);
