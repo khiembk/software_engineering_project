@@ -125,6 +125,7 @@ function AdminHomePage() {
       if (list.code == "200") {
         setFeeList(list.data);
       } else {
+        setFeeList([])
         console.error({ message: "Lấy danh sách phí thất bại", data: list });
       }
     } catch (error) {
@@ -143,6 +144,7 @@ function AdminHomePage() {
         if (list.code == "200") {
           setFeeList(list.data);
         } else {
+          setFeeList([])
           console.error({ message: "Lấy danh sách phí thất bại", data: list });
         }
       } catch (error) {
@@ -161,6 +163,7 @@ function AdminHomePage() {
         if (list.code == "200") {
           setFeeList(list.data);
         } else {
+          setFeeList([])
           console.error({ message: "Lấy danh sách phí thất bại", data: list });
         }
       } catch (error) {
@@ -181,6 +184,7 @@ function AdminHomePage() {
             if (list.code == "200") {
               setFeeList(list.data);
             } else {
+              setFeeList([])
               console.error({ message: "Lấy danh sách phí thất bại", data: list });
             }
           } catch (error) {
@@ -198,6 +202,7 @@ function AdminHomePage() {
             if (list.code == "200") {
               setFeeList(list.data);
             } else {
+              setFeeList([])
               console.error({ message: "Lấy danh sách phí thất bại", data: list });
             }
           } catch (error) {
