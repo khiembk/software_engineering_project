@@ -49,6 +49,9 @@ public class UpdateUserInforController {
             if (FamilyId.isEmpty()){
                 throw new RuntimeException("FamilyId is null");
             }
+            if (!dataBaseService.IsExistedFamily(FamilyId)){
+                throw new RuntimeException("Invalid FamilyId");
+            }
             String PhoneNumber = RequestBody.get("PhoneNumber");
             if (PhoneNumber.isEmpty()){
                 throw new RuntimeException("PhoneNumber is null");
