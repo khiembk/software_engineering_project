@@ -18,6 +18,8 @@ public class DataBaseConnect {
     String  insertUser = "INSERT INTO login (UserName, UserPassword, UserId) VALUES (?, ?,?)";
     private static final String SEARCH_USER_BY_ID_SQL = "SELECT * FROM login WHERE UserId = ?";
     private static final String DELETE_USER_BY_ID_SQL_LOGIN = "DELETE FROM login WHERE UserId = ?";
+    private static final String DELETE_FEE_BY_ID = "DELETE FROM fee WHERE FeeId = ?";
+    private static final String DELETE_FAMILY_BY_ID_SQL = "DELETE FROM family WHERE FamilyId = ?";
     private static final String UPDATE_PASS_USER_BY_ID_SQL = "UPDATE login SET UserPassword = ? WHERE UserId = ?";
     private static final String UPDATE_PASS_ROOT_BY_ID_SQL = "UPDATE admin SET UserPassword = ? WHERE UserId = ?";
     private static final String SEARCH_ROOT_BY_ID_SQL = "SELECT * FROM admin WHERE UserId = ?";
@@ -28,6 +30,7 @@ public class DataBaseConnect {
     private static final String GET_lIST_FAMILY_SQL = "SELECT * FROM family";
     private static final String GET_lIST_FAMILY_BY_ID_SQL = "SELECT * FROM family WHERE FamilyId = ?";
     private static final String UPDATE_FEE_STATUS_SQL = "UPDATE fee SET IsComplete = ? WHERE FeeId = ?";
+    private static final String UPDATE_FAMILY_BY_ID = "UPDATE family SET OwnerName = ? , Address = ? WHERE FamilyId = ?";
     private static final String GET_lIST_FEE_BY_FAMILY_ID_SQL = "SELECT * FROM fee WHERE FamilyId = ?";
     private static final String GET_LIST_FEE_BY_FAMILY_ID_AND_NOT_COMPLETE_SQL =
             "SELECT * FROM fee WHERE FamilyId = ? AND IsComplete = 0";
@@ -54,8 +57,17 @@ public class DataBaseConnect {
         jdbcTemplate.update(DELETE_USER_BY_ID_SQL_LOGIN,UserId);
         jdbcTemplate.update(DELETE_USER_BY_ID_SQL_INFO,UserId);
     }
+    public void DeleteFeeById(String FeeId){
+        jdbcTemplate.update(DELETE_FEE_BY_ID,FeeId);
+    }
+    public void DeleteFamilyById(String FamilyId){
+        jdbcTemplate.update(DELETE_FAMILY_BY_ID_SQL,FamilyId);
+    }
     public void UpdateRootPass(String NewPass, String UserId){
         jdbcTemplate.update(UPDATE_PASS_ROOT_BY_ID_SQL,NewPass,UserId);
+    }
+    public void UpdateFamilyById(String OwnerName,String Address, String FamilyId){
+        jdbcTemplate.update(UPDATE_FAMILY_BY_ID,OwnerName,Address,FamilyId);
     }
     public void InsertNewFamily(String FammilyId, String OwnerName, String Address){
         jdbcTemplate.update(INSERT_NEW_FAMILY,FammilyId,OwnerName,Address);

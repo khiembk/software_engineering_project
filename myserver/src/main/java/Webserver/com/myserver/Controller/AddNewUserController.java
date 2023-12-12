@@ -48,6 +48,9 @@ public class AddNewUserController {
             if (JWTFactory.VerifyJWT(rootId,accessToken) && dataBaseService.IsRoot(rootId)){
                 dataBaseService.addUserToDataBase(UserName, HashFuntion.hash256("mypass"), UserId);
                 String FamilyId = RequestBody.get("FamilyId");
+                if(!dataBaseService.IsExistedFamily(FamilyId)){
+                    throw new RuntimeException("Invalid FamilyId");
+                }
                 String PhoneNumber = RequestBody.get("PhoneNumber");
                 String dateofBirth = RequestBody.get("dateOfBirth");
                 if (dateofBirth.isEmpty() || PhoneNumber.isEmpty() || FamilyId.isEmpty()){

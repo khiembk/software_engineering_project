@@ -62,6 +62,12 @@ public class DataBaseService {
         }
         return false;
     }
+    public void DeleteFamilyById(String FamilyId){
+        dataBaseConnect.DeleteFamilyById(FamilyId);
+    }
+    public void UpdateFamilyById(String OwnerName,String Address,String FamilyId){
+        dataBaseConnect.UpdateFamilyById(OwnerName,Address,FamilyId);
+    }
     public List<UserInfo> GetListUserInfoByFamilyId(String familyId){
         return dataBaseConnect.ListUserInforByFamilyId(familyId);
     }
@@ -74,6 +80,9 @@ public class DataBaseService {
             return true;
         }
         return false;
+    }
+    public void DeleteFeeById(String FeeId){
+        dataBaseConnect.DeleteFeeById(FeeId);
     }
     public List<Family> GetListFamily(){
         return dataBaseConnect.getListFamily();

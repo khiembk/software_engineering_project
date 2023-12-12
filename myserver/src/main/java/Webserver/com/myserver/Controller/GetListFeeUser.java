@@ -109,6 +109,9 @@ public class GetListFeeUser {
             List<UserInfo> userinfos = dataBaseService.GetListUserInfoById(UserId);
             if (JWTFactory.VerifyJWT(UserId, AccessToken) && dataBaseService.IsNomalUser(UserId) && userinfos.size() == 1) {
                 UserInfo cur_info = userinfos.get(0);
+                if (!dataBaseService.IsExistedFamily(cur_info.getFamilyId())){
+                    throw  new RuntimeException("Invalid FamilyId");
+                }
                 List<Fee> fees = dataBaseService.GetListFeeByFamilyIdNotComplete(cur_info.getFamilyId());
                 JSONObject jsonResponse = new JSONObject();
                 jsonResponse.put("code", "200");
