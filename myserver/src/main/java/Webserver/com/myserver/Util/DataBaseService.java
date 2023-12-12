@@ -62,6 +62,13 @@ public class DataBaseService {
         }
         return false;
     }
+    public boolean IsValidFamilyId(String FamilyId){
+        List<Family> listfa= dataBaseConnect.getListFamilyById(FamilyId);
+        if (listfa.size()==1){
+            return true;
+        }
+        return false;
+    }
     public List<UserInfo> GetListUserInfoByFamilyId(String familyId){
         return dataBaseConnect.ListUserInforByFamilyId(familyId);
     }

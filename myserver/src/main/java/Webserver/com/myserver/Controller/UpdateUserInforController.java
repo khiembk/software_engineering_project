@@ -3,6 +3,7 @@ package Webserver.com.myserver.Controller;
 import Webserver.com.myserver.HelperFunction.HashFuntion;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.HelperObject.BasicReponse;
+import Webserver.com.myserver.Model.Admin;
 import Webserver.com.myserver.Model.User;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
@@ -31,6 +32,10 @@ public class UpdateUserInforController {
             if (RootId.isEmpty()){
                 throw new RuntimeException("RootId is null");
             }
+            String RootPassword = RequestBody.get("RootPassword");
+            if (RootPassword.isEmpty()){
+                throw  new RuntimeException("RootPassword is null");
+            }
             String UserId = RequestBody.get("UserId");
             if (UserId.isEmpty()){
                 throw new RuntimeException("UserId is null");
@@ -51,6 +56,14 @@ public class UpdateUserInforController {
             String dateOfBirth = RequestBody.get("dateOfBirth");
             if (dateOfBirth.isEmpty()){
                 throw new RuntimeException("dateOfBirth is null");
+            }
+            List<Admin> ListRoot = dataBaseService.SearchRootById(RootId);
+            if (ListRoot.size()==1){
+                if (!ListRoot.get(0).getUserPassword().equals(HashFuntion.hash256(RootPassword))){
+                    throw new RuntimeException("Invalid RootPassword");
+                }
+            }else{
+                throw new RuntimeException("Invalid RootId");
             }
             if (JWTFactory.VerifyJWT(RootId,AccessToken) && dataBaseService.IsNomalUser(UserId) && dataBaseService.IsRoot(RootId)){
                 dataBaseService.updateUserInfo(UserId,FamilyId,PhoneNumber,dateOfBirth);
@@ -86,7 +99,18 @@ public class UpdateUserInforController {
             if (AccessToken.isEmpty()){
                 throw new RuntimeException("AccessToken is null");
             }
-
+            String RootPassword = RequestBody.get("RootPassword");
+            if (RootPassword.isEmpty()){
+                throw  new RuntimeException("RootPassword is null");
+            }
+            List<Admin> ListRoot = dataBaseService.SearchRootById(RootId);
+            if (ListRoot.size()==1){
+                if (!ListRoot.get(0).getUserPassword().equals(HashFuntion.hash256(RootPassword))){
+                    throw new RuntimeException("Invalid RootPassword");
+                }
+            }else{
+                throw new RuntimeException("Invalid RootId");
+            }
             if (JWTFactory.VerifyJWT(RootId,AccessToken) && dataBaseService.IsNomalUser(UserId) && dataBaseService.IsRoot(RootId)){
                 dataBaseService.DeleteUserById(UserId);
                 basicReponse.setCode("200");
