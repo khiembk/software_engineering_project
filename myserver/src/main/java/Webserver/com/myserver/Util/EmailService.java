@@ -36,9 +36,9 @@ public class EmailService {
 
             // Sending the mail
             javaMailSender.send(mailMessage);
-            return "Mail Sent Successfully...";
+            return "200";
         } catch (Exception e) {
-            return "Error while Sending Mail";
+            return "500";
         }
     }
     public String sendMailWithAttachment(String receiver, String MsgBody, String text, String subject){

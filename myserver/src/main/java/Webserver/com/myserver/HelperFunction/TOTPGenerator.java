@@ -6,9 +6,10 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 public class TOTPGenerator {
-    public static String generateTOTP(String secretKey, String stringInput) {
-        long timeStep = 30; // Time step in seconds
-        int totpLength = 6; // Length of the generated TOTP
+    private static String secretKey = "HanoiUniversityOfScienceAndTechnology";
+    public static String generateTOTP( String stringInput) {
+        long timeStep = 180;
+        int totpLength = 6;
 
         try {
             byte[] keyBytes = secretKey.getBytes();
@@ -45,9 +46,8 @@ public class TOTPGenerator {
 
         return null;
     }
-    public static boolean verifyTOTP(String secretKey, String stringInput, String userProvidedTOTP) {
-        String generatedTOTP = generateTOTP(secretKey, stringInput);
-
+    public static boolean verifyTOTP( String stringInput, String userProvidedTOTP) {
+        String generatedTOTP = generateTOTP(stringInput);
         return generatedTOTP != null && generatedTOTP.equals(userProvidedTOTP);
     }
 
@@ -66,12 +66,6 @@ public class TOTPGenerator {
         mac.init(keySpec);
         return mac.doFinal(data);
     }
-//    public static void main(String args[]){
-//        String key= "1234456";
-//        String email = "trankhiem";
-//        String otp = generateTOTP(key,email);
-//        System.out.println(otp);
-//        System.out.println(verifyTOTP(key,email,otp));
-//    }
+
 
 }
