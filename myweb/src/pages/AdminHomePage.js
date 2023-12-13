@@ -15,7 +15,6 @@ import PeopleIcon from '@mui/icons-material/People';
 import MoneyIcon from '@mui/icons-material/Money';
 import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
 import LogoutIcon from '@mui/icons-material/Logout';
-
 import SearchIcon from '@mui/icons-material/Search';
 
 function Header(props) {
@@ -41,7 +40,6 @@ function Header(props) {
 
 
 
-
 function AdminHomePage() {
   const [title, setTitle] = useState("Quản lý thu phí");
   const [familyList, setFamilyList] = useState();
@@ -49,6 +47,11 @@ function AdminHomePage() {
   const [feeList, setFeeList] = useState();
   const { user, logout } = useAuth();
   const [searchValue, setSearchValue] = useState('');
+  const [searchFamilyIDValue, setSearchFamiLyIDValue] = useState('');
+  const [paymentStatus, setPaymentStatus] = useState(null);
+
+  const handlePaymentStatusChange = (status) => setPaymentStatus(() => (paymentStatus === status ? null : status));
+  
   const logoutBtn_Click = async e => {
       e.preventDefault();
       logout();
@@ -108,6 +111,110 @@ function AdminHomePage() {
     }
   };
 
+  const fetchFeeListByFamilyID = async () => {
+    if(searchFamilyIDValue!=='') {
+      if(paymentStatus===null) {
+    try {
+      const list = await fetchFunction({
+        reqType: "/Fee/GetListFeeByFamily", 
+        UserId: user.UserId,
+        accessToken: user.token,
+        FamilyId: searchFamilyIDValue
+      });
+  
+      if (list.code == "200") {
+        setFeeList(list.data);
+      } else {
+        setFeeList([])
+        console.error({ message: "Lấy danh sách phí thất bại", data: list });
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách phí:", error);
+    }
+  } 
+     else if(paymentStatus==='paid') {
+      try {
+        const list = await fetchFunction({
+          reqType: "/Fee/GetListFeeByFamily/Complete", 
+          UserId: user.UserId,
+          accessToken: user.token,
+          FamilyId: searchFamilyIDValue
+        });
+        
+        if (list.code == "200") {
+          setFeeList(list.data);
+        } else {
+          setFeeList([])
+          console.error({ message: "Lấy danh sách phí thất bại", data: list });
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách phí:", error);
+      }
+     }
+     else {
+      try {
+        const list = await fetchFunction({
+          reqType: "/Fee/GetListFeeByFamily/NotComplete", 
+          UserId: user.UserId,
+          accessToken: user.token,
+          FamilyId: searchFamilyIDValue
+        });
+        
+        if (list.code == "200") {
+          setFeeList(list.data);
+        } else {
+          setFeeList([])
+          console.error({ message: "Lấy danh sách phí thất bại", data: list });
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách phí:", error);
+      }
+     }
+  }
+  else 
+     {
+        if(paymentStatus==='paid') {
+          try {
+            const list = await fetchFunction({
+              reqType: "/Fee/getListFee/Complete", 
+              UserId: user.UserId,
+              accessToken: user.token,
+            });
+            
+            if (list.code == "200") {
+              setFeeList(list.data);
+            } else {
+              setFeeList([])
+              console.error({ message: "Lấy danh sách phí thất bại", data: list });
+            }
+          } catch (error) {
+            console.error("Lỗi khi lấy danh sách phí:", error);
+          }
+        } 
+        else if(paymentStatus==='unpaid') {
+          try {
+            const list = await fetchFunction({
+              reqType: "/Fee/getListFee/NotComplete", 
+              UserId: user.UserId,
+              accessToken: user.token,
+            });
+            
+            if (list.code == "200") {
+              setFeeList(list.data);
+            } else {
+              setFeeList([])
+              console.error({ message: "Lấy danh sách phí thất bại", data: list });
+            }
+          } catch (error) {
+            console.error("Lỗi khi lấy danh sách phí:", error);
+          }
+        } else {
+          fetchFeeList()
+        }
+     }
+  };
+  
+
   useEffect(() => {
     fetchFamilyList();
     fetchUserList();
@@ -116,16 +223,68 @@ function AdminHomePage() {
 
   const content=()=>{
     if(title === "Quản lý thu phí") {
-      return (<div className="ml-2 w-3/4 h-screen ">
-        <h1 className="text-center mb-5 text-2xl mt-4 font-bold">
+      return (<div className="ml-8 mt-10 w-3/4 h-screen">
+        <h1 className="text-center mb-5 text-2xl mt-4 font-bold text-[28px]">
         Thông tin chi tiết các phí hiện hành
         </h1>
-        <Link to='/admin/addfee' className="inline-block w-48 text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
+
+        <div className=" w-full flex">
+        <Link to='/admin/addfee' className=" h-10 w-48 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
           Thêm khoản phí mới
         </Link>
 
+        <form className="container w-2/3 mx-auto justify-center items-center">
+      <div className="flex justify-center items-center">
+      <input
+        type="text"
+        placeholder="Tìm kiếm theo Mã Gia đình"
+        id="FamilyId"
+        value={searchFamilyIDValue}
+        onChange={(e) => setSearchFamiLyIDValue(e.target.value)}
+        className="w-full px-3 py-2 text-default border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+      />
+            <button
+        type="button"
+        className="ml-3 px-4 py-2 bg-blue-500 text-white rounded-md"
+        onClick={fetchFeeListByFamilyID}
+      >
+        <SearchIcon />
+      </button>
+      </div>
+
+      <div className="flex items-center ml-3 mt-2">
+
+    
+<label className="mr-2">
+  <input
+    type="checkbox"
+    checked={paymentStatus === 'paid'}
+    onChange={() => handlePaymentStatusChange('paid')}
+    className="mr-2 form-checkbox text-blue-500 focus:ring focus:border-blue-300"
+  />
+  <span className="text-blue-500">Đã thanh toán</span>
+</label>
+
+
+<label className="mr-2">
+  <input
+    type="checkbox"
+    checked={paymentStatus === 'unpaid'}
+    onChange={() => handlePaymentStatusChange('unpaid')}
+    className="mr-2 form-checkbox text-red-500 focus:ring focus:border-red-300"
+  />
+  <span className="text-red-500">Chưa thanh toán</span>
+</label>
+      </div>
+
+    </form>
+      </div>
+        
+
         <FeeList2 items={feeList}/>
+
       </div>)
+
     } else if(title === "Quản lý nhân khẩu"){
         return(
         <div className="ml-10 w-3/4 h-screen ">
@@ -142,6 +301,7 @@ function AdminHomePage() {
       <input
         type="text"
         placeholder="Search by UserID,FullName"
+        id='FamilyId'
         value={searchValue}
         onChange={(e)=> setSearchValue(e.target.value)}
         className="w-full px-3 py-2 text-default border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
@@ -156,7 +316,7 @@ function AdminHomePage() {
       </div>)
     } else{
         return(
-        <div className="ml-2 w-3/4 h-screen ">
+        <div className="ml-8 w-3/4 h-screen ">
         <h1 className="text-center mb-5 text-2xl mt-4 font-bold">
         Thông tin chi tiết các hộ khẩu
         </h1>
@@ -170,7 +330,7 @@ function AdminHomePage() {
   }
   return (
     <div className="flex ">
-        <div className=" block fixed top-0 left-0 h-screen justify-center items-center w-1/5 bg-[#101F33] p-8 ">
+        <div className=" block fixed top-0 left-0 h-screen justify-center items-center w-[285px] bg-[#101F33] p-8 ">
           <div  className= ' w-52 h-20 flex items-center text-[#BDC2C7] font-bold py-2 px-4 rounded mb-10 mt-0' >
             <Home  style={{ fontSize: 50 }} />
             <h1 className="text-[32px] italic">Overview</h1>
@@ -196,7 +356,7 @@ function AdminHomePage() {
           </button>
         </div>
 
-          <div className="container fixed left-0 w-4/5 max-h-screen h-screen ml-[297px] ">
+          <div className="container mr-0 ml-[285px] h-screen ">
               <Header/>
           {(userList && familyList && feeList) ? content() : (<LoadingScreen/>)}
           </div>
