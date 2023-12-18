@@ -131,5 +131,37 @@ public class UpdateUserInforController {
         }
     }
 
+    @PostMapping("/GetUserInfoByAdmin")
+    String GetUserInfoByAdmin(@RequestBody HashMap<String,String> RequestBody){
+       try {
+           String RootId = RequestBody.get("RootId");
+           if (RootId.isEmpty()){
+               throw new RuntimeException("RootId is null");
+           }
+           String UserId = RequestBody.get("UserId");
+           if (UserId.isEmpty()){
+               throw new RuntimeException("UserIs is null");
+           }
+           String AccessToken = RequestBody.get("accessToken");
+           if (AccessToken.isEmpty()){
+               throw new RuntimeException("AccessToken is null");
+           }
+           if (JWTFactory.VerifyJWT(RootId,AccessToken) && dataBaseService.IsNomalUser(UserId)){
+               JSONObject jsonReponse = new JSONObject();
+               jsonReponse.put("code","200");
+               jsonReponse.put("message","Success");
+               jsonReponse.put("data",dataBaseService.GetListUserInfoById(UserId));
+               logger.info(jsonReponse.toString());
+               return jsonReponse.toString();
+           }else{
+               throw new RuntimeException("Invalid JWT");
+           }
+       }catch (Exception exception){
+           BasicReponse basicReponse = new BasicReponse();
+           basicReponse.setCode("500");
+           basicReponse.setMessage(exception.getMessage());
+           return basicReponse.toString();
+       }
+    }
 
 }

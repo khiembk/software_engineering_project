@@ -87,6 +87,9 @@ public class DataBaseService {
     public List<Family> GetListFamily(){
         return dataBaseConnect.getListFamily();
     }
+    public List<Family> GetListFamilyById(String FalimyId) {
+        return dataBaseConnect.getListFamilyById(FalimyId);
+    }
     public void InsertNewFamily(String FamilyId, String OwnerName, String Address){
         dataBaseConnect.InsertNewFamily(FamilyId,OwnerName,Address);
     }
