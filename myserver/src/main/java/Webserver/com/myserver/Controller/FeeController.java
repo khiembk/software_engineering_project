@@ -2,11 +2,7 @@ package Webserver.com.myserver.Controller;
 import Webserver.com.myserver.HelperFunction.HashFuntion;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.HelperObject.BasicReponse;
-
 import Webserver.com.myserver.Model.Admin;
-
-import Webserver.com.myserver.Model.Fee;
-
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -19,11 +15,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/Fee")
 @CrossOrigin(origins = "*")
-public class AddNewFee {
+public class FeeController {
     private final DataBaseService dataBaseService;
-    private static final Logger logger = LoggerFactory.getLogger(AddNewFee.class);
+    private static final Logger logger = LoggerFactory.getLogger(FeeController.class);
 
-    public AddNewFee(DataBaseService dataBaseService) {
+    public FeeController(DataBaseService dataBaseService) {
         this.dataBaseService = dataBaseService;
     }
 

@@ -24,12 +24,10 @@ INSERT INTO admin (UserName, UserPassword, UserId) VALUES ( 'root','4813494d137e
 4. Create a table for fee
 CREATE TABLE fee (
     Id INT PRIMARY KEY AUTO_INCREMENT,
-    Money  INT NOT NULL,
     FeeName VARCHAR(100) NOT NULL,
     FeeId VARCHAR(100) NOT NULL,
     DateCreate VARCHAR(30) NOT NULL,
-    FamilyId VARCHAR(100) NOT NULL,
-    IsComplete INT NOT NULL,
+    IsRequired INT NOT NULL,
     Detail VARCHAR(100)
 );
 5. Create a table save infor of nomalUser.
@@ -41,6 +39,18 @@ CREATE TABLE nomal_user_info (
     DateOfBirth VARCHAR(30),
     PhoneNumber VARCHAR(10)
 );
+
+7.Create table for bill
+ CREATE TABLE bill (
+     Id INT PRIMARY KEY AUTO_INCREMENT,
+     Money  INT NOT NULL,
+     FeeId VARCHAR(100) NOT NULL,
+     BillId VARCHAR(255) NOT NULL,
+     Date VARCHAR(30) NOT NULL,
+     FamilyId VARCHAR(100) NOT NULL,
+     Detail VARCHAR(100),
+     UserId VARCHAR(255) NOT NULL
+ );
 6. Insert sample User
 INSERT INTO login (UserName, UserPassword, UserId) VALUES ('Tran Van A', 'ea71c25a7a602246b4c39824b855678894a96f43bb9b71319c39700a1e045222','000001');
 INSERT INTO nomal_user_info (UserName, UserId) VALUES ('Tran Van A', '000001');
@@ -91,19 +101,19 @@ INSERT INTO nomal_user_info (UserName, UserId) VALUES ('Le Van F', '000012');
 UPDATE nomal_user_info SET FamilyId = 'NBGVLS0004', PhoneNumber = '0123456789' , DateOfBirth = '01/01/2000'  WHERE UserId = '000012' ;
 
 7. Insert Sample Fee
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'water_bill' ,'bill0001','01/01/2023',null,'NBGVLS0003',0);
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'electrical_bill' ,'bill0002','01/01/2023',null,'NBGVLS0003',0);
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'water_bill' ,'bill0003','01/01/2023',null,'NBGVLS0001',0);
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'electrical_bill' ,'bill0004','01/01/2023',null,'NBGVLS0001',0);
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'water_bill' ,'bill0005','01/01/2023',null,'NBGVLS0002',0);
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'electrical_bill' ,'bill0006','01/01/2023',null,'NBGVLS0002',0);
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'rice_bill' ,'bill0007','01/01/2023',null,'NBGVLS0001',0);
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'vegetable_bill' ,'bill0008','01/01/2023',null,'NBGVLS0001',0);
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'milk_bill' ,'bill0009','01/01/2023',null,'NBGVLS0002',1);
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'cloth_bill' ,'bill0010','01/01/2023',null,'NBGVLS0003',1);
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'cloth_bill' ,'bill0011','01/01/2023',null,'NBGVLS0004',0);
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'water_bill' ,'bill0012','01/01/2023',null,'NBGVLS0004',1);
-INSERT INTO fee (Money,FeeName, FeeId, DateCreate, Detail,FamilyId, IsComplete) VALUES (50000,'electrical_bill' ,'bill0013','01/01/2023',null,'NBGVLS0004',0);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('water_bill' ,'bill0001','01/01/2023',null,0);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('electrical_bill' ,'bill0002','01/01/2023',null,0);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('water_bill' ,'bill0003','01/01/2023',null,0);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('electrical_bill' ,'bill0004','01/01/2023',null,0);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('water_bill' ,'bill0005','01/01/2023',null,0);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('electrical_bill' ,'bill0006','01/01/2023',null,0);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('rice_bill' ,'bill0007','01/01/2023',null,0);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('vegetable_bill' ,'bill0008','01/01/2023',null,0);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('milk_bill' ,'bill0009','01/01/2023',null,1);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('cloth_bill' ,'bill0010','01/01/2023',null,1);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('cloth_bill' ,'bill0011','01/01/2023',null,0);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('water_bill' ,'bill0012','01/01/2023',null,1);
+INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, isRequired) VALUES ('electrical_bill' ,'bill0013','01/01/2023',null,0);
 8. Insert sample family
 INSERT INTO family (FamilyId , OwnerName, Address) VALUES ('NBGVLS0001','Tran Van A','Hanoi');
 INSERT INTO family (FamilyId , OwnerName, Address) VALUES ('NBGVLS0002','Nguyen Van A','Hanoi');

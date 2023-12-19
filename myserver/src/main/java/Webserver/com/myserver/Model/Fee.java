@@ -1,15 +1,12 @@
 package Webserver.com.myserver.Model;
 
-import java.util.Date;
-
 public class Fee {
-    private int Money;
+
     private String FeeId;
     private  String FeeName;
     private String DateCreate;
     private String Detail;
-    private String FamilyId;
-    private  int IsComplete;
+    private  int IsRequired;
 
     public void setDateCreate(String dateCreate) {
         DateCreate = dateCreate;
@@ -19,9 +16,6 @@ public class Fee {
         return DateCreate;
     }
 
-    public int getMoney() {
-        return Money;
-    }
 
     public String getFeeId() {
         return FeeId;
@@ -47,23 +41,11 @@ public class Fee {
         FeeName = feeName;
     }
 
-    public void setMoney(int money) {
-        Money = money;
+    public int getIsRequired() {
+        return IsRequired;
     }
 
-    public String getFamilyId() {
-        return FamilyId;
-    }
-
-    public void setFamilyId(String familyId) {
-        FamilyId = familyId;
-    }
-
-    public int getIsComplete() {
-        return IsComplete;
-    }
-
-    public void setIsComplete(int isComplete) {
-        IsComplete = isComplete;
+    public void setIsRequired(int isRequired) {
+        IsRequired = isRequired;
     }
 }

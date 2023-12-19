@@ -4,6 +4,7 @@ import Webserver.com.myserver.HelperObject.UserInfo;
 import Webserver.com.myserver.Model.*;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,25 +33,37 @@ public class DataBaseService {
     public List<Fee> GetListFee(){
         return dataBaseConnect.GetListFee();
     }
-    public List<Fee> GetListFeeComplete(){
-        return dataBaseConnect.GetListFeeComplete();
+    public List<Fee> GetListFeeRequired(){
+        return dataBaseConnect.GetListFeeRequired();
     }
-    public List<Fee> GetListFeeNotComplete(){
-        return dataBaseConnect.GetListFeeNotComplete();
+    public List<Fee> GetListFeeNotRequired(){
+        return dataBaseConnect.GetListFeeNotRequired();
     }
 
-    public List<Fee> GetListFeeByFamilyId(String FamilyId){
-
-        return dataBaseConnect.GetListFeeByFamilyId(FamilyId);
+    public boolean IsExistedBill(String BillId){
+        List<Bill> bills = dataBaseConnect.GetListBillById(BillId);
+        if (bills.size()>0){
+            return true;
+        }
+        return false;
     }
-    public List<Fee> GetListFeeByFamilyIdNotComplete(String FamilyId){
-        return dataBaseConnect.getListFeeByFamilyIdAndNotComplete(FamilyId);
+    public List<Bill> GetListBillById(String BillId){
+        return dataBaseConnect.GetListBillById(BillId);
     }
-    public List<Fee> GetListFeeByFamilyIdComplete(String FamilyId){
-        return dataBaseConnect.getListFeeByFamilyIdAndComplete(FamilyId);
+    public List<Bill> GetListBill(){
+        return dataBaseConnect.GetListBill();
     }
-    public List<Admin> GetListRootById(String UserId){
-        return dataBaseConnect.searchRootById(UserId);
+    public void DeleteBillById(String BillId){
+        dataBaseConnect.DeleteBillById(BillId);
+    }
+    public List<Bill> GetListBillByUserId(String UserId){
+        return dataBaseConnect.GetListBillByUserId(UserId);
+    }
+    public List<Bill> GetListBillByFamilyId(String FamilyId){
+        return dataBaseConnect.GetListBillByFamilyId(FamilyId);
+    }
+    public List<Bill> GetListBillByFeeId(String FeeId){
+        return dataBaseConnect.GetListBillByFeeId(FeeId);
     }
     public void UpdatePassRoot(String UserId,String NewPass){
         dataBaseConnect.UpdateRootPass(NewPass,UserId);
@@ -109,12 +122,14 @@ public class DataBaseService {
     public void UpdateNomalUserPass(String newPass, String UseId){
         dataBaseConnect.UpdateNomalUserPass(UseId,newPass);
     }
-    public void InsertNewFee(int money,String FeeName,String FeeId,String dateCreate,String detail,String FamilyId){
-        dataBaseConnect.insertNewFee(money,FeeName,FeeId,dateCreate,detail,FamilyId);
+    public void InsertNewFee(String FeeName,String FeeId,String dateCreate,String detail,int IsRequired){
+        dataBaseConnect.insertNewFee(FeeName,FeeId,dateCreate,detail,IsRequired);
     }
-    public void CompleteFeeById(String FeeId){
-        dataBaseConnect.CompleteFeeById(FeeId);
+    public void InsertNewBill(String BillId,String FeeId,String FamilyId,String UserId,int Money,String date,String detail){
+        dataBaseConnect.insertNewBill(BillId,FeeId,FamilyId,UserId,Money, date,detail);
+        //BillId,FeeId,FamilyId,UserId,Money,Date, Detail
     }
+
     public void DeleteUserById(String UserId){
         dataBaseConnect.DeleteNomalUserById(UserId);
     }
