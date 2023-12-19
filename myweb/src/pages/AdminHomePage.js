@@ -50,6 +50,13 @@ function AdminHomePage() {
   const [searchFamilyIDValue, setSearchFamiLyIDValue] = useState('');
   const [paymentStatus, setPaymentStatus] = useState(null);
 
+  const [selectedTab, setSelectedTab] = useState("Quản lý hộ khẩu");
+
+  const handleTabClick = (title) => {
+    setTitle(title);
+    setSelectedTab(title);
+  };
+
   const handlePaymentStatusChange = (status) => setPaymentStatus(() => (paymentStatus === status ? null : status));
   
   const logoutBtn_Click = async e => {
@@ -57,6 +64,30 @@ function AdminHomePage() {
       logout();
   }
   
+  const fetchUserInfo = async () => {
+    if(searchValue.trim()!=="") {
+    try {
+      const userData = await fetchFunction({
+        reqType: '/GetUserInfoByAdmin',
+        UserId: searchValue.trim(),
+        RootId: user.UserId,
+        accessToken: user.token
+      });
+
+      if (userData.code === "200") {
+          setUserList(userData.data);
+      } else {
+        setUserList([])
+        console.log("fetch error! code !== 200", user);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    fetchUserList();
+  }
+  };
+
   const fetchFamilyList = async () => {
     try {
       const list = await fetchFunction({
@@ -112,14 +143,14 @@ function AdminHomePage() {
   };
 
   const fetchFeeListByFamilyID = async () => {
-    if(searchFamilyIDValue!=='') {
+    if(searchFamilyIDValue.trim()!=='') {
       if(paymentStatus===null) {
     try {
       const list = await fetchFunction({
         reqType: "/Fee/GetListFeeByFamily", 
         UserId: user.UserId,
         accessToken: user.token,
-        FamilyId: searchFamilyIDValue
+        FamilyId: searchFamilyIDValue.trim()
       });
   
       if (list.code == "200") {
@@ -138,7 +169,7 @@ function AdminHomePage() {
           reqType: "/Fee/GetListFeeByFamily/Complete", 
           UserId: user.UserId,
           accessToken: user.token,
-          FamilyId: searchFamilyIDValue
+          FamilyId: searchFamilyIDValue.trim()
         });
         
         if (list.code == "200") {
@@ -157,7 +188,7 @@ function AdminHomePage() {
           reqType: "/Fee/GetListFeeByFamily/NotComplete", 
           UserId: user.UserId,
           accessToken: user.token,
-          FamilyId: searchFamilyIDValue
+          FamilyId: searchFamilyIDValue.trim()
         });
         
         if (list.code == "200") {
@@ -281,7 +312,7 @@ function AdminHomePage() {
       </div>
         
 
-        <FeeList2 items={feeList}/>
+        <FeeList2 items={feeList} setFeeList={setFeeList}/>
 
       </div>)
 
@@ -300,19 +331,21 @@ function AdminHomePage() {
         <form className="flex w-2/3 mx-auto justify-center items-center">
       <input
         type="text"
-        placeholder="Search by UserID,FullName"
-        id='FamilyId'
+        placeholder="Search by UserID"
+        id='UserId'
         value={searchValue}
         onChange={(e)=> setSearchValue(e.target.value)}
         className="w-full px-3 py-2 text-default border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
       />
-      <button type="submit" className="ml-3 px-4 py-2 bg-blue-500 text-white rounded-md">
+
+      <button type="button" className="ml-3 px-4 py-2 bg-blue-500 text-white rounded-md" onClick={
+        fetchUserInfo}>
         <SearchIcon/>
       </button>
       </form>
         </div>
 
-        <UserList items={userList}/>
+        <UserList items={userList} setUserList={setUserList}/>
       </div>)
     } else{
         return(
@@ -324,33 +357,31 @@ function AdminHomePage() {
           Thêm hộ khẩu mới
         </Link>
         
-        <FamilyList items={familyList}/>
+        <FamilyList items={familyList} setFamilyList={setFamilyList} />
       </div>)
     }
   }
   return (
     <div className="flex ">
-        <div className=" block fixed top-0 left-0 h-screen justify-center items-center w-[285px] bg-[#101F33] p-8 ">
-          <div  className= ' w-52 h-20 flex items-center text-[#BDC2C7] font-bold py-2 px-4 rounded mb-10 mt-0' >
+        <div className=" fixed top-0 left-0 h-screen justify-center items-center w-[285px] bg-[#101F33] py-8 ">
+          <div  className= 'w-52 h-20 pl-10 flex items-center text-[#BDC2C7] font-bold py-2 px-4 rounded mb-10 mt-0' >
             <Home  style={{ fontSize: 50 }} />
             <h1 className="text-[32px] italic">Overview</h1>
          </div>
-          <Link to='/admin/' className= 'hover:bg-gray-200 w-52 h-14 flex items-center hover:text-[#4FC3F7] text-[18px] text-[#BDC2C7] font-bold py-2 px-4 rounded mb-10 mt-[50px]' onClick={(e)=>setTitle("Quản lý hộ khẩu")}>
-          <PermMediaOutlinedIcon className="mr-2" /> 
-            Quản lý hộ khẩu
-          </Link>
-          
-          <Link to='/admin/' className="hover:bg-gray-200 w-56 h-14 flex items-center hover:text-[#4FC3F7] text-[18px] text-[#BDC2C7] font-bold py-2 px-4 rounded mb-10" onClick={(e)=>setTitle("Quản lý nhân khẩu")}>
-            <PeopleIcon className="mr-2" />
-            Quản lý nhân khẩu
-          </Link>
+         <Link to="/admin/" className={`hover:bg-gray-200 hover:text-[#4FC3F7] text-[#BDC2C7] w-full  h-14 pl-10 flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "Quản lý hộ khẩu" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`} onClick={() => handleTabClick("Quản lý hộ khẩu")}>
+          <PermMediaOutlinedIcon className="mr-2" />
+          Quản lý hộ khẩu
+        </Link>
+        <Link to="/admin/" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10 text-[#BDC2C7] flex text-left items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "Quản lý nhân khẩu" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`} onClick={() => handleTabClick("Quản lý nhân khẩu")}>
+          <PeopleIcon className="mr-2" />
+          Quản lý nhân khẩu
+        </Link>
+        <Link to="/admin/" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10 text-[#BDC2C7] flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "Quản lý thu phí" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`} onClick={() => handleTabClick("Quản lý thu phí")}>
+          <MoneyIcon className="mr-2" />
+          Quản lý thu phí
+        </Link>
 
-          <Link to='/admin/' className="hover:bg-gray-200 w-52 h-14 flex items-center hover:text-[#4FC3F7] text-[18px] text-[#BDC2C7] font-bold py-2 px-4 rounded mb-10" onClick={(e)=>setTitle("Quản lý thu phí")}>
-            <MoneyIcon className="mr-2"/> 
-            Quản lý thu phí
-          </Link>
-
-          <button className="hover:bg-gray-200 w-52 h-14 flex items-center hover:bg- hover:text-[#4FC3F7] text-[#BDC2C7] text-[18px] font-bold py-2 px-4 rounded mb-10" onClick={logoutBtn_Click}>
+          <button className="hover:bg-gray-200 w-full h-14 pl-10 flex items-center hover:bg- hover:text-[#4FC3F7] text-[#BDC2C7] text-[18px] font-bold py-2 px-4 rounded mb-10" onClick={logoutBtn_Click}>
             <LogoutIcon className="mr-2" />
             Đăng xuất
           </button>

@@ -39,11 +39,13 @@ export const router = createBrowserRouter(
                 <Route path="/changepass" element={<ChangePassword/>}/>
             </Route>
             <Route element={<AdminLayout/>}>
-                <Route path="/admin/" element={<AdminHomePage/>}/>
+                <Route extra path="/admin" element={<AdminHomePage/>}/>
                 <Route path="/admin/addfee" element={<CreateFee/>}/>
                 <Route path="/admin/adduser" element={<CreateUser/>}/>
                 <Route path="/admin/addfamily" element={<CreateFamily/>}/>
-                <Route path="admin/changepass" element={<ChangePasswordforAdmin/>}/>
+                <Route path="/admin/changepass" element={<ChangePasswordforAdmin/>}/>
+                <Route path = "/admin/edit-user/:userId" element = {<CreateUser/>}/>
+                <Route path = "/admin/edit-family/:familyId" element = {<CreateFamily/>}/>
             </Route>
         </Route>
     )
