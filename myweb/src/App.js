@@ -15,6 +15,7 @@ import CreateUser from "./pages/CreateUser";
 import CreateFamily from "./pages/CreateFamily"
 import ChangePassword from "./pages/ChangePassword"
 import ChangePasswordforAdmin from "./pages/ChangePasswordforAdmin";
+import ForgetPassword from "./pages/ForgetPassword";
 
 const getUserData = () => 
     new Promise((resolve) =>
@@ -29,6 +30,7 @@ export const router = createBrowserRouter(
         <Route element={<AuthLayout/>} loader={() => defer({ userPromise: getUserData() })}>
             <Route element={<UnprotectedLayout/>}>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/forgetpass" element={<ForgetPassword/>}/>
             </Route>
             <Route element={<ProtectedLayout/>}>
                 <Route path="/" element={<Home/>}/>
@@ -39,11 +41,13 @@ export const router = createBrowserRouter(
                 <Route path="/changepass" element={<ChangePassword/>}/>
             </Route>
             <Route element={<AdminLayout/>}>
-                <Route path="/admin/" element={<AdminHomePage/>}/>
+                <Route extra path="/admin" element={<AdminHomePage/>}/>
                 <Route path="/admin/addfee" element={<CreateFee/>}/>
                 <Route path="/admin/adduser" element={<CreateUser/>}/>
                 <Route path="/admin/addfamily" element={<CreateFamily/>}/>
-                <Route path="admin/changepass" element={<ChangePasswordforAdmin/>}/>
+                <Route path="/admin/changepass" element={<ChangePasswordforAdmin/>}/>
+                <Route path = "/admin/edit-user/:userId" element = {<CreateUser/>}/>
+                <Route path = "/admin/edit-family/:familyId" element = {<CreateFamily/>}/>
             </Route>
         </Route>
     )

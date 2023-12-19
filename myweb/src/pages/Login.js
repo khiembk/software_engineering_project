@@ -65,6 +65,9 @@ export default function Login() {
             Login as admin
           </button>
         </div>
+        <div className='flex justify-center mt-3'>
+          <button className="text-blue-600 hover:text-blue-800" onClick={e => {navigate("/forgetpass")}}>Forget password?</button>
+        </div>
         {FailAttempt && <div className="text-red-500" style={{marginTop: "10px", textAlign: 'center'}}>UserId or Password is wrong!</div>}
       </form>
       <p class="text-center text-gray-500 text-xs">

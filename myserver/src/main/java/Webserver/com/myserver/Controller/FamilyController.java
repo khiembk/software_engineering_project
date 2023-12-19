@@ -100,6 +100,44 @@ public class FamilyController {
         }
 
     }
+
+        @PostMapping("/GetFamilyInfoByAdmin")
+    public String GetListFamilyByAdmin(@RequestBody HashMap<String,String> RequestBody){
+        logger.info(RequestBody.toString());
+        try {
+                String UserId  = RequestBody.get("UserId");
+            if (UserId.isEmpty()){
+                throw new RuntimeException("UserId is null");
+            }
+            String FalimyId  = RequestBody.get("FamilyId");
+            if (UserId.isEmpty()){
+                throw new RuntimeException("FamilyId is null");
+            }
+            String AccessToken = RequestBody.get("accessToken");
+            if (AccessToken.isEmpty()){
+                throw new RuntimeException("AccessToken is null");
+            }
+
+            if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){
+                JSONObject jsonReponse = new JSONObject();
+                jsonReponse.put("code","200");
+                jsonReponse.put("message","Success");
+                jsonReponse.put("data",dataBaseService.GetListFamilyById(FalimyId));
+                logger.info(jsonReponse.toString());
+                return jsonReponse.toString();
+            }else {
+                throw new RuntimeException("Invalid JWT");
+            }
+        }catch (Exception exception){
+            BasicReponse basicReponse = new BasicReponse();
+            basicReponse.setCode("500");
+            basicReponse.setMessage(exception.getMessage());
+            logger.info(basicReponse.toString());
+            return basicReponse.toString();
+        }
+
+    }
+
     @PostMapping("/Delete")
     public String DeleteFamily(@RequestBody HashMap<String,String> RequestBody){
         logger.info(RequestBody.toString());
