@@ -18,24 +18,28 @@ const HistoryFeeList = ({ items }) => {
 
   return (
     <div style={{margin: '10px'}}>
-      <div className="flex justify-center" style={{marginBottom: '10px'}}>
-        <p className="w-[15rem] border-2 border-gray-500 px-1 py-1">Mã phí</p>
-        <p className="w-[15rem] border-2 border-gray-500 px-1 py-1">Tên phí</p>
-        <p className="w-[30rem] border-2 border-gray-500 px-1 py-1">Chi tiết</p>
-        <p className="w-[10rem] border-2 border-gray-500 px-1 py-1">Số tiền</p>
-        <p className="w-[10rem] border-2 border-gray-500 px-1 py-1">Ngày tạo</p>
-      </div>
-      <ul>
-        {currentItems.map((item, index) => (
-          <li className="flex justify-center" style={{marginBottom: '1px'}} key={index}>
-            <p className="w-[15rem] border-2 border-gray-300 px-1 py-1">{item.feeId}</p>
-            <p className="w-[15rem] border-2 border-gray-300 px-1 py-1">{item.feeName}</p>
-            <p className="w-[30rem] border-2 border-gray-300 px-1 py-1">{item.detail}</p>
-            <p className="w-[10rem] border-2 border-gray-300 px-1 py-1">{item.money}</p>
-            <p className="w-[10rem] border-2 border-gray-300 px-1 py-1">{moment.utc(item.dateCreate).tz("Asia/Bangkok").format("DD/MM/YYYY")}</p>
-          </li>
-        ))}
-      </ul>
+      <table className="mt-4 table w-full">
+        <thead>
+          <tr>
+            <th className="py-2 px-4 border-2 border-gray-400">Mã phí</th>
+            <th className="py-2 px-4 border-2 border-gray-400">Tên phí</th>
+            <th className="py-2 px-4 border-2 border-gray-400">Chi tiết</th>
+            <th className="py-2 px-4 border-2 border-gray-400">Số tiền</th>
+            <th className="py-2 px-4 border-2 border-gray-400">Ngày tạo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentItems.map((item, index) => (
+            <tr key={index}>
+              <td className="py-2 px-4 border-2">{item.feeId}</td>
+              <td className="py-2 px-4 border-2">{item.feeName}</td>
+              <td className="py-2 px-4 border-2">{item.detail}</td>
+              <td className="py-2 px-4 border-2">{item.money}</td>
+              <td className="py-2 px-4 border-2">{moment.utc(item.dateCreate).tz("Asia/Bangkok").format("DD/MM/YYYY")}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <Pagination className="flex justify-center mt-4" size="large" variant="outlined" color="primary" count={Math.ceil(items.length / itemsPerPage)} page={currentPage} onChange={handlePageChange} />
     </div>
   );

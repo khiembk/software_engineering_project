@@ -15,6 +15,7 @@ import CreateUser from "./pages/CreateUser";
 import CreateFamily from "./pages/CreateFamily"
 import ChangePassword from "./pages/ChangePassword"
 import ChangePasswordforAdmin from "./pages/ChangePasswordforAdmin";
+import ForgetPassword from "./pages/ForgetPassword";
 
 const getUserData = () => 
     new Promise((resolve) =>
@@ -29,6 +30,7 @@ export const router = createBrowserRouter(
         <Route element={<AuthLayout/>} loader={() => defer({ userPromise: getUserData() })}>
             <Route element={<UnprotectedLayout/>}>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/forgetpass" element={<ForgetPassword/>}/>
             </Route>
             <Route element={<ProtectedLayout/>}>
                 <Route path="/" element={<Home/>}/>

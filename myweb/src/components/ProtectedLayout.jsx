@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import HomeIcon from '@mui/icons-material/Home';
@@ -7,17 +8,29 @@ import HistoryIcon from '@mui/icons-material/History';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PasswordIcon from '@mui/icons-material/Password';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import EmailIcon from '@mui/icons-material/Email';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 export const ProtectedLayout = () => {
     const { user } = useAuth();
     const { logout } = useAuth();
     const navigate = useNavigate();
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     const currentPage = window.location.pathname.split("/")[1];
 
-    const logoutBtn_Click = async e => {
-        e.preventDefault();
+    const logoutBtn_Click = async () => {
+        setAnchorEl(null);
         logout();
     }
     const redirectBtn_Click = async (e, page) => {
@@ -33,24 +46,23 @@ export const ProtectedLayout = () => {
     else if(user.mode === "user"){
         return (
             <div className="h-screen">
-                <h1 className="flex w-full h-[6%] bg-blue-600 border-b-[1px] border-gray-300" style={{justifyContent: 'right', position: 'fixed'}}>
-                    <button className="bg-red-500 hover:bg-red-800 text-white font-semibold py-2 px-4 border rounded-[2rem]">
-                        <div className="flex">
-                            <NotificationsIcon/>
-                        </div>
+                <h1 className="flex w-full h-[6%] bg-blue-500 border-gray-300" style={{justifyContent: 'right', position: 'fixed'}}>
+                    <button className="bg-transparent hover:bg-blue-800 text-white font-semibold border rounded-[2rem] mr-3" type="button" onClick={handleClick}>
+                        <AccountCircleIcon sx={{fontSize: 50}}/>
                     </button>
-
-                    <button className='px-4 py-2 bg-red-500 border rounded-[2rem] font-semibold text-white hover:bg-red-800' onClick={e => {navigate("/changepass")}}>
-                        <div className="flex">
-                            <PasswordIcon/>
-                        </div>
-                    </button>
-
-                    <button className="bg-red-500 hover:bg-red-800 text-white font-semibold py-2 px-4 border rounded-[2rem]" onClick={logoutBtn_Click}>
-                        <div className="flex">
-                            <LogoutIcon/>
-                        </div>
-                    </button>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                        <MenuItem onClick={() => {setAnchorEl(null); navigate("/changepass")}}><PasswordIcon/><span className="ml-3">Change Password</span></MenuItem>
+                        <MenuItem onClick={handleClose}><EmailIcon/><span className="ml-3">Change Email</span></MenuItem>
+                        <MenuItem onClick={logoutBtn_Click}><LogoutIcon/><span className="ml-3">Logout</span></MenuItem>
+                    </Menu>
                 </h1>
                 <div className="flex h-screen" style={{paddingTop: '50px'}}>
                     <div className="bg-blue-500" style={{display: 'flex', flexDirection: 'column', marginRight: '30px'}} >
