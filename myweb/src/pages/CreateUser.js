@@ -1,34 +1,69 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   FaUser,
   FaKey,
   FaCalendar,
-  FaAddressCard,
   FaPhone,
   FaHouseUser,
 } from "react-icons/fa";
 import { fetchFunction } from "../utils/Fetch";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import moment from 'moment-timezone';
 
 const CreateUser = () => {
+  const {userId} =useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [FailAttempt, setAttempt] = useState(null);
-  const [title, setTitle] = useState("Tạo nhân khẩu mới");
   const [userID, setUserID] = useState("");
   const [fullName, setFullName] = useState("");
   const [dob, setDob] = useState(new Date());
   const [hk_number, setHK_number] = useState("");
   const [phone_number, setPhone_Number] = useState("");
 
-  const handleSubmit = (e) => {
+
+  const [openPopover, setOpenPopover] = useState(false);
+  const[password,setPassword]=useState("")
+
+
+  function title() {
+    if(userId) return "Chỉnh sửa thông tin nhân khẩu"
+    else return "Tạo nhân khẩu mới"
+  }
+
+  const savainfor = (e) =>
+  {
+    if(userId) {
+      e.preventDefault();
+      setOpenPopover(true);
+    }
+    else addNewUser(e);
+  }
+
+  const updateUser = async (e) => {
     e.preventDefault();
-    setUserID("");
-    setFullName("");
-    setDob(new Date());
-    setHK_number("");
-    setPhone_Number("");
+
+
+    const respond = await fetchFunction({
+      reqType: "/UpdateUserInfo", 
+      RootId: user.UserId,
+      accessToken: user.token,
+      UserId: userID,
+      dateOfBirth: dob,
+      PhoneNumber: phone_number,
+      FamilyId: hk_number,
+      RootPassword: password
+    });
+
+    if(respond.code === "200"){
+      setAttempt(null);
+      navigate("/admin");
+    }
+    else{
+      setAttempt("fail");
+    }
   };
 
   const addNewUser = async (e) => {
@@ -40,7 +75,7 @@ const CreateUser = () => {
       accessToken: user.token,
       UserId: userID,
       UserName: fullName,
-      DateOfBirth: dob,
+      dateOfBirth: dob,
       PhoneNumber: phone_number,
       FamilyId: hk_number
     });
@@ -54,14 +89,42 @@ const CreateUser = () => {
     }
   };
 
+ 
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const userData = await fetchFunction({
+          reqType: '/GetUserInfoByAdmin',
+          UserId: userId,
+          RootId: user.UserId,
+          accessToken: user.token
+        });
+  
+        if (userData.code === "200") {
+          setUserID(userData.data[0].userId); 
+          setFullName(userData.data[0].userName);
+          setDob(moment.utc(userData.data[0].dateOfBirth).tz("Asia/Bangkok").format("YYYY-MM-DD"));
+          setHK_number(userData.data[0].familyId);
+          setPhone_Number(userData.data[0].phoneNumber);
+        } else {
+          console.log("fetch error! code !== 200", user);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    fetchUserInfo();
+  }, []);
+  
+
   return (
     <div className="justify-center items-center">
       <form
         className="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-md shadow-md"
-        onSubmit={handleSubmit}
       >
         <div className="flex items-center justify-center">
-          <h1 className="text-red-600 font-bold rounded">{title}</h1>
+          <h1 className="text-red-600 font-bold rounded text-[28px]">{title()}</h1>
         </div>
         <div className="mb-4 block items-center">
           <label
@@ -151,7 +214,7 @@ const CreateUser = () => {
             className="block justify-center items-center text-gray-700 text-sm font-bold mb-2"
             htmlFor="phone_number"
           >
-            Số điện thoại liên lạc
+            
           </label>
           <div className="flex justify-center items-center">
             <FaPhone className="mr-2 scale-125" />
@@ -162,7 +225,8 @@ const CreateUser = () => {
               id="phone_number"
               placeholder="Phone Number"
               value={phone_number}
-              onchange={(e) => setPhone_Number(e.target.value)}
+              onChange={(e) => setPhone_Number(e.target.value)}
+              maxLength={10} 
             />
           </div>
         </div>
@@ -173,9 +237,9 @@ const CreateUser = () => {
           <button
             className="col-span-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
             type="submit"
-            onClick={addNewUser}
+            onClick={e=>savainfor(e)}
           >
-            Tạo Nhân khẩu mới
+            Lưu thông tin
           </button>
           <button
             className="col-span-1 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
@@ -186,6 +250,40 @@ const CreateUser = () => {
           </button>
         </div>
       </form>
+      {openPopover && (
+  <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white p-4 rounded-md">
+      <input
+        className="border-2 rounded-md px-4 py-2 mr-2"
+        type="password"
+        placeholder="Xác thực mật khẩu Admin"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        type="button"
+        onClick={(e) => {
+          if (password === "") {
+            window.alert("Mật khẩu rỗng, yêu cầu nhập lại");
+          } else {
+            setOpenPopover(false);
+            updateUser(e);
+          }
+        }}
+      >
+        OK
+      </button>
+      <button
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2"
+        type="button"
+        onClick={() => setOpenPopover(false)}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 };

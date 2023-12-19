@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { fetchFunction } from "../utils/Fetch";
-
+import { FaKey,FaHouseUser  } from "react-icons/fa";
+import { MdMoney, MdOutlineFeed  } from "react-icons/md";
+import { IoInformationCircle } from "react-icons/io5";
 const CreateFee = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -64,6 +66,8 @@ const CreateFee = () => {
           >
             Mã phí
           </label>
+          <div className="flex justify-center items-center">
+          <FaKey className="mr-2 scale-125" />
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="feeID"
@@ -72,6 +76,7 @@ const CreateFee = () => {
             value={feeID}
             onChange={(e) => setFeeID(e.target.value)}
           />
+          </div>
         </div>
 
         <div className="mb-4">
@@ -81,6 +86,8 @@ const CreateFee = () => {
           >
             Tên phí
           </label>
+          <div className="flex justify-center items-center">
+          <MdOutlineFeed className="mr-2 scale-150" />
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="feeName"
@@ -89,6 +96,7 @@ const CreateFee = () => {
             value={feeName}
             onChange={(e) => setFeeName(e.target.value)}
           />
+          </div>
         </div>
 
         <div className="mb-4">
@@ -98,6 +106,8 @@ const CreateFee = () => {
           >
             Số tiền phải đóng (VNĐ)
           </label>
+          <div className="flex justify-center items-center">
+          <MdMoney className="mr-2 scale-150" />
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="money"
@@ -106,6 +116,7 @@ const CreateFee = () => {
             value={money}
             onChange={(e) => setMoney(e.target.value)}
           />
+          </div>
         </div>
 
         <div className="mb-4">
@@ -115,6 +126,8 @@ const CreateFee = () => {
           >
             Mã hộ áp dụng
           </label>
+          <div className="flex justify-center items-center">
+          <FaHouseUser className="mr-2 scale-125" />
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="familyId"
@@ -123,6 +136,7 @@ const CreateFee = () => {
             value={familyId}
             onChange={(e) => setFamilyId(e.target.value)}
           />
+          </div>
         </div>
 
         <div className="mb-4">
@@ -132,6 +146,8 @@ const CreateFee = () => {
           >
             Mô tả chỉ tiết về phí
           </label>
+          <div className="flex justify-center items-center">
+          <IoInformationCircle className="mr-2 scale-150" />
           <textarea
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="detail"
@@ -139,6 +155,7 @@ const CreateFee = () => {
             value={detail}
             onChange={(e) => setDetail(e.target.value)}
           />
+          </div>
         </div>
 
         {FailAttempt && <div className="text-red-500 py-2">Có lỗi gì đó</div>}
