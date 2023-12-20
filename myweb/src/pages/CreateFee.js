@@ -28,7 +28,7 @@ const CreateFee = () => {
   const addNewFee = async (e) => {
     e.preventDefault();
 
-    const respond = await fetchFunction({
+    const response = await fetchFunction({
       reqType: "/Fee/addNewFee", 
       UserId: user.UserId,
       accessToken: user.token,
@@ -40,7 +40,7 @@ const CreateFee = () => {
       Money: money
     });
 
-    if(respond.code === "200"){
+    if(response.code === "200"){
       setAttempt(null);
       navigate("/admin");
     }
@@ -50,7 +50,7 @@ const CreateFee = () => {
   };
 
   return (
-    <div className="items-center justify-center ">
+    <div className="h-screen mt-10">
       <form
         className="bg-white shadow rounded border-2 p-6 mx-auto max-w-xl"
         onSubmit={handleSubmit}
@@ -171,7 +171,7 @@ const CreateFee = () => {
           <button
             className="col-span-1 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
             type="reset"
-            onClick={e => {navigate("/admin");}}
+            onClick={e => {navigate("/admin/quanlyphi");}}
           >
             Hủy
           </button>

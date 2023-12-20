@@ -30,7 +30,7 @@ export default function ChangePasswordforAdmin() {
     }
     else{
         try{
-            const respond = await fetchFunction({
+            const response = await fetchFunction({
                 reqType: '/changePass/Root',
                 UserId: user.UserId,
                 accessToken: user.token,
@@ -38,7 +38,7 @@ export default function ChangePasswordforAdmin() {
                 NewPassword: UserNewPassword
             });
 
-            if(respond.code === "200"){
+            if(response.code === "200"){
                 setAttempt(null);
                 setAnchorEl(buttonElement);
             }

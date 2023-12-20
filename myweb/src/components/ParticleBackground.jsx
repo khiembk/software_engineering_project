@@ -16,13 +16,13 @@ const ParticleBackground = () => {
         value: ["#2EB67D", "#ECB22E", "#E01E5B", "#36C5F0"]
       },
       shape: {
-        type: "circle"
+        type: "triangle"
       },
       opacity: {
         value: 0.3
       },
       size: {
-        value: { min: 1, max: 4 }
+        value: { min: 2, max: 4 }
       },
       links: {
         enable: true,
@@ -33,7 +33,7 @@ const ParticleBackground = () => {
       },
       move: {
         enable: true,
-        speed: 5,
+        speed: 4,
         direction: "random",
         random: true,
         straight: false,
@@ -44,22 +44,15 @@ const ParticleBackground = () => {
       events: {
         onHover: {
           enable: true,
-          mode: "grab"
-        },
-        onClick: {
-          enable: false,
-          mode: "push"
+          mode: "attract"
         }
       },
       modes: {
-        grab: {
-          distance: 140,
+        atrract: {
+          distance: 150,
           links: {
             opacity: 1
           }
-        },
-        push: {
-          quantity: 4
         }
       }
     }

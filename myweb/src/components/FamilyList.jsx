@@ -66,9 +66,11 @@ const deleteFamily = async () => {
               <td className="px-4 py-2 border-2">{item.familyId}</td>
               <td className="px-4 py-2 border-2">{item.ownerName}</td>
               <td className="px-4 py-2 border-2">{item.address}</td>
-              <td className="flex px-4 py-2 border-2 items-center justify-center">
-                <Link className="hover:text-gray-400 flex items-center justify-center bg-green-400 w-20 h-7 font-bold text-white rounded-md" to={`/admin/edit-family/${item.familyId}`}>Update</Link>
-                <button className="hover:text-gray-400 flex justify-center items-center w-20 h-7 bg-red-600 font-bold text-white rounded-md" style={{ marginLeft: "10px" }} onClick={()=>{setOpenPopover(true); setFamilyId(item.familyId)}}> Delete</button>
+              <td className="px-4 py-2 border-2">
+                <div className='flex justify-center'>
+                  <Link className="hover:text-gray-400 bg-green-400 px-3 py-1 font-bold text-white rounded-md" to={`/admin/edit-family/${item.familyId}`}>Update</Link>
+                  <button className="hover:text-gray-400 bg-red-600 px-3 py-1 font-bold text-white rounded-md" style={{ marginLeft: "10px" }} onClick={()=>{setOpenPopover(true); setFamilyId(item.familyId)}}> Delete</button>
+                </div>
               </td>
           </tr>
           ))}

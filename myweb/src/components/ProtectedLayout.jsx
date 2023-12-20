@@ -47,8 +47,8 @@ export const ProtectedLayout = () => {
         return (
             <div className="h-screen">
                 <h1 className="flex w-full h-[6%] bg-blue-500 border-gray-300" style={{justifyContent: 'right', position: 'fixed'}}>
-                    <button className="bg-transparent hover:bg-blue-800 text-white font-semibold border rounded-[2rem] mr-3" type="button" onClick={handleClick}>
-                        <AccountCircleIcon sx={{fontSize: 50}}/>
+                    <button className="border-transparent bg-transparent hover:bg-black text-white font-semibold border h-[42px] rounded-[3rem] mr-3 self-center" type="button" onClick={handleClick}>
+                        <AccountCircleIcon sx={{fontSize: 40}}/>
                     </button>
                     <Menu
                         id="basic-menu"
