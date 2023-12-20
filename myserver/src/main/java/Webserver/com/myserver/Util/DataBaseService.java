@@ -1,5 +1,6 @@
 package Webserver.com.myserver.Util;
 
+import Webserver.com.myserver.HelperFunction.HashFuntion;
 import Webserver.com.myserver.HelperObject.UserInfo;
 import Webserver.com.myserver.Model.*;
 import org.springframework.stereotype.Component;
@@ -132,7 +133,22 @@ public class DataBaseService {
         dataBaseConnect.insertNewBill(BillId,FeeId,FamilyId,UserId,Money, date,detail);
         //BillId,FeeId,FamilyId,UserId,Money,Date, Detail
     }
-
+    public boolean CheckValidRootPass(String RootId,String Password){
+        List<Admin> ListRoot = dataBaseConnect.searchRootById(RootId);
+        if (ListRoot.size()==1){
+            if (ListRoot.get(0).getUserPassword().equals(HashFuntion.hash256(Password))){
+                  return true;
+            }
+        }
+        return false;
+    }
+    public boolean CheckIfFeeCanDelete(String FeeId){
+        List<Bill> bills = dataBaseConnect.GetListBillByFeeId(FeeId);
+        if(bills.size()==0){
+            return true;
+        }
+        return false;
+    }
     public void DeleteUserById(String UserId){
         dataBaseConnect.DeleteNomalUserById(UserId);
     }

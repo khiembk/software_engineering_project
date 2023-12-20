@@ -23,7 +23,7 @@ public class DataBaseConnect {
     private static final String UPDATE_PASS_USER_BY_ID_SQL = "UPDATE login SET UserPassword = ? WHERE UserId = ?";
     private static final String UPDATE_PASS_ROOT_BY_ID_SQL = "UPDATE admin SET UserPassword = ? WHERE UserId = ?";
     private static final String SEARCH_ROOT_BY_ID_SQL = "SELECT * FROM admin WHERE UserId = ?";
-    private static final String INSERT_FEE_BY_ID_SQL = "INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, IsRequired) VALUES (?,?,?,?,?,?,?)";
+    private static final String INSERT_FEE_BY_ID_SQL = "INSERT INTO fee (FeeName, FeeId, DateCreate, Detail, IsRequired) VALUES (?,?,?,?,?)";
     private static final String INSERT_BILL_BY_ID_SQL = "INSERT INTO bill (BillId,FeeId,FamilyId,UserId,Money,Date, Detail) VALUES (?,?,?,?,?,?,?)";
     private static final String SEARCH_FEE_BY_ID_SQL = "SELECT * FROM fee WHERE FeeId = ?";
     private static final String GET_lIST_FEE_SQL = "SELECT * FROM fee";
