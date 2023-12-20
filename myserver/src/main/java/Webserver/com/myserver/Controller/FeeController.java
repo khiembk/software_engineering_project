@@ -4,6 +4,7 @@ import Webserver.com.myserver.HelperFunction.IDgenerator;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.HelperObject.BasicReponse;
 import Webserver.com.myserver.Model.Admin;
+import Webserver.com.myserver.Model.Bill;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -92,23 +93,27 @@ public class FeeController {
             if (RootId.isEmpty()) {
                 throw new RuntimeException("RootId is null");
             }
+            if (!dataBaseService.IsRoot(RootId)){
+                throw new RuntimeException("Invalid RootId");
+            }
             String FeeId = RequestBody.get("FeeId");
             if (FeeId.isEmpty()) {
                 throw new RuntimeException("FeeId is null");
+            }
+            if(!dataBaseService.IsExistedFee(FeeId)){
+                throw new RuntimeException("FeeId is not exist");
             }
             String RootPassword = RequestBody.get("RootPassword");
             if (RootPassword.isEmpty()){
                 throw  new RuntimeException("RootPassword is null");
             }
-            List<Admin> ListRoot = dataBaseService.SearchRootById(RootId);
-            if (ListRoot.size()==1){
-                if (!ListRoot.get(0).getUserPassword().equals(HashFuntion.hash256(RootPassword))){
-                    throw new RuntimeException("Invalid RootPassword");
-                }
-            }else{
-                throw new RuntimeException("Invalid RootId");
+            if (!dataBaseService.CheckValidRootPass(RootId,RootPassword)){
+                throw new RuntimeException("Invalid Password");
             }
-            if (JWTFactory.VerifyJWT(RootId, AccessToken) && dataBaseService.IsRoot(RootId) && dataBaseService.IsExistedFee(FeeId)) {
+            if (!dataBaseService.CheckIfFeeCanDelete(FeeId)){
+                throw new RuntimeException("Cannot delete this fee");
+            }
+            if (JWTFactory.VerifyJWT(RootId, AccessToken)) {
                 dataBaseService.DeleteFeeById(FeeId);
                 basicReponse.setCode("200");
                 basicReponse.setMessage("Success");
