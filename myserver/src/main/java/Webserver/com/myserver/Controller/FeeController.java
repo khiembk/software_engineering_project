@@ -1,5 +1,6 @@
 package Webserver.com.myserver.Controller;
 import Webserver.com.myserver.HelperFunction.HashFuntion;
+import Webserver.com.myserver.HelperFunction.IDgenerator;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.HelperObject.BasicReponse;
 import Webserver.com.myserver.Model.Admin;
@@ -36,10 +37,7 @@ public class FeeController {
             if (UserId.isEmpty()) {
                 throw new RuntimeException("UserId is null");
             }
-            String FeeId = RequestBody.get("FeeId");
-            if (FeeId.isEmpty()) {
-                throw new RuntimeException("FeeId is null");
-            }
+
             String isRequired = RequestBody.get("isRequired");
             if(isRequired.isEmpty()){
                 throw new RuntimeException("IsRequired is null");
@@ -47,6 +45,16 @@ public class FeeController {
             String FeeName = RequestBody.get("FeeName");
             if (FeeName.isEmpty()) {
                 throw new RuntimeException("FeeName is null");
+            }
+            String FeeId = RequestBody.get("FeeId");
+            if (FeeId.isEmpty()) {
+                FeeId = IDgenerator.GenId(FeeName);
+                while (dataBaseService.IsExistedFee(FeeId)){
+                    FeeId = IDgenerator.GenId(FeeName);
+                }
+            }
+            if (dataBaseService.IsExistedFee(FeeId)){
+                throw new RuntimeException("Invalid FeeId");
             }
             String dateCreate = RequestBody.get("DateCreate");
             if (dateCreate.isEmpty()) {
