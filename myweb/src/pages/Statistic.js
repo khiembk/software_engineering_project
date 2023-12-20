@@ -12,74 +12,11 @@ export default function Statistic() {
   const [error, setError] = useState(null);
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
-
-  const dataset = [
-    {
-      trantime: 0,
-      tranmoney: 0,
-      month: 'Jan',
-    },
-    {
-      trantime: 0,
-      tranmoney: 0,
-      month: 'Fev',
-    },
-    {
-      trantime: 0,
-      tranmoney: 0,
-      month: 'Mar',
-    },
-    {
-      trantime: 0,
-      tranmoney: 0,
-      month: 'Apr',
-    },
-    {
-      trantime: 0,
-      tranmoney: 0,
-      month: 'May',
-    },
-    {
-      trantime: 0,
-      tranmoney: 0,
-      month: 'June',
-    },
-    {
-      trantime: 0,
-      tranmoney: 0,
-      month: 'July',
-    },
-    {
-      trantime: 0,
-      tranmoney: 0,
-      month: 'Aug',
-    },
-    {
-      trantime: 0,
-      tranmoney: 0,
-      month: 'Sept',
-    },
-    {
-      trantime: 0,
-      tranmoney: 0,
-      month: 'Oct',
-    },
-    {
-      trantime: 0,
-      tranmoney: 0,
-      month: 'Nov',
-    },
-    {
-      trantime: 0,
-      tranmoney: 0,
-      month: 'Dec',
-    },
-  ];
   
   const fetchFeeUser = async () => {
     try {
       const list = await fetchFunction({
-        reqType: "/GetListFeeUser/Complete", 
+        reqType: "/Bill/GetListByFamilyId/User", 
         UserId: user.UserId,
         accessToken: user.token
       });
@@ -88,16 +25,80 @@ export default function Statistic() {
         let monthtime = 0;
         let yeartran = 0;
         let yeartime = 0;
+
+        const dataset = [
+          {
+            trantime: 0,
+            tranmoney: 0,
+            month: 'Jan',
+          },
+          {
+            trantime: 0,
+            tranmoney: 0,
+            month: 'Fev',
+          },
+          {
+            trantime: 0,
+            tranmoney: 0,
+            month: 'Mar',
+          },
+          {
+            trantime: 0,
+            tranmoney: 0,
+            month: 'Apr',
+          },
+          {
+            trantime: 0,
+            tranmoney: 0,
+            month: 'May',
+          },
+          {
+            trantime: 0,
+            tranmoney: 0,
+            month: 'June',
+          },
+          {
+            trantime: 0,
+            tranmoney: 0,
+            month: 'July',
+          },
+          {
+            trantime: 0,
+            tranmoney: 0,
+            month: 'Aug',
+          },
+          {
+            trantime: 0,
+            tranmoney: 0,
+            month: 'Sept',
+          },
+          {
+            trantime: 0,
+            tranmoney: 0,
+            month: 'Oct',
+          },
+          {
+            trantime: 0,
+            tranmoney: 0,
+            month: 'Nov',
+          },
+          {
+            trantime: 0,
+            tranmoney: 0,
+            month: 'Dec',
+          },
+        ];
+        
         for (let i = 0; i < list.data.length; i++) {
-          if(moment(list.data[i].dateCreate).tz("Asia/Bangkok").year() === currentYear){
-            if(moment(list.data[i].dateCreate).tz("Asia/Bangkok").month() === currentMonth){
+          if(moment(list.data[i].date).tz("Asia/Bangkok").year() === currentYear){
+            if(moment(list.data[i].date).tz("Asia/Bangkok").month() === currentMonth){
               monthtime++;
               monthtran += list.data[i].money;
             }
             yeartime++;
             yeartran += list.data[i].money;
-            dataset[moment(list.data[i].dateCreate).tz("Asia/Bangkok").month()].trantime++;
-            dataset[moment(list.data[i].dateCreate).tz("Asia/Bangkok").month()].tranmoney += list.data[i].money;
+            dataset[moment(list.data[i].date).tz("Asia/Bangkok").month()].trantime++;
+            dataset[moment(list.data[i].date).tz("Asia/Bangkok").month()].tranmoney += list.data[i].money;
           }
         }
 
@@ -116,7 +117,7 @@ export default function Statistic() {
       }
     } catch (error) {
       setError("Something went wrong!");
-      console.log("get user list fail?");
+      console.log(error);
     }
   };
 

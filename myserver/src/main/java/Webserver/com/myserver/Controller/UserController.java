@@ -107,19 +107,31 @@ public class UserController {
        try {
            String UserId = RequestBody.get("UserId");
            if (UserId.isEmpty()){
-               throw new RuntimeException("UserIs is null");
+               throw new RuntimeException("UserId is null");
            }
            String AccessToken = RequestBody.get("accessToken");
            if (AccessToken.isEmpty()){
                throw new RuntimeException("AccessToken is null");
            }
-           if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId)){
-               JSONObject jsonReponse = new JSONObject();
-               jsonReponse.put("code","200");
-               jsonReponse.put("message","Success");
-               jsonReponse.put("data",dataBaseService.GetListUserInfoById(UserId));
-               logger.info(jsonReponse.toString());
-               return jsonReponse.toString();
+           String UserIdToFind = RequestBody.get("userIdToFind");
+           
+           if (JWTFactory.VerifyJWT(UserId,AccessToken) && (dataBaseService.IsNomalUser(UserId) || dataBaseService.IsRoot(UserId))){
+                if (UserIdToFind.isEmpty()){
+                    JSONObject jsonReponse = new JSONObject();
+                    jsonReponse.put("code","200");
+                    jsonReponse.put("message","Success");
+                    jsonReponse.put("data",dataBaseService.GetListUserInfoById(UserId));
+                    logger.info(jsonReponse.toString());
+                    return jsonReponse.toString();
+                }
+                else{
+                    JSONObject jsonReponse = new JSONObject();
+                    jsonReponse.put("code","200");
+                    jsonReponse.put("message","Success");
+                    jsonReponse.put("data",dataBaseService.GetListUserInfoById(UserIdToFind));
+                    logger.info(jsonReponse.toString());
+                    return jsonReponse.toString();
+                }
            }else{
                throw new RuntimeException("Invalid JWT");
            }

@@ -25,7 +25,6 @@ const valueFormatter = (value) => `${value} Lần`;
 const valueFormatter2 = (value) => `${value} VND`;
 
 const StatisticBarChart = ({dataset}) => {
-    console.log(dataset);
     return(
         <div className="flex justify-center">
             <BarChart 

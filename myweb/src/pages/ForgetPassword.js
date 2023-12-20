@@ -21,16 +21,16 @@ export default function ForgetPassword(){
 
     const otpBtn_Click = async () => {
         try{
-            const respond = await fetchFunction({
+            const response = await fetchFunction({
                 reqType: "/ForgetPass/RequestOTP",
                 UserId: UserID
             });
 
-            if(respond.code === "200"){
+            if(response.code === "200"){
                 setAttempt(null);
             }
             else{
-                setAttempt(respond.message);
+                setAttempt(response.message);
             }
         }
         catch(error){
@@ -41,13 +41,13 @@ export default function ForgetPassword(){
     const confirmBtn_Click = async (e) => {
         const buttonElement = e.currentTarget;
         try{
-            const respond = await fetchFunction({
+            const response = await fetchFunction({
                 reqType: "/ForgetPass/VerifyOTP",
                 UserId: UserID,
                 Otp: UserOTP
             });
 
-            if(respond.code === "200"){
+            if(response.code === "200"){
                 setAttempt(null);
                 setAnchorEl(buttonElement);
 
@@ -57,7 +57,7 @@ export default function ForgetPassword(){
                 }, 3000);
             }
             else{
-                setAttempt(respond.message);
+                setAttempt(response.message);
             }
         }
         catch(error){
