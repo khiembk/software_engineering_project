@@ -1,8 +1,10 @@
 package Webserver.com.myserver.Controller;
 import Webserver.com.myserver.HelperFunction.HashFuntion;
+import Webserver.com.myserver.HelperFunction.IDgenerator;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.HelperObject.BasicReponse;
 import Webserver.com.myserver.Model.Admin;
+import Webserver.com.myserver.Model.Bill;
 import Webserver.com.myserver.Util.DataBaseService;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -36,10 +38,7 @@ public class FeeController {
             if (UserId.isEmpty()) {
                 throw new RuntimeException("UserId is null");
             }
-            String FeeId = RequestBody.get("FeeId");
-            if (FeeId.isEmpty()) {
-                throw new RuntimeException("FeeId is null");
-            }
+
             String isRequired = RequestBody.get("isRequired");
             if(isRequired.isEmpty()){
                 throw new RuntimeException("IsRequired is null");
@@ -47,6 +46,16 @@ public class FeeController {
             String FeeName = RequestBody.get("FeeName");
             if (FeeName.isEmpty()) {
                 throw new RuntimeException("FeeName is null");
+            }
+            String FeeId = RequestBody.get("FeeId");
+            if (FeeId.isEmpty()) {
+                FeeId = IDgenerator.GenId(FeeName);
+                while (dataBaseService.IsExistedFee(FeeId)){
+                    FeeId = IDgenerator.GenId(FeeName);
+                }
+            }
+            if (dataBaseService.IsExistedFee(FeeId)){
+                throw new RuntimeException("Invalid FeeId");
             }
             String dateCreate = RequestBody.get("DateCreate");
             if (dateCreate.isEmpty()) {
@@ -84,23 +93,27 @@ public class FeeController {
             if (RootId.isEmpty()) {
                 throw new RuntimeException("RootId is null");
             }
+            if (!dataBaseService.IsRoot(RootId)){
+                throw new RuntimeException("Invalid RootId");
+            }
             String FeeId = RequestBody.get("FeeId");
             if (FeeId.isEmpty()) {
                 throw new RuntimeException("FeeId is null");
+            }
+            if(!dataBaseService.IsExistedFee(FeeId)){
+                throw new RuntimeException("FeeId is not exist");
             }
             String RootPassword = RequestBody.get("RootPassword");
             if (RootPassword.isEmpty()){
                 throw  new RuntimeException("RootPassword is null");
             }
-            List<Admin> ListRoot = dataBaseService.SearchRootById(RootId);
-            if (ListRoot.size()==1){
-                if (!ListRoot.get(0).getUserPassword().equals(HashFuntion.hash256(RootPassword))){
-                    throw new RuntimeException("Invalid RootPassword");
-                }
-            }else{
-                throw new RuntimeException("Invalid RootId");
+            if (!dataBaseService.CheckValidRootPass(RootId,RootPassword)){
+                throw new RuntimeException("Invalid Password");
             }
-            if (JWTFactory.VerifyJWT(RootId, AccessToken) && dataBaseService.IsRoot(RootId) && dataBaseService.IsExistedFee(FeeId)) {
+            if (!dataBaseService.CheckIfFeeCanDelete(FeeId)){
+                throw new RuntimeException("Cannot delete this fee");
+            }
+            if (JWTFactory.VerifyJWT(RootId, AccessToken)) {
                 dataBaseService.DeleteFeeById(FeeId);
                 basicReponse.setCode("200");
                 basicReponse.setMessage("Success");
