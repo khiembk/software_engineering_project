@@ -368,15 +368,15 @@ function AdminHomePage() {
             <Home  style={{ fontSize: 50 }} />
             <h1 className="text-[32px] italic">Overview</h1>
          </div>
-         <Link to="/admin/" className={`hover:bg-gray-200 hover:text-[#4FC3F7] text-[#BDC2C7] w-full  h-14 pl-10 flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "Quản lý hộ khẩu" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`} onClick={() => handleTabClick("Quản lý hộ khẩu")}>
+         <Link to="/admin/" className={`hover:bg-gray-200 hover:text-[#4FC3F7]  w-full  h-14 pl-10 flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "Quản lý hộ khẩu" ? "bg-[#101F33] text-[#4FC3F7]" : "bg-[#101F33] text-[#BDC2C7]"}`} onClick={() => handleTabClick("Quản lý hộ khẩu")}>
           <PermMediaOutlinedIcon className="mr-2" />
           Quản lý hộ khẩu
         </Link>
-        <Link to="/admin/" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10 text-[#BDC2C7] flex text-left items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "Quản lý nhân khẩu" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`} onClick={() => handleTabClick("Quản lý nhân khẩu")}>
+        <Link to="/admin/" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10 flex text-left items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "Quản lý nhân khẩu" ? "bg-[#101F33] text-[#4FC3F7]" : "bg-[#101F33] text-[#BDC2C7]"}`} onClick={() => handleTabClick("Quản lý nhân khẩu")}>
           <PeopleIcon className="mr-2" />
           Quản lý nhân khẩu
         </Link>
-        <Link to="/admin/" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10 text-[#BDC2C7] flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "Quản lý thu phí" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`} onClick={() => handleTabClick("Quản lý thu phí")}>
+        <Link to="/admin/" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10 flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "Quản lý thu phí" ? "bg-[#101F33] text-[#4FC3F7]" : "bg-[#101F33] text-[#BDC2C7]"}`} onClick={() => handleTabClick("Quản lý thu phí")}>
           <MoneyIcon className="mr-2" />
           Quản lý thu phí
         </Link>
