@@ -1,10 +1,13 @@
 package Webserver.com.myserver.Controller;
 
+import Webserver.com.myserver.HelperFunction.HashFuntion;
+import Webserver.com.myserver.HelperFunction.IDgenerator;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.HelperFunction.TOTPGenerator;
 import Webserver.com.myserver.HelperObject.BasicReponse;
 import Webserver.com.myserver.Util.DataBaseService;
 import Webserver.com.myserver.Util.EmailService;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -70,10 +73,17 @@ public class ForgetPassController {
 
             if (dataBaseService.IsNomalUser(UserId)) {
                 if (TOTPGenerator.verifyTOTP(UserId,Otp)){
-                    basicReponse.setMessage(JWTFactory.GenJWT(UserId));
-                    basicReponse.setCode("200");
-                    logger.info(basicReponse.toString());
-                    return basicReponse.toString();
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("code","200");
+                    jsonObject.put("accessToken",JWTFactory.GenJWT(UserId));
+                    String newPass = IDgenerator.GenPass(6);
+                    dataBaseService.UpdateNomalUserPass(HashFuntion.hash256(newPass),UserId);
+                    logger.info(jsonObject.toString());
+                    String EmailStatus = emailService.sendSimpleMail("trankhiem2003@gmail.com","your password is : "+ newPass,"Forget Password Support");
+                    if (EmailStatus.equals("500")){
+                        throw new RuntimeException("Error Sending Email");
+                    }
+                    return jsonObject.toString();
                 }else {
 
                     throw new RuntimeException("Invalid Otp");
