@@ -21,7 +21,6 @@ public class ForgetPassController {
     private final DataBaseService dataBaseService;
     private final EmailService emailService;
     private static final Logger logger = LoggerFactory.getLogger(ForgetPassController.class);
-
     public ForgetPassController(DataBaseService dataBaseService, EmailService emailService) {
         this.dataBaseService = dataBaseService;
         this.emailService = emailService;
@@ -70,20 +69,18 @@ public class ForgetPassController {
             if(Otp.isEmpty()){
                 throw new RuntimeException("Otp is null");
             }
-
             if (dataBaseService.IsNomalUser(UserId)) {
                 if (TOTPGenerator.verifyTOTP(UserId,Otp)){
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("code","200");
-                    jsonObject.put("accessToken",JWTFactory.GenJWT(UserId));
+                    basicReponse.setCode("200");
+                    basicReponse.setMessage("Success");
                     String newPass = IDgenerator.GenPass(6);
                     dataBaseService.UpdateNomalUserPass(HashFuntion.hash256(newPass),UserId);
-                    logger.info(jsonObject.toString());
                     String EmailStatus = emailService.sendSimpleMail("trankhiem2003@gmail.com","your password is : "+ newPass,"Forget Password Support");
                     if (EmailStatus.equals("500")){
                         throw new RuntimeException("Error Sending Email");
                     }
-                    return jsonObject.toString();
+                    logger.info(basicReponse.toString());
+                    return basicReponse.toString();
                 }else {
 
                     throw new RuntimeException("Invalid Otp");

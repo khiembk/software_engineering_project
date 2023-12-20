@@ -35,7 +35,8 @@ public class DataBaseConnect {
     private static final String DELETE_BILL_BY_ID = "DELETE FROM bill WHERE BillId = ?";
     private static final String GET_lIST_BILL_BY_USER_ID_SQL = "SELECT * FROM bill WHERE UserId = ?";
 
-
+    private static final String GET_lIST_FEE_BY_FAMILY_COMPLETE_ID_SQL = "select * from fee where FeeId in (select f.FeeId from fee f, bill b where f.FeeId = b.FeeId  and b.FamilyId = ?)";
+    private static final String GET_lIST_FEE_BY_FAMILY_NOT_COMPLETE_ID_SQL = "select * from fee where FeeId not in (select f.FeeId from fee f, bill b where f.FeeId = b.FeeId  and b.FamilyId = ?)";
     private static final String GET_lIST_FAMILY_SQL = "SELECT * FROM family";
     private static final String GET_lIST_FAMILY_BY_ID_SQL = "SELECT * FROM family WHERE FamilyId = ?";
 
@@ -121,6 +122,12 @@ public class DataBaseConnect {
     }
     public List<Fee> searchFeeById(String feeId){
         return jdbcTemplate.query(SEARCH_FEE_BY_ID_SQL,new Object[]{feeId},new BeanPropertyRowMapper<>(Fee.class));
+    }
+    public List<Fee> GetListFeeCompleteByFamilyId(String FamilyId){
+        return jdbcTemplate.query(GET_lIST_FEE_BY_FAMILY_COMPLETE_ID_SQL,new Object[]{FamilyId},new BeanPropertyRowMapper<>(Fee.class));
+    }
+    public List<Fee> GetListFeeNotCompleteByFamilyId(String FamilyId){
+        return jdbcTemplate.query(GET_lIST_FEE_BY_FAMILY_NOT_COMPLETE_ID_SQL,new Object[]{FamilyId},new BeanPropertyRowMapper<>(Fee.class));
     }
     public List<UserInfo> ListUserInfor(){
         return  jdbcTemplate.query(GET_lIST_USER_SQL,new BeanPropertyRowMapper<>(UserInfo.class));
