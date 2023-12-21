@@ -44,19 +44,27 @@ public class UserController {
             if (UserId.isEmpty()){
                 throw new RuntimeException("UserId is null");
             }
-            if (JWTFactory.VerifyJWT(rootId,accessToken) && dataBaseService.IsRoot(rootId)){
+            String FamilyId = RequestBody.get("FamilyId");
+            if (FamilyId.isEmpty()){
+                throw new RuntimeException("FamilyId is null");
+            }
+            if(!dataBaseService.IsExistedFamily(FamilyId)){
+                throw new RuntimeException("Invalid FamilyId");
+            }
+            if (!dataBaseService.IsRoot(rootId)){
+                throw new RuntimeException("Invalid RootId");
+            }
+            String PhoneNumber = RequestBody.get("PhoneNumber");
+            String dateofBirth = RequestBody.get("dateOfBirth");
+            if (dateofBirth.isEmpty()){
+                throw new RuntimeException("datofBirth is null");
+            }
+            if (PhoneNumber.isEmpty()){
+                throw new RuntimeException("PhoneNumner is null");
+            }
+            if (JWTFactory.VerifyJWT(rootId,accessToken)){
                 dataBaseService.addUserToDataBase(UserName, HashFuntion.hash256("mypass"), UserId);
-                String FamilyId = RequestBody.get("FamilyId");
-                if(!dataBaseService.IsExistedFamily(FamilyId)){
-                    throw new RuntimeException("Invalid FamilyId");
-                }
-                String PhoneNumber = RequestBody.get("PhoneNumber");
-                String dateofBirth = RequestBody.get("dateOfBirth");
-                if (dateofBirth.isEmpty() || PhoneNumber.isEmpty() || FamilyId.isEmpty()){
-                    throw new RuntimeException("User not enough info");
-                }
                 dataBaseService.updateUserInfo(UserId,FamilyId,PhoneNumber,dateofBirth);
-
                 basicReponse.setMessage("Success");
                 basicReponse.setCode("200");
                 logger.info(basicReponse.toString());
