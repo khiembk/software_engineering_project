@@ -6,7 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 import { fetchFunction } from "../utils/Fetch";
 import {Popover,TextField} from '@mui/material';
 
-const UserList = ({ items,setUserList }) => {
+const UserList = ({ items,setUserList, mode }) => {
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const { user } = useAuth();
@@ -59,7 +59,7 @@ const[password,setPassword]=useState("")
             <th className="py-2 px-4 border-2"> Ngày sinh </th>
             <th className="py-2 px-4 border-2"> Số điện thoại </th>
             <th className="py-2 px-4 border-2"> Mã hộ khẩu </th>
-            <th className="py-2 px-4 border-2"> Thao tác </th>
+            {mode && <th className="py-2 px-4 border-2"> Thao tác </th>}
           </tr>
         </thead>
         <tbody>
@@ -70,10 +70,14 @@ const[password,setPassword]=useState("")
               <td className="px-4 py-2 border-2">{moment.utc(item.dateOfBirth).tz("Asia/Bangkok").format("DD/MM/YYYY")}</td>
               <td className="px-4 py-2 border-2">{item.phoneNumber}</td>
               <td className="px-4 py-2 border-2">{item.familyId}</td>
-              <td className="flex px-4 py-2 border-2 items-center justify-center">
-                <Link className="hover:text-gray-400 flex items-center justify-center bg-green-400 w-20 h-7 font-bold text-white rounded-md" to={`/admin/edit-user/${item.userId}`}>Update</Link>
-                <button className="hover:text-gray-400 flex justify-center items-center w-20 h-7 bg-red-600 font-bold text-white rounded-md" style={{ marginLeft: "10px" }} onClick={()=>{setOpenPopover(true); setUserId(item.userId)}}> Delete</button>
-              </td>
+              {mode &&
+                <td className="px-4 py-2 border-2">
+                  <div className='flex justify-center'>
+                    <Link className="hover:text-gray-400 bg-green-400 px-3 py-1 font-bold text-white rounded-md" to={`/admin/edit-user/${item.userId}`}>Update</Link>
+                    <button className="hover:text-gray-400 bg-red-600 px-3 py-1 font-bold text-white rounded-md" style={{ marginLeft: "10px" }} onClick={()=>{setOpenPopover(true); setUserId(item.userId)}}> Delete</button>
+                  </div>
+                </td>
+              }
             </tr>
           ))}
         </tbody>

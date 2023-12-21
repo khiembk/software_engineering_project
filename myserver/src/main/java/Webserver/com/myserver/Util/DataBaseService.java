@@ -142,6 +142,14 @@ public class DataBaseService {
         }
         return false;
     }
+    public List<Fee> GetListFeeCompleteUser(String UserId){
+        List<UserInfo> nomalUserList = dataBaseConnect.ListUserInforById(UserId);
+        return dataBaseConnect.GetListFeeCompleteByFamilyId(nomalUserList.get(0).getFamilyId());
+    }
+    public List<Fee> GetListFeeNotCompleteUser(String UserId){
+        List<UserInfo> nomalUserList = dataBaseConnect.ListUserInforById(UserId);
+        return dataBaseConnect.GetListFeeNotCompleteByFamilyId(nomalUserList.get(0).getFamilyId());
+    }
     public boolean CheckIfFeeCanDelete(String FeeId){
         List<Bill> bills = dataBaseConnect.GetListBillByFeeId(FeeId);
         if(bills.size()==0){

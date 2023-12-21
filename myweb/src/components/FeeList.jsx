@@ -32,8 +32,8 @@ const FeeList = ({ items }) => {
             <th className="py-2 px-4 border-2 border-gray-400">Mã phí</th>
             <th className="py-2 px-4 border-2 border-gray-400">Tên phí</th>
             <th className="py-2 px-4 border-2 border-gray-400">Chi tiết</th>
-            <th className="py-2 px-4 border-2 border-gray-400">Số tiền</th>
             <th className="py-2 px-4 border-2 border-gray-400">Ngày tạo</th>
+            <th className="py-2 px-4 border-2 border-gray-400">Loại phí</th>
           </tr>
         </thead>
         <tbody>
@@ -42,8 +42,8 @@ const FeeList = ({ items }) => {
               <td className="py-2 px-4 border-2">{item.feeId}</td>
               <td className="py-2 px-4 border-2">{item.feeName}</td>
               <td className="py-2 px-4 border-2">{item.detail}</td>
-              <td className="py-2 px-4 border-2">{item.money}</td>
               <td className="py-2 px-4 border-2">{moment.utc(item.dateCreate).tz("Asia/Bangkok").format("DD/MM/YYYY")}</td>
+              <td className="py-2 px-4 border-2">{item.isRequired ? "Bắt buộc" : "Không bắt buộc"}</td>
               <td>
                 <button className="w-[6rem] font-semibold ml-[5px] px-1 py-1 bg-transparent border border-gray-500 rounded-[1rem] hover:text-white hover:bg-gray-500 hover:border-transparent" onClick={e => {setAnchorEl(e.currentTarget);}}>Nộp ngay</button>
               </td>

@@ -164,6 +164,75 @@ public class FeeController {
         }
     }
 
+    @PostMapping("/getListFee/Complete")
+    String GetListFeeComplete(@RequestBody HashMap<String, String> RequestBody) {
+        logger.info(RequestBody.toString());
+        try {
+            String AccessToken = RequestBody.get("accessToken");
+            if (AccessToken.isEmpty()) {
+                throw new RuntimeException("AccessToken is null");
+            }
+            String UserId = RequestBody.get("UserId");
+            if (UserId.isEmpty()) {
+                throw new RuntimeException("UserId is null");
+            }
+            if (!dataBaseService.IsNomalUser(UserId)){
+                throw new RuntimeException("Invalid UserId");
+            }
+            if (JWTFactory.VerifyJWT(UserId, AccessToken)) {
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("code", "200");
+                jsonResponse.put("message", "Success");
+                jsonResponse.put("data", dataBaseService.GetListFeeCompleteUser(UserId));
+                logger.info(jsonResponse.toString());
+                return jsonResponse.toString();
+            } else {
+                throw new RuntimeException("Invalid JWT");
+            }
+
+        } catch (Exception exception) {
+            BasicReponse basicReponse = new BasicReponse();
+            basicReponse.setCode("500");
+            basicReponse.setMessage(exception.getMessage());
+            logger.info(basicReponse.toString());
+            return basicReponse.toString();
+        }
+    }
+    @PostMapping("/getListFee/NotComplete")
+    String GetListFeeNotComplete(@RequestBody HashMap<String, String> RequestBody) {
+        logger.info(RequestBody.toString());
+        try {
+            String AccessToken = RequestBody.get("accessToken");
+            if (AccessToken.isEmpty()) {
+                throw new RuntimeException("AccessToken is null");
+            }
+            String UserId = RequestBody.get("UserId");
+            if (UserId.isEmpty()) {
+                throw new RuntimeException("UserId is null");
+            }
+            if (!dataBaseService.IsNomalUser(UserId)){
+                throw new RuntimeException("Invalid UserId");
+            }
+            if (JWTFactory.VerifyJWT(UserId, AccessToken)) {
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("code", "200");
+                jsonResponse.put("message", "Success");
+                jsonResponse.put("data", dataBaseService.GetListFeeNotCompleteUser(UserId));
+                logger.info(jsonResponse.toString());
+                return jsonResponse.toString();
+            } else {
+                throw new RuntimeException("Invalid JWT");
+            }
+
+        } catch (Exception exception) {
+            BasicReponse basicReponse = new BasicReponse();
+            basicReponse.setCode("500");
+            basicReponse.setMessage(exception.getMessage());
+            logger.info(basicReponse.toString());
+            return basicReponse.toString();
+        }
+    }
+
     @PostMapping("/getListFee/Required")
     String GetListFeeRequired(@RequestBody HashMap<String, String> RequestBody) {
         logger.info(RequestBody.toString());

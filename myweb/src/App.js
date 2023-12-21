@@ -1,4 +1,4 @@
-import { defer, Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
+import { defer, Route, createBrowserRouter, createRoutesFromElements, Navigate } from "react-router-dom";
 import { AdminLayout } from './components/AdminLayout';
 import { ProtectedLayout } from './components/ProtectedLayout';
 import { UnprotectedLayout } from './components/UnprotectedLayout';
@@ -9,13 +9,17 @@ import UserInformation from "./pages/UserInformation";
 import FeePay from './pages/FeePay'
 import FeeHistory from './pages/PayHistory'
 import Statistic from "./pages/Statistic";
-import AdminHomePage from "./pages/AdminHomePage";
 import CreateFee from "./pages/CreateFee";
 import CreateUser from "./pages/CreateUser";
 import CreateFamily from "./pages/CreateFamily"
 import ChangePassword from "./pages/ChangePassword"
 import ChangePasswordforAdmin from "./pages/ChangePasswordforAdmin";
 import ForgetPassword from "./pages/ForgetPassword";
+import FeeManage from "./pages/FeeManage";
+import UserManage from "./pages/UserManage";
+import FamilyManage from "./pages/FamilyManage";
+import BillManage from "./pages/BillManage";
+import CreateBill from "./pages/CreateBill";
 
 const getUserData = () => 
     new Promise((resolve) =>
@@ -40,14 +44,22 @@ export const router = createBrowserRouter(
                 <Route path="/thongke" element={<Statistic/>}/>
                 <Route path="/changepass" element={<ChangePassword/>}/>
             </Route>
-            <Route element={<AdminLayout/>}>
-                <Route extra path="/admin" element={<AdminHomePage/>}/>
+            <Route path="/admin" element={<AdminLayout/>}>
+                <Route
+                    index
+                    element={<Navigate to="/admin/quanlyhokhau" />}
+                />
+                <Route path="/admin/quanlyphi" element={<FeeManage/>}/>
+                <Route path="/admin/quanlythuphi" element={<BillManage/>}/>
+                <Route path="/admin/quanlynhankhau" element={<UserManage/>}/>
+                <Route path="/admin/quanlyhokhau" element={<FamilyManage/>}/>
                 <Route path="/admin/addfee" element={<CreateFee/>}/>
                 <Route path="/admin/adduser" element={<CreateUser/>}/>
                 <Route path="/admin/addfamily" element={<CreateFamily/>}/>
+                <Route path="/admin/addbill" element={<CreateBill/>}/>
                 <Route path="/admin/changepass" element={<ChangePasswordforAdmin/>}/>
-                <Route path = "/admin/edit-user/:userId" element = {<CreateUser/>}/>
-                <Route path = "/admin/edit-family/:familyId" element = {<CreateFamily/>}/>
+                <Route path="/admin/edit-user/:userId" element = {<CreateUser/>}/>
+                <Route path="/admin/edit-family/:familyId" element = {<CreateFamily/>}/>
             </Route>
         </Route>
     )

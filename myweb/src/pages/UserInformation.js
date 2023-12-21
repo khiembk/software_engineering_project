@@ -25,7 +25,8 @@ export default function UserInformation() {
       const userData = await fetchFunction({
         reqType: '/GetUserInfo',
         UserId: user.UserId,
-        accessToken: user.token
+        accessToken: user.token,
+        userIdToFind: ""
       });
 
       if(userData.code === "200"){
