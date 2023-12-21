@@ -9,7 +9,7 @@ export default function FeePay() {
   const { user } = useAuth();
   const [feeUser, setFeeUser] = useState();
   const [searchName, setSearchName] = useState("");
-  const [searchFeeMode, setSearchFeeMode] = useState("");
+  const [searchFeeMode, setSearchFeeMode] = useState();
   const [searchStatus, setSearchStatus] = useState();
 
   const handlePaymentStatusChange = (status) => setSearchFeeMode(() => (searchFeeMode === status ? null : status));
@@ -17,20 +17,15 @@ export default function FeePay() {
   const fetchFeeUser = async () => {
     try {
       const feeList = await fetchFunction({
-        reqType: "/Fee/getListFee" + searchFeeMode, 
-        UserId: user.UserId,
-        accessToken: user.token
-      });
-      const billList = await fetchFunction({
-        reqType: "/Bill/GetListByUserId/User", 
+        reqType: "/Fee/getListFee/NotComplete", 
         UserId: user.UserId,
         accessToken: user.token
       });
 
-      if(feeList.code === "200" && billList.code === "200"){
-        let tempList = [];
-        for(let i = 0; i < billList.data.length; i++){
-          tempList = feeList.data.filter((fee) => fee.feeId !== billList.data[i].feeId);
+      if(feeList.code === "200"){
+        let tempList = feeList.data;
+        if(searchFeeMode != null){
+          tempList = tempList.filter((fee) => fee.isRequired === searchFeeMode);
         }
         if(searchName){
           tempList = tempList.filter((fee) => fee.feeName.includes(searchName));
@@ -45,7 +40,6 @@ export default function FeePay() {
       }
       else{
         console.log(feeList.message);
-        console.log(billList.message);
       }
     } 
     catch (error) {
@@ -63,7 +57,7 @@ export default function FeePay() {
       {feeUser ?
       <div>
         <h1 className="text-center font-semibold text-[1.5rem]" style={{marginBottom: '30px'}}>Các khoản phí chưa thanh toán</h1>
-        <div className='flex ml-4'>
+        <div className='flex ml-4 mb-4'>
           <div>
             <div>
               <span className='font-semibold'>Name:</span>
@@ -73,8 +67,8 @@ export default function FeePay() {
               <label className="mr-2">
                 <input
                   type="checkbox"
-                  checked={searchFeeMode === '/Required'}
-                  onChange={() => handlePaymentStatusChange('/Required')}
+                  checked={searchFeeMode === 1}
+                  onChange={() => handlePaymentStatusChange(1)}
                   className="mr-2 form-checkbox text-blue-500 focus:ring focus:border-blue-300"
                 />
                 <span className="text-blue-500">Bắt buộc</span>
@@ -82,8 +76,8 @@ export default function FeePay() {
               <label className="mr-2 ml-3">
                 <input
                   type="checkbox"
-                  checked={searchFeeMode === '/NotRequired'}
-                  onChange={() => handlePaymentStatusChange('/NotRequired')}
+                  checked={searchFeeMode === 0}
+                  onChange={() => handlePaymentStatusChange(0)}
                   className="mr-2 form-checkbox text-blue-500 focus:ring focus:border-blue-300"
                 />
                 <span className="text-blue-500">Không bắt buộc</span>

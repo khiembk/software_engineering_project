@@ -46,8 +46,8 @@ export const ProtectedLayout = () => {
     else if(user.mode === "user"){
         return (
             <div className="h-screen">
-                <h1 className="flex w-full h-[6%] bg-blue-500 border-gray-300" style={{justifyContent: 'right', position: 'fixed'}}>
-                    <button className="border-transparent bg-transparent hover:bg-black text-white font-semibold border h-[42px] rounded-[3rem] mr-3 self-center" type="button" onClick={handleClick}>
+                <h1 className="flex w-full h-[6vh] bg-blue-500 border-gray-300" style={{justifyContent: 'right', position: 'fixed'}}>
+                    <button className={`border-transparent bg-transparent hover:scale-[130%] text-white font-semibold border h-[42px] rounded-[3rem] mr-3 self-center ${open && "scale-[130%]"}`} type="button" onClick={handleClick}>
                         <AccountCircleIcon sx={{fontSize: 40}}/>
                     </button>
                     <Menu
@@ -67,31 +67,31 @@ export const ProtectedLayout = () => {
                 <div className="flex h-screen" style={{paddingTop: '50px'}}>
                     <div className="bg-blue-500" style={{display: 'flex', flexDirection: 'column', marginRight: '30px'}} >
                         <button className={`home-button ${currentPage === "" && "bg-blue-800 text-white border-b-4 border-white"} `} onClick={(e) => redirectBtn_Click(e, "")}>
-                            <div className="flex">
+                            <div className={`flex ${currentPage === "" && "scale-[120%]"}`}>
                                 <HomeIcon className="justify-start" fontSize="large"/>
                                 <p className="justify-center flex-grow self-center font-semibold">Home</p>
                             </div>
                         </button>
                         <button className={`home-button ${currentPage === "thongtin" && "bg-blue-800 text-white border-b-4 border-white"} `} onClick={(e) => redirectBtn_Click(e, "thongtin")}>
-                            <div className="flex">
+                            <div className={`flex ${currentPage === "thongtin" && "scale-[120%]"}`}>
                                 <PermIdentityIcon fontSize="large"/>
                                 <p className="justify-center flex-grow self-center font-semibold">Thông tin</p>
                             </div>
                         </button>
                         <button className={`home-button ${currentPage === "thuphi" && "bg-blue-800 text-white border-b-4 border-white"} `} onClick={(e) => redirectBtn_Click(e, "thuphi")}>
-                            <div className="flex">
+                            <div className={`flex ${currentPage === "thuphi" && "scale-[120%]"}`}>
                                 <ReceiptIcon fontSize="large"/>
                                 <p className="justify-center flex-grow self-center font-semibold">Thu phí</p>
                             </div>
                         </button>
                         <button className={`home-button ${currentPage === "lichsunop" && "bg-blue-800 text-white border-b-4 border-white"} `} onClick={(e) => redirectBtn_Click(e, "lichsunop")}>
-                            <div className="flex">
+                            <div className={`flex ${currentPage === "lichsunop" && "scale-[120%]"}`}>
                                 <HistoryIcon fontSize="large"/>
                                 <p className="justify-center flex-grow self-center font-semibold">Lịch sử nộp phí</p>
                             </div>
                         </button>
                         <button className={`home-button ${currentPage === "thongke" && "bg-blue-800 text-white border-b-4 border-white"} `} onClick={(e) => redirectBtn_Click(e, "thongke")}>
-                            <div className="flex">
+                            <div className={`flex ${currentPage === "thongke" && "scale-[120%]"}`}>
                                 <AnalyticsIcon fontSize="large"/>
                                 <p className="justify-center flex-grow self-center font-semibold">Thống kê</p>
                             </div>
