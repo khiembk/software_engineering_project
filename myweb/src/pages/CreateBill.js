@@ -44,7 +44,8 @@ function CreateBill() {
                 setAnchorEl(buttonElement);
                 setTimeout(() => {
                     setAnchorEl();
-                }, 2000);
+                    navigate("/admin/quanlythuphi");
+                }, 2000);    
             }
             else{
                 console.log("returned code != 200");

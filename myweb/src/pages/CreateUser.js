@@ -60,7 +60,7 @@ const CreateUser = () => {
 
     if(response.code === "200"){
       setAttempt(null);
-      navigate("/admin");
+      navigate("/admin/quanlynhankhau");
     }
     else{
       setAttempt("fail");
@@ -83,7 +83,7 @@ const CreateUser = () => {
 
     if(response.code === "200"){
       setAttempt(null);
-      navigate("/admin");
+      navigate("/admin/quanlynhankhau");
     }
     else{
       setAttempt("fail");
@@ -188,7 +188,7 @@ const CreateUser = () => {
             <div className="flex items-center">
               <FaCalendar className="mr-2 scale-125" />
               <input
-                className="border-gray-900 border-2 w-36 ml-3 "
+                className="border-gray-900 border-2 w-36 ml-3 h-9 w-36 mx-auto text-center"
                 type="date"
                 id="date_of_birth"
                 name="date_of_birth"
@@ -222,7 +222,7 @@ const CreateUser = () => {
               className="block justify-center items-center text-gray-700 text-sm font-bold mb-2"
               htmlFor="phone_number"
             >
-              
+              Số điện thoại
             </label>
             <div className="flex justify-center items-center">
               <FaPhone className="mr-2 scale-125" />

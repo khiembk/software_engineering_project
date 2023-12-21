@@ -49,7 +49,7 @@ const CreateUser = () => {
 
     if(response.code === "200"){
       setAttempt(null);
-      navigate("/admin");
+      navigate("/admin/quanlyhokhau");
     }
     else{
       setAttempt("fail");
@@ -101,7 +101,7 @@ const CreateUser = () => {
 
     if(response.code === "200"){
       setAttempt(null);
-      navigate("/admin");
+      navigate("/admin/quanlyhokhau");
     }
     else{
       setAttempt("fail");

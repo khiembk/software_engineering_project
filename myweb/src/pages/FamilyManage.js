@@ -32,11 +32,11 @@ function FamilyManage() {
     return(
         <div>
             {familyList ?
-                <div className="ml-8 h-screen ">
-                    <h1 className="text-center mb-5 text-2xl mt-4 font-bold">
+                <div className="ml-8 h-screen mt-10">
+                    <h1 className="text-center mb-5 text-2xl mt-4 font-bold text-[28px]">
                         Thông tin chi tiết các hộ khẩu
                     </h1>
-                    <Link to='/admin/addfamily' className="inline-block w-52 text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
+                    <Link to='/admin/addfamily' className="ml-3 block w-52 text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
                         Thêm hộ khẩu mới
                     </Link>
                     

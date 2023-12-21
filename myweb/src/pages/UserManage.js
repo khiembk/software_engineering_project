@@ -40,7 +40,7 @@ function UserManage() {
             });
         
             if (userData.code === "200") {
-                let tempList = userData.data.filter((user) => user.userId.includes(searchValue.trim()));
+                let tempList = userData.data.filter((user) => user.userId===searchValue.trim());
                 setUserList(tempList);
             } else {
                 setUserList([])
@@ -61,20 +61,20 @@ function UserManage() {
     return (
         <div>
             {userList ?
-                <div className="ml-10 h-screen ">
-                    <h1 className="text-center mb-5 text-2xl mt-4 font-bold">
+                <div className="ml-8 mt-10 h-screen">
+                    <h1 className="text-center mb-5 text-2xl mt-4 font-bold text-[28px]">
                         Thông tin chi tiết các nhân khẩu
                     </h1>
         
-                    <div className="flex w-full h-12 items-center">
+                    <div className="flex w-full h-10 items-center">
                         <Link to='/admin/adduser' className="flex ml-3 content-center w-48 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
                             Thêm nhân khẩu mới
                         </Link>
                 
-                        <form className="flex mx-auto justify-center items-center">
+                        <form className="flex w-96 mx-auto justify-center items-center">
                             <input
                                 type="text"
-                                placeholder="Search by UserID"
+                                placeholder="Tìm kiếm theo số CCCD "
                                 id='UserId'
                                 value={searchValue}
                                 onChange={(e)=> setSearchValue(e.target.value)}

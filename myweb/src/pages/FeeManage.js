@@ -150,12 +150,12 @@ function FeeManage() {
             Thông tin chi tiết các phí hiện hành
           </h1>
 
-          <div className=" w-full flex">
-            <Link to='/admin/addfee' className=" h-10 w-48 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
+          <div className="w-full inline-flex">
+            <Link to='/admin/addfee' className=" h-10 ml-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
               Thêm khoản phí mới
             </Link>
 
-            <form className="container w-2/3 mx-auto justify-center items-center">
+            <form className=" mx-auto w-96 justify-center items-center">
               <div className="flex justify-center items-center">
                 <input
                   type="text"

@@ -30,19 +30,19 @@ export const AdminLayout = () => {
                         <Home style={{ fontSize: 50 }} />
                         <h1 className="text-[32px] italic">Overview</h1>
                     </div>
-                    <Link to="/admin/quanlyhokhau" className={`hover:bg-gray-200 hover:text-[#4FC3F7] text-[#BDC2C7] w-full  h-14 pl-10 flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlyhokhau" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`}>
+                    <Link to="/admin/quanlyhokhau" className={`hover:bg-gray-200 hover:text-[#4FC3F7]  w-full  h-14 pl-10 flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlyhokhau" ? "bg-[#101F33] text-[#4FC3F7]" : "text-[#BDC2C7]"}`}>
                         <PermMediaOutlinedIcon className="mr-2" />
                         Quản lý hộ khẩu
                     </Link>
-                    <Link to="/admin/quanlynhankhau" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10 text-[#BDC2C7] flex text-left items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlynhankhau" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`}>
+                    <Link to="/admin/quanlynhankhau" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10  flex text-left items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlynhankhau" ? "bg-[#101F33] text-[#4FC3F7]" : "text-[#BDC2C7]"}`}>
                         <PeopleIcon className="mr-2" />
                         Quản lý nhân khẩu
                     </Link>
-                    <Link to="/admin/quanlyphi" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10 text-[#BDC2C7] flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlythuphi" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`}>
+                    <Link to="/admin/quanlyphi" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10  flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlyphi" ? "bg-[#101F33] text-[#4FC3F7]" : "text-[#BDC2C7]"}`}>
                         <MoneyIcon className="mr-2" />
                         Quản lý các loại phí
                     </Link>
-                    <Link to="/admin/quanlythuphi" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10 text-[#BDC2C7] flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlythuphi" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`}>
+                    <Link to="/admin/quanlythuphi" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10  flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlythuphi" ? "bg-[#101F33] text-[#4FC3F7]" : "text-[#BDC2C7]"}`}>
                         <PaymentIcon className="mr-2" />
                         Quản lý thu phí
                     </Link>
@@ -52,7 +52,7 @@ export const AdminLayout = () => {
                     </button>
                 </div>
                 <div className="flex-grow ml-[285px]">
-                    <h1 className="h-[10%] bg-[#009BE5]">
+                    <h1 className="h-[95px] bg-[#009BE5]">
                         <div className="flex justify-end">
                             <button>
                                 <NotificationsIcon className='mt-3 text-2xl text-white'/>
@@ -62,7 +62,7 @@ export const AdminLayout = () => {
                         
                         <div className="flex justify-between items-center mx-3">
                         <h1 className="text-white text-[36px] text-bold"></h1>
-                        <Link to='/admin/changepass/'className="hover:text-red-500 text-[18px] hover:scale-[120%] mr-6 flex justify-center text[18px] font-bold text-white rounded-md w-[140px] h-8 border-2 border-gray-200">
+                        <Link to='/admin/changepass/'className="hover:text-red-500 text-[18px] hover:scale-[120%] mr-11 flex justify-center text[18px] font-bold text-white rounded-md w-[140px] h-8 border-2 border-gray-200">
                             Đổi mật khẩu
                         </Link>
                         </div>

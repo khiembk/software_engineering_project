@@ -2,27 +2,26 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { fetchFunction } from "../utils/Fetch";
-import { FaKey,FaHouseUser  } from "react-icons/fa";
-import { MdMoney, MdOutlineFeed  } from "react-icons/md";
+import { FaKey,FaCheckCircle,FaCalendar  } from "react-icons/fa";
+import { MdOutlineFeed  } from "react-icons/md";
 import { IoInformationCircle } from "react-icons/io5";
 const CreateFee = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [FailAttempt, setAttempt] = useState(null);
-  const [title, setTitle] = useState("Tạo khoản thu phí mới");
   const [feeID, setFeeID] = useState("");
-  const [money, setMoney] = useState(0);
+  const [datecreate, setDateCreate] = useState(new Date());
   const [feeName, setFeeName] = useState("");
   const [detail, setDetail] = useState("");
-  const [familyId, setFamilyId] = useState("");
+  
+  const [feeType, setFeeType] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setFeeID("");
-    setMoney("");
+  
     setFeeName("");
     setDetail("");
-    setFamilyId("");
   };
 
   const addNewFee = async (e) => {
@@ -34,15 +33,14 @@ const CreateFee = () => {
       accessToken: user.token,
       FeeId: feeID,
       FeeName: feeName,
-      DateCreate: new Date(),
+      DateCreate: datecreate,
       Detail: detail,
-      FamilyId: familyId,
-      Money: money
+      isRequired: feeType
     });
 
     if(response.code === "200"){
       setAttempt(null);
-      navigate("/admin");
+      navigate("/admin/quanlyphi");
     }
     else{
       setAttempt("fail");
@@ -56,7 +54,7 @@ const CreateFee = () => {
         onSubmit={handleSubmit}
       >
         <div className="flex items-center justify-center">
-          <h3 className="text-red-600 font-bold rounded">{title}</h3>
+          <h2 className="text-red-600 text-[25px] font-bold rounded">Tạo khoản phí mới</h2>
         </div>
 
         <div className="mb-4">
@@ -99,43 +97,44 @@ const CreateFee = () => {
           </div>
         </div>
 
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="money"
-          >
-            Số tiền phải đóng (VNĐ)
-          </label>
-          <div className="flex justify-center items-center">
-          <MdMoney className="mr-2 scale-150" />
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="money"
-            type="text"
-            placeholder="Money"
-            value={money}
-            onChange={(e) => setMoney(e.target.value)}
-          />
+        <div className="mb-4 block items-center">
+            <label
+              className="block justify-center items-center text-gray-700 text-sm font-bold mb-2"
+              htmlFor="date_of_birth"
+            >
+              Ngày tạo
+            </label>
+            <div className="flex items-center">
+              <FaCalendar className="mr-2 scale-125" />
+              <input
+                className="border-gray-900 border-2 w-36 ml-3 h-9 w-36 mx-auto text-center"
+                type="date"
+                id="date_of_birth"
+                name="date_of_birth"
+                value={datecreate}
+                onChange={(e) => setDateCreate(e.target.value)}
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="mb-4">
-          <label
+          <div className="mb-4">
+        <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="money"
+            htmlFor="feeType"
           >
-            Mã hộ áp dụng
-          </label>
+            Loại phí
+        </label>
           <div className="flex justify-center items-center">
-          <FaHouseUser className="mr-2 scale-125" />
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="familyId"
-            type="text"
-            placeholder="FamilyId"
-            value={familyId}
-            onChange={(e) => setFamilyId(e.target.value)}
-          />
+          <FaCheckCircle className="mr-2 scale-150" />
+            <select
+              className="h-[48px] shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="feeType"
+              value={feeType}
+              onChange={(e)=>setFeeType(e.target.value)}
+            >
+              <option value={0}>Không bắt buộc</option>
+              <option value={1}>Bắt buộc</option>
+            </select>
           </div>
         </div>
 

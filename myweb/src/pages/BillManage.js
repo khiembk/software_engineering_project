@@ -87,7 +87,7 @@ function BillManage() {
             accessToken: user.token
           });
           if (list.code === "200") {
-            let tempList = list.data.filter((bill) => bill.familyId.includes(searchValue));
+            let tempList = list.data.filter((bill) => bill.familyId.includes(searchValue.trim()));
             setFeeList(tempList);
           } else {
             setFeeList([]);
@@ -106,7 +106,7 @@ function BillManage() {
           });
           
           if (list.code == "200") {
-            let tempList = list.data.filter((bill) => bill.feeId.includes(searchValue));
+            let tempList = list.data.filter((bill) => bill.feeId.includes(searchValue.trim()));
             setFeeList(tempList);
           } else {
             setFeeList([])
@@ -135,12 +135,12 @@ function BillManage() {
             Thông tin các hoá đơn đã thanh toán
           </h1>
 
-          <div className=" w-full flex">
-            <Link to='/admin/addbill' className="h-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
+          <div className=" w-full inline-flex">
+            <Link to='/admin/addbill' className=" ml-3 h-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ">
               Thanh toán hoá đơn mới
             </Link>
 
-            <form className="container w-2/3 mx-auto justify-center items-center">
+            <form className=" mx-auto w-96 justify-center items-center">
               <div className="flex justify-center items-center">
                 <input
                   type="text"
