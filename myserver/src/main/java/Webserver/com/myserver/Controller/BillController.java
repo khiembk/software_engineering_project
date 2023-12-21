@@ -63,6 +63,9 @@ public class BillController {
             if(FamilyId.isEmpty()){
                 throw new RuntimeException("FamilyId is null");
             }
+            if (!dataBaseService.IsExistedFamily(FamilyId)){
+                throw new RuntimeException("Invalid FamilyId");
+            }
             String BillId = FeeId+"_"+FamilyId;
             if (dataBaseService.IsExistedBill(BillId)){
                 throw new RuntimeException("Invalid BillId");
