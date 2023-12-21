@@ -4,12 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { fetchFunction } from "../utils/Fetch";
 import FeeList2 from "../components/FeeList2";
 import LoadingScreen from "../components/LoadingScreen";
-
 import SearchIcon from '@mui/icons-material/Search';
-
-
-
-
 
 function FeeManage() {
   const { user } = useAuth();
@@ -122,7 +117,7 @@ function FeeManage() {
             accessToken: user.token,
           });
           
-          if (list.code == "200") {
+          if (list.code === "200") {
             setFeeList(list.data);
             setSearchStatus("success");
           } else {

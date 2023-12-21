@@ -2,24 +2,25 @@ import React, { useState,useEffect } from "react";
 import {
   FaUser,
   FaKey,
-
   FaAddressCard,
 } from "react-icons/fa";
 import { fetchFunction } from "../utils/Fetch";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate,useParams } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const CreateUser = () => {
   const {familyId} = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [FailAttempt, setAttempt] = useState(null);
-  
+  const [FailAttempt, setFailAttempt] = useState(null);
+  const [onAttempt, setOnAttempt] = useState(false);
   const [familyID, setFamilyID] = useState("");
   const [fullOwnerName, setFullOwnerName] = useState("");
   const [address, setAddress] = useState("");
   const [fetchFamilyInfoDone, setFetchFamilyInfoDone] = useState(false);
+  const [formData, setFormData] = useLocalStorage("createfamily", {familyID: "", fullOwnerName: "", address: ""});
 
   function title() {
     if(familyId) return "Chỉnh sửa thông tin hộ khẩu"
@@ -37,7 +38,7 @@ const CreateUser = () => {
 
   const updateFamily = async (e) => {
     e.preventDefault();
-
+    setOnAttempt(true);
     const response = await fetchFunction({
       reqType: "/Family/Update", 
       accessToken: user.token,
@@ -48,11 +49,37 @@ const CreateUser = () => {
     });
 
     if(response.code === "200"){
-      setAttempt(null);
-      navigate("/admin");
+      setFailAttempt(null);
+      setOnAttempt(false);
+      navigate("/admin/quanlyhokhau");
     }
     else{
-      setAttempt("fail");
+      setFailAttempt("fail");
+      setOnAttempt(false);
+    }
+  };
+
+  const addNewFamily = async (e) => {
+    e.preventDefault();
+    setOnAttempt(true);
+    const response = await fetchFunction({
+      reqType: "/Family/Add", 
+      UserId: user.UserId,
+      accessToken: user.token,
+      FamilyId: familyID,
+      OwnerName: fullOwnerName,
+      Address: address,
+    });
+
+    if(response.code === "200"){
+      setFormData({familyID: "", fullOwnerName: "", address: ""});
+      setFailAttempt(null);
+      setOnAttempt(false);
+      navigate("/admin/quanlyhokhau");
+    }
+    else{
+      setFailAttempt("fail");
+      setOnAttempt(false);
     }
   };
 
@@ -83,35 +110,24 @@ const CreateUser = () => {
       fetchFamilyInfo();
     }
     else{
+      setFamilyID(formData.familyID);
+      setFullOwnerName(formData.fullOwnerName);
+      setAddress(formData.address);
       setFetchFamilyInfoDone(true);
     }
   }, []);
 
-  const addNewFamily = async (e) => {
-    e.preventDefault();
-
-    const response = await fetchFunction({
-      reqType: "/Family/Add", 
-      UserId: user.UserId,
-      accessToken: user.token,
-      FamilyId: familyID,
-      OwnerName: fullOwnerName,
-      Address: address,
-    });
-
-    if(response.code === "200"){
-      setAttempt(null);
-      navigate("/admin");
+  useEffect(() => {
+    if(!familyId){
+      setFormData({familyID, fullOwnerName, address});
     }
-    else{
-      setAttempt("fail");
-    }
-  };
+  }, [familyID, fullOwnerName, address]);
 
   return (
     <div>
       {fetchFamilyInfoDone ?
-        <div className="h-screen">
+        <div>
+          {onAttempt && <div className='fixed top-0 h-screen w-screen bg-black bg-opacity-50 text-white'><LoadingScreen color='secondary'/></div>}
           <form
             className="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-md shadow-md"
           >
@@ -127,17 +143,20 @@ const CreateUser = () => {
               </label>
               <div className="flex justify-center items-center">
                 <FaKey className="mr-2 scale-125" />
-                <input
-                  className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  type="text"
-                  name="familyID"
-                  id="familyID"
-                  placeholder="FamilyId"
-                  value={familyID}
-                  onChange={(e) => {
-                    setFamilyID(e.target.value);
-                  }}
-                />
+                {familyId ? 
+                  <p className="appearance-none  bg-gray-300 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{familyID}</p>:
+                  <input
+                    className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    type="text"
+                    name="familyID"
+                    id="familyID"
+                    placeholder="FamilyId"
+                    value={familyID}
+                    onChange={(e) => {
+                      setFamilyID(e.target.value);
+                    }}
+                  />
+                }
               </div>
             </div>
     

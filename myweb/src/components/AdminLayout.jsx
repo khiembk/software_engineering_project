@@ -30,29 +30,29 @@ export const AdminLayout = () => {
                         <Home style={{ fontSize: 50 }} />
                         <h1 className="text-[32px] italic">Overview</h1>
                     </div>
-                    <Link to="/admin/quanlyhokhau" className={`hover:bg-gray-200 hover:text-[#4FC3F7] text-[#BDC2C7] w-full  h-14 pl-10 flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlyhokhau" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`}>
+                    <Link to="/admin/quanlyhokhau" className={`hover:bg-[#4FC3F7] hover:text-[#101F33] text-[#BDC2C7] w-full  h-14 pl-10 flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlyhokhau" ? "text-[#101F33] bg-[#4FC3F7] scale-[110%]" : ""}`}>
                         <PermMediaOutlinedIcon className="mr-2" />
                         Quản lý hộ khẩu
                     </Link>
-                    <Link to="/admin/quanlynhankhau" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10 text-[#BDC2C7] flex text-left items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlynhankhau" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`}>
+                    <Link to="/admin/quanlynhankhau" className={`hover:bg-[#4FC3F7] hover:text-[#101F33] w-full h-14 pl-10 text-[#BDC2C7] flex text-left items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlynhankhau" ? "text-[#101F33] bg-[#4FC3F7] scale-[110%]" : ""}`}>
                         <PeopleIcon className="mr-2" />
                         Quản lý nhân khẩu
                     </Link>
-                    <Link to="/admin/quanlyphi" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10 text-[#BDC2C7] flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlythuphi" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`}>
+                    <Link to="/admin/quanlyphi" className={`hover:bg-[#4FC3F7] hover:text-[#101F33] w-full h-14 pl-10 text-[#BDC2C7] flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlyphi" ? "text-[#101F33] bg-[#4FC3F7] scale-[110%]" : ""}`}>
                         <MoneyIcon className="mr-2" />
                         Quản lý các loại phí
                     </Link>
-                    <Link to="/admin/quanlythuphi" className={`hover:bg-gray-200 hover:text-[#4FC3F7] w-full h-14 pl-10 text-[#BDC2C7] flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlythuphi" ? "bg-[#101F33] text-[#4FC3F7]" : ""}`}>
+                    <Link to="/admin/quanlythuphi" className={`hover:bg-[#4FC3F7] hover:text-[#101F33] w-full h-14 pl-10 text-[#BDC2C7] flex items-center text-[18px] font-bold py-2 px-4 rounded mb-10 ${selectedTab === "quanlythuphi" ? "text-[#101F33] bg-[#4FC3F7] scale-[110%]" : ""}`}>
                         <PaymentIcon className="mr-2" />
                         Quản lý thu phí
                     </Link>
-                    <button className="hover:bg-gray-200 w-full h-14 pl-10 flex items-center hover:bg- hover:text-[#4FC3F7] text-[#BDC2C7] text-[18px] font-bold py-2 px-4 rounded mb-10" onClick={logoutBtn_Click}>
+                    <button className="hover:bg-[#4FC3F7] w-full h-14 pl-10 flex items-center hover:text-red-600 text-[#BDC2C7] text-[18px] font-bold py-2 px-4 rounded mb-10" onClick={logoutBtn_Click}>
                         <LogoutIcon className="mr-2" />
                         Đăng xuất
                     </button>
                 </div>
                 <div className="flex-grow ml-[285px]">
-                    <h1 className="h-[10%] bg-[#009BE5]">
+                    <h1 className="h-[12vh] bg-[#009BE5]">
                         <div className="flex justify-end">
                             <button>
                                 <NotificationsIcon className='mt-3 text-2xl text-white'/>

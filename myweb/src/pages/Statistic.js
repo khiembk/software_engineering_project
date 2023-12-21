@@ -130,7 +130,7 @@ export default function Statistic() {
       {statData ?
       <div style={{margin: "10px"}}>
         {error && <p className="text-red-500 font-bold text-[5rem]">error</p>}
-        <div>
+        <div className="min-w-[55rem]">
           <p className="font-semibold text-center text-green-700 text-[1.5rem]">Biểu đồ các giao dịch được thực hiện trong năm nay</p>
           {chartData && <StatisticBarChart dataset = {chartData}/>}
         </div>

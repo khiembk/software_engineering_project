@@ -3,13 +3,11 @@ import moment from 'moment-timezone';
 import { useAuth } from "../hooks/useAuth";
 import { fetchFunction } from '../utils/Fetch';
 import UserList from '../components/UserList';
-import { useNavigate } from 'react-router-dom';
 import LoadingScreen from '../components/LoadingScreen';
 import {
   FaUser,
   FaKey,
   FaCalendar,
-  FaAddressCard,
   FaPhone,
   FaHouseUser,
 } from "react-icons/fa";
@@ -80,7 +78,7 @@ export default function UserInformation() {
                 </label>
                 <div className="flex justify-center items-center">
                   <FaKey className="mr-2 scale-125" />
-                  <p className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{userInformation[0].userId}</p>
+                  <p className="appearance-none border rounded bg-gray-200 mr-10 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{userInformation[0].userId}</p>
                 </div>
               </div>
 
@@ -93,7 +91,7 @@ export default function UserInformation() {
                 </label>
                 <div className="flex justify-center items-center">
                   <FaUser className="mr-2 scale-125" />
-                  <p className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{userInformation[0].userName}</p>
+                  <p className="appearance-none border rounded bg-gray-200 mr-10 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{userInformation[0].userName}</p>
                 </div>
               </div>
 
@@ -106,7 +104,7 @@ export default function UserInformation() {
                 </label>
                 <div className="flex items-center">
                   <FaCalendar className="mr-2 scale-125" />
-                  <p className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{moment.utc(userInformation[0].dateOfBirth).tz("Asia/Bangkok").format("DD/MM/YYYY")}</p>
+                  <p className="appearance-none border rounded bg-gray-200 mr-10 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{moment.utc(userInformation[0].dateOfBirth).tz("Asia/Bangkok").format("DD/MM/YYYY")}</p>
                 </div>
               </div>
 
@@ -119,7 +117,7 @@ export default function UserInformation() {
                 </label>
                 <div className="flex justify-center items-center">
                   <FaHouseUser className="mr-2 scale-125" />
-                  <p className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{userInformation[0].familyId}</p>
+                  <p className="appearance-none border rounded bg-gray-200 mr-10 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{userInformation[0].familyId}</p>
                 </div>
               </div>
 
@@ -132,7 +130,7 @@ export default function UserInformation() {
                 </label>
                 <div className="flex justify-center items-center">
                   <FaPhone className="mr-2 scale-125" />
-                  <p className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{userInformation[0].phoneNumber}</p>
+                  <p className="appearance-none border rounded bg-gray-200 mr-10 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{userInformation[0].phoneNumber}</p>
                 </div>
               </div>
               <h2 className="text-center font-semibold text-[1.5rem]" style={{marginTop: '30px'}}>Thông tin những người dùng cùng mã hộ</h2>

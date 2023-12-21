@@ -6,7 +6,7 @@ const chartSetting = {
   height: 400,
   sx: {
     [`.${axisClasses.left} .${axisClasses.label}`]: {
-      transform: 'translate(-20px, 0)',
+      transform: 'translate(-70px, 0)',
     },
     [`.${axisClasses.right} .${axisClasses.label}`]: {
       transform: 'translate(70px, 0)',
