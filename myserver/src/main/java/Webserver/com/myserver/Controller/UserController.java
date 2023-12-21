@@ -44,6 +44,9 @@ public class UserController {
             if (UserId.isEmpty()){
                 throw new RuntimeException("UserId is null");
             }
+            if (dataBaseService.IsNomalUser(UserId)){
+                throw new RuntimeException("UserId is existed");
+            }
             String FamilyId = RequestBody.get("FamilyId");
             if (FamilyId.isEmpty()){
                 throw new RuntimeException("FamilyId is null");
@@ -91,7 +94,10 @@ public class UserController {
            if (AccessToken.isEmpty()){
                throw new RuntimeException("AccessToken is null");
            }
-           if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsRoot(UserId)){
+           if (!dataBaseService.IsRoot(UserId)){
+               throw new RuntimeException("Invalid RootId");
+           }
+           if (JWTFactory.VerifyJWT(UserId,AccessToken) ){
                JSONObject jsonReponse = new JSONObject();
                jsonReponse.put("code","200");
                jsonReponse.put("message","Success");
@@ -117,29 +123,21 @@ public class UserController {
            if (UserId.isEmpty()){
                throw new RuntimeException("UserId is null");
            }
+           if (!dataBaseService.IsNomalUser(UserId)){
+               throw new RuntimeException("Invalid UserId");
+           }
            String AccessToken = RequestBody.get("accessToken");
            if (AccessToken.isEmpty()){
                throw new RuntimeException("AccessToken is null");
            }
-           String UserIdToFind = RequestBody.get("userIdToFind");
-           
-           if (JWTFactory.VerifyJWT(UserId,AccessToken) && (dataBaseService.IsNomalUser(UserId) || dataBaseService.IsRoot(UserId))){
-                if (UserIdToFind.isEmpty()){
+           if (JWTFactory.VerifyJWT(UserId,AccessToken)){
                     JSONObject jsonReponse = new JSONObject();
                     jsonReponse.put("code","200");
                     jsonReponse.put("message","Success");
                     jsonReponse.put("data",dataBaseService.GetListUserInfoById(UserId));
                     logger.info(jsonReponse.toString());
                     return jsonReponse.toString();
-                }
-                else{
-                    JSONObject jsonReponse = new JSONObject();
-                    jsonReponse.put("code","200");
-                    jsonReponse.put("message","Success");
-                    jsonReponse.put("data",dataBaseService.GetListUserInfoById(UserIdToFind));
-                    logger.info(jsonReponse.toString());
-                    return jsonReponse.toString();
-                }
+
            }else{
                throw new RuntimeException("Invalid JWT");
            }
@@ -159,13 +157,19 @@ public class UserController {
             if (UserId.isEmpty()){
                 throw new RuntimeException("UserId is null");
             }
+            if (!dataBaseService.IsNomalUser(UserId)){
+                throw new RuntimeException("Invalid UserId");
+            }
             String AccessToken = RequestBody.get("accessToken");
             if (AccessToken.isEmpty()){
                 throw new RuntimeException("AccessToken is null");
             }
             List<UserInfo> userInfos = dataBaseService.GetListUserInfoById(UserId);
-            if (JWTFactory.VerifyJWT(UserId,AccessToken) && dataBaseService.IsNomalUser(UserId) && userInfos.size()==1){
+            if (JWTFactory.VerifyJWT(UserId,AccessToken)  && userInfos.size()==1){
                 String familyId = userInfos.get(0).getFamilyId();
+                if (!dataBaseService.IsExistedFamily(familyId)){
+                    throw new RuntimeException("Error in database");
+                }
                 JSONObject jsonResponse = new JSONObject();
                 jsonResponse.put("code","200");
                 jsonResponse.put("message","Success");
@@ -192,6 +196,9 @@ public class UserController {
             if (RootId.isEmpty()){
                 throw new RuntimeException("RootId is null");
             }
+            if (!dataBaseService.IsRoot(RootId)){
+                throw new RuntimeException("Invalid RootId");
+            }
             String RootPassword = RequestBody.get("RootPassword");
             if (RootPassword.isEmpty()){
                 throw  new RuntimeException("RootPassword is null");
@@ -199,6 +206,9 @@ public class UserController {
             String UserId = RequestBody.get("UserId");
             if (UserId.isEmpty()){
                 throw new RuntimeException("UserId is null");
+            }
+            if (!dataBaseService.IsNomalUser(UserId)){
+                throw new RuntimeException("Invalid UserId");
             }
             String AccessToken = RequestBody.get("accessToken");
             if (AccessToken.isEmpty()){
@@ -228,7 +238,7 @@ public class UserController {
             }else{
                 throw new RuntimeException("Invalid RootId");
             }
-            if (JWTFactory.VerifyJWT(RootId,AccessToken) && dataBaseService.IsNomalUser(UserId) && dataBaseService.IsRoot(RootId)){
+            if (JWTFactory.VerifyJWT(RootId,AccessToken)){
                 dataBaseService.updateUserInfo(UserId,FamilyId,PhoneNumber,dateOfBirth);
                 basicReponse.setCode("200");
                 basicReponse.setMessage("Success");
@@ -254,9 +264,15 @@ public class UserController {
             if (RootId.isEmpty()){
                 throw new RuntimeException("RootId is null");
             }
+            if (!dataBaseService.IsRoot(RootId)){
+                throw new RuntimeException("Invalid RootId");
+            }
             String UserId = RequestBody.get("UserId");
             if (UserId.isEmpty()){
                 throw new RuntimeException("UserId is null");
+            }
+            if (!dataBaseService.IsNomalUser(UserId)){
+                throw new RuntimeException("Invalid UserId");
             }
             String AccessToken = RequestBody.get("accessToken");
             if (AccessToken.isEmpty()){
@@ -274,7 +290,7 @@ public class UserController {
             }else{
                 throw new RuntimeException("Invalid RootId");
             }
-            if (JWTFactory.VerifyJWT(RootId,AccessToken) && dataBaseService.IsNomalUser(UserId) && dataBaseService.IsRoot(RootId)){
+            if (JWTFactory.VerifyJWT(RootId,AccessToken)){
                 dataBaseService.DeleteUserById(UserId);
                 basicReponse.setCode("200");
                 basicReponse.setMessage("Success");
