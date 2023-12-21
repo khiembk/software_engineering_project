@@ -30,7 +30,7 @@ export default function FeePay() {
       if(feeList.code === "200" && billList.code === "200"){
         let tempList = [];
         for(let i = 0; i < billList.data.length; i++){
-          tempList = feeList.data.filter((fee) => fee.feeId != billList.data[i].feeId);
+          tempList = feeList.data.filter((fee) => fee.feeId !== billList.data[i].feeId);
         }
         if(searchName){
           tempList = tempList.filter((fee) => fee.feeName.includes(searchName));
