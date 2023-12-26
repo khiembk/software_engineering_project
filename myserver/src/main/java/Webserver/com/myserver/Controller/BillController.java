@@ -1,4 +1,5 @@
 package Webserver.com.myserver.Controller;
+import Webserver.com.myserver.Config.ServerProperties;
 import Webserver.com.myserver.HelperFunction.JWTFactory;
 import Webserver.com.myserver.HelperObject.BasicReponse;
 import Webserver.com.myserver.HelperObject.UserInfo;
@@ -15,22 +16,24 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class BillController {
     private final DataBaseService dataBaseService;
+    private final ServerProperties serverProperties;
     private static final Logger logger = LoggerFactory.getLogger(BillController.class);
-    public BillController(DataBaseService dataBaseService) {
+    public BillController(DataBaseService dataBaseService,ServerProperties serverProperties) {
         this.dataBaseService = dataBaseService;
+        this.serverProperties = serverProperties;
     }
+
     @PostMapping("/Add")
     public String AddNewBill(@RequestBody HashMap<String,String> RequestBody){
         logger.info(RequestBody.toString());
         BasicReponse basicReponse = new BasicReponse();
         try {
-
             String AccessToken = RequestBody.get("accessToken");
             if (AccessToken.isEmpty()) {
                 throw new RuntimeException("AccessToken is null");
             }
             String RootId = RequestBody.get("RootId");
-            if (RootId.isEmpty()) {
+            if (RootId.length() < serverProperties.getMinLengthUserId() || RootId.length() > serverProperties.getMaxLengthUserId()) {
                 throw new RuntimeException("RootId is null");
             }
             String FeeId = RequestBody.get("FeeId");

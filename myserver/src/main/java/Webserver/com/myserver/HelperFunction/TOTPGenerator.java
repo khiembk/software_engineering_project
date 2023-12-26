@@ -1,4 +1,7 @@
 package Webserver.com.myserver.HelperFunction;
+import Webserver.com.myserver.Config.ServerProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
@@ -6,6 +9,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 public class TOTPGenerator {
+
     private static String secretKey = "HanoiUniversityOfScienceAndTechnology";
     public static String generateTOTP( String stringInput) {
         long timeStep = 180;
